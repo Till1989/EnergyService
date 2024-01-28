@@ -53,6 +53,10 @@ namespace EnergyService
             this.ConsumptionDBConnection = new OleDbConnection(SetProvider("Consumption.accdb"));
             ConsumptionDBConnection.Open();
 
+            this.WorkTimeDBConnection = new OleDbConnection(SetProvider("WorkTime.accdb"));
+            WorkTimeDBConnection.Open();
+
+
             mainTabControl.SelectedIndex = 1;
 
         }
@@ -1160,6 +1164,7 @@ namespace EnergyService
             LoginDBConnection.Close();
             PlannedExpensesDBConnection.Close();
             ConsumptionDBConnection.Close();
+            WorkTimeDBConnection.Close();
         }
 
         private void CurrentStockDataGridView_Resize(object sender, EventArgs e)// Add colunms resize
@@ -2738,7 +2743,68 @@ namespace EnergyService
         }
 
         //CURRENCY********************************************************************************************************************************************************************/
-    }
+
+        //WORK TIME********************************************************************************************************************************************************************/
+
+
+
+        //CLASSES/////////////////////////////////////////////////
+
+        OleDbConnection WorkTimeDBConnection;
+        OleDbCommand WorkTimeDBCommand;
+        OleDbDataReader WorkTimeDBReader;
+
+        public class WorkTime
+        {
+            string personName;
+            string personStatus;
+            int workYear;
+            string workMonth;
+            int workDay;
+            int workHours;
+            int paymentMultiplicator;
+            public WorkTime(string personName, string personStatus, int workYear, string workMonth, int workDay, int workHours, int paymentMultiplicator)
+            {
+                this.personName = personName;
+                this.personStatus = personStatus;
+                this.workYear = workYear;
+                this.workMonth = workMonth;
+                this.workDay = workDay;
+                this.workHours = workHours;
+                this.paymentMultiplicator = paymentMultiplicator;
+            }
+        }
+
+        //FUNCTIONS////////////////////////////////////////////////
+        private string PrepareWorkTimeSearchCommand()
+        {
+            string tmp = " personName=" + searchWorkTimePersonComboBox.Text + " AND" + " workYear=" + Convert.ToInt32(searchWorkTimeYearComboBox.Text) + " AND" + " workMonth=" + searchWorkTimeMonthComboBox.Text;
+            return tmp;
+        }
+
+        private void GetWorkTime(string command)
+        {
+            command = "SELECT * FROM WorkTime WHERE" + command;
+
+            WorkTimeDBCommand = new OleDbCommand(command, WorkTimeDBConnection);
+
+            WorkTime[] tmp = new WorkTime[1000];
+
+            int i = 0;
+
+            this.WorkTimeDBReader = WorkTimeDBCommand.ExecuteReader();
+            while (WorkTimeDBReader.Read())
+            {
+                tmp[i] = new WorkTime(WorkTimeDBReader[0].ToString(), WorkTimeDBReader[1].ToString(), Convert.ToInt32(WorkTimeDBReader[2]), WorkTimeDBReader[3].ToString(), Convert.ToInt32(WorkTimeDBReader[4]), Convert.ToInt32(WorkTimeDBReader[5]), Convert.ToInt32(WorkTimeDBReader[6]));
+                i++;
+            }
+            tmp = tmp.Where(temp => temp != null).ToArray();
+        }
+
+            //EVENTS/////////////////////////////////////////////////
+            //WORK TIME********************************************************************************************************************************************************************/
+
+        }
 
 
 
