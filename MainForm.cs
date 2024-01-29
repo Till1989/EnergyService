@@ -2872,9 +2872,23 @@ namespace EnergyService
                 workTimeDataGridView.Columns.Add(column);
             }
 
+            Person[] workers = new Person[searchWorkTimePersonComboBox.Items.Count];
+            for(int i=0; i<workers.Length; i++)
+            {
+                workers[i] = ((Person)searchWorkTimePersonComboBox.Items[i]);
+            }
+
+            WorkTime[,] temp1 = new WorkTime[workers.Length, maxDays];
+
+            for(int i=0; i<workers.Length; i++)
+            {
 
 
+                for(int y=0; y<maxDays; y++)
+                {
 
+                }
+            }
 
 
 
