@@ -2812,7 +2812,65 @@ namespace EnergyService
 
         private void GetWorkTime(string command)
         {
+            int month = 0;
+            switch (searchWorkTimeMonthComboBox.Text)
+            {
+                case "January": month = 1; break;
+                case "February": month = 2; break;
+                case "March": month = 3; break;
+                case "April": month = 4; break;
+                case "May": month = 5; break;
+                case "June": month = 6; break;
+                case "July": month = 7; break;
+                case "August": month = 8; break;
+                case "September": month = 9; break;
+                case "October": month = 10; break;
+                case "November": month = 11; break;
+                case "December": month = 12; break;
+                default: break;
+            }
+            int maxDays = DateTime.DaysInMonth(Convert.ToInt32(searchWorkTimeYearComboBox.Text), month);
 
+            workTimeDataGridView.Rows.Clear();
+            workTimeDataGridView.Columns.Clear();
+
+            DataGridViewColumn column = new DataGridViewTextBoxColumn();
+            column.HeaderText = "Name";
+            column.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            column.DefaultCellStyle = new DataGridViewCellStyle();
+            column.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            workTimeDataGridView.Columns.Add(column);
+
+            column = new DataGridViewTextBoxColumn();
+            column.HeaderText = "Position";
+            column.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            column.DefaultCellStyle = new DataGridViewCellStyle();
+            column.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            workTimeDataGridView.Columns.Add(column);
+
+            column = new DataGridViewTextBoxColumn();
+            column.HeaderText = "Year";
+            column.Width = 50;
+            column.DefaultCellStyle = new DataGridViewCellStyle();
+            column.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            workTimeDataGridView.Columns.Add(column);
+
+            column = new DataGridViewTextBoxColumn();
+            column.HeaderText = "Month";
+            column.Width = 70;
+            column.DefaultCellStyle = new DataGridViewCellStyle();
+            column.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            workTimeDataGridView.Columns.Add(column);
+
+            for (int i = 0; i < maxDays; i++)
+            {
+                column = new DataGridViewTextBoxColumn();
+                column.HeaderText = Convert.ToString(i + 1);
+                column.AutoSizeMode = DataGridViewAutoSizeColumnMode.NotSet;
+                column.Width = 30;
+
+                workTimeDataGridView.Columns.Add(column);
+            }
 
 
 
@@ -2909,62 +2967,17 @@ namespace EnergyService
 
 
 
-            workTimeDataGridView.Rows.Clear();
-            workTimeDataGridView.Columns.Clear();
+
+            /*
+                        for(i=0; i<workers.Length; i++)
+                        {
+                            workTimeDataGridView.Rows.Add();
+                            workTimeDataGridView.Rows[workTimeDataGridView.Rows.Count - 2].Cells[0].Value = workers[i];
 
 
 
 
-
-            DataGridViewColumn column = new DataGridViewTextBoxColumn();
-            column.HeaderText = "Name";
-            column.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-            column.DefaultCellStyle = new DataGridViewCellStyle();
-            column.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            workTimeDataGridView.Columns.Add(column);
-
-            column = new DataGridViewTextBoxColumn();
-            column.HeaderText = "Position";
-            column.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-            column.DefaultCellStyle = new DataGridViewCellStyle();
-            column.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            workTimeDataGridView.Columns.Add(column);
-
-            column = new DataGridViewTextBoxColumn();
-            column.HeaderText = "Year";
-            column.Width = 50;
-            column.DefaultCellStyle = new DataGridViewCellStyle();
-            column.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            workTimeDataGridView.Columns.Add(column);
-
-            column = new DataGridViewTextBoxColumn();
-            column.HeaderText = "Month";
-            column.Width = 70;
-            column.DefaultCellStyle = new DataGridViewCellStyle();
-            column.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            workTimeDataGridView.Columns.Add(column);
-
-
-            for (i=0;i<maxDays;i++)
-            {
-                column = new DataGridViewTextBoxColumn();
-                column.HeaderText = Convert.ToString(i + 1);
-                column.AutoSizeMode = DataGridViewAutoSizeColumnMode.NotSet;
-                column.Width = 30;
-
-
-                workTimeDataGridView.Columns.Add(column);
-            }
-/*
-            for(i=0; i<workers.Length; i++)
-            {
-                workTimeDataGridView.Rows.Add();
-                workTimeDataGridView.Rows[workTimeDataGridView.Rows.Count - 2].Cells[0].Value = workers[i];
-
-            
-
-
-            }*/
+                        }*/
 
 
 
