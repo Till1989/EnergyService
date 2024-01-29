@@ -40,12 +40,16 @@ namespace EnergyService
             StockDBConnection.Open();
             L0_ComboBox.Items.AddRange(GetGroups(0));
             WriteOffEquipmentComboBox.Items.AddRange(GetFacilities());
-            WriteOffRecipientPersonComboBox.Items.AddRange(GetPersons());
-            WriteOffSenderPersonComboBox.Items.AddRange(GetPersons());
+            WriteOffRecipientPersonComboBox.Items.AddRange(GetPersons("Worker"));
+            WriteOffRecipientPersonComboBox.Items.AddRange(GetPersons("Engineer"));
+            WriteOffRecipientPersonComboBox.Items.AddRange(GetPersons("Manager"));
+            WriteOffSenderPersonComboBox.Items.AddRange(GetPersons("Engineer"));
+            WriteOffSenderPersonComboBox.Items.AddRange(GetPersons("Manager"));
 
             this.MaintenanceDBConnection = new OleDbConnection(SetProvider("Maintenance.accdb"));
             MaintenanceDBConnection.Open();
-            maintenanceExecutorComboBox.Items.AddRange(GetPersons());
+            maintenanceExecutorComboBox.Items.AddRange(GetPersons("Worker"));
+            maintenanceExecutorComboBox.Items.AddRange(GetPersons("Engineer"));
 
             this.PlannedExpensesDBConnection = new OleDbConnection(SetProvider("PlannedExpenses.accdb"));
             PlannedExpensesDBConnection.Open();
@@ -55,9 +59,17 @@ namespace EnergyService
 
             this.WorkTimeDBConnection = new OleDbConnection(SetProvider("WorkTime.accdb"));
             WorkTimeDBConnection.Open();
+            addWorkTimePersonComboBox.Items.AddRange(GetPersons("Worker"));
+            addWorkTimePersonComboBox.Items.AddRange(GetPersons("Engineer"));
+            searchWorkTimePersonComboBox.Items.AddRange(GetPersons("Worker"));
+            searchWorkTimePersonComboBox.Items.AddRange(GetPersons("Engineer"));
+            addWorkTimeMultiplierComboBox.SelectedIndex = 0;
+            searchWorkTimePersonComboBox.SelectedIndex = 0;
+            addWorkTimePersonComboBox.SelectedIndex = 0;
+            workShiftComboBox.SelectedIndex = 0;
 
 
-            mainTabControl.SelectedIndex = 1;
+            mainTabControl.SelectedIndex = 5;
 
         }
 
@@ -320,10 +332,14 @@ namespace EnergyService
         {
             public string name;
             public string position;
-            public Person(string name, string position)
+            public string division;
+            public string status;
+            public Person(string name, string position, string division, string status)
             {
                 this.name = name;
                 this.position = position;
+                this.division = division;
+                this.status = status;
             }
             public override string ToString()
             {
@@ -794,17 +810,22 @@ namespace EnergyService
 
             return tmp;
         }
-        private Person[] GetPersons()
+        private Person[] GetPersons(string status)
         {
             Person[] tmp = new Person[1000];
-            PersonsDBCommand = new OleDbCommand("SELECT * FROM Persons", PersonsDBConnection);
+            string command = "SELECT * FROM Persons";
+            if(status != "")
+            {
+                command += " WHERE status='" + status + "'";
+            }
+            PersonsDBCommand = new OleDbCommand(command, PersonsDBConnection);
 
             int i = 0;
 
             this.PersonsReader = PersonsDBCommand.ExecuteReader();
             while (PersonsReader.Read())
             {
-                tmp[i] = new Person(PersonsReader[0].ToString(), PersonsReader[1].ToString());
+                tmp[i] = new Person(PersonsReader[0].ToString(), PersonsReader[1].ToString(), PersonsReader[2].ToString(), PersonsReader[3].ToString());
                 i++;
             }
             tmp = tmp.Where(temp => temp != null).ToArray();
@@ -2762,8 +2783,9 @@ namespace EnergyService
             string workMonth;
             int workDay;
             int workHours;
-            int paymentMultiplicator;
-            public WorkTime(string personName, string personStatus, int workYear, string workMonth, int workDay, int workHours, int paymentMultiplicator)
+            int paymentMultiplier;
+            int workShift;
+            public WorkTime(string personName, string personStatus, int workYear, string workMonth, int workDay, int workHours, int paymentMultiplier, int workShift)
             {
                 this.personName = personName;
                 this.personStatus = personStatus;
@@ -2771,14 +2793,15 @@ namespace EnergyService
                 this.workMonth = workMonth;
                 this.workDay = workDay;
                 this.workHours = workHours;
-                this.paymentMultiplicator = paymentMultiplicator;
+                this.paymentMultiplier = paymentMultiplier;
+                this.workShift = workShift;
             }
         }
 
         //FUNCTIONS////////////////////////////////////////////////
         private string PrepareWorkTimeSearchCommand()
         {
-            string tmp = " personName=" + searchWorkTimePersonComboBox.Text + " AND" + " workYear=" + Convert.ToInt32(searchWorkTimeYearComboBox.Text) + " AND" + " workMonth=" + searchWorkTimeMonthComboBox.Text;
+            string tmp = " personName='" + searchWorkTimePersonComboBox.Text + "' AND" + " workYear=" + Convert.ToInt32(searchWorkTimeYearComboBox.Text) + " AND" + " workMonth='" + searchWorkTimeMonthComboBox.Text+"'";
             return tmp;
         }
 
@@ -2795,16 +2818,163 @@ namespace EnergyService
             this.WorkTimeDBReader = WorkTimeDBCommand.ExecuteReader();
             while (WorkTimeDBReader.Read())
             {
-                tmp[i] = new WorkTime(WorkTimeDBReader[0].ToString(), WorkTimeDBReader[1].ToString(), Convert.ToInt32(WorkTimeDBReader[2]), WorkTimeDBReader[3].ToString(), Convert.ToInt32(WorkTimeDBReader[4]), Convert.ToInt32(WorkTimeDBReader[5]), Convert.ToInt32(WorkTimeDBReader[6]));
+                tmp[i] = new WorkTime(WorkTimeDBReader[0].ToString(), WorkTimeDBReader[1].ToString(), Convert.ToInt32(WorkTimeDBReader[2]), 
+                    WorkTimeDBReader[3].ToString(), Convert.ToInt32(WorkTimeDBReader[4]), Convert.ToInt32(WorkTimeDBReader[5]), 
+                    Convert.ToInt32(WorkTimeDBReader[6]), Convert.ToInt32(WorkTimeDBReader[7]));
                 i++;
             }
             tmp = tmp.Where(temp => temp != null).ToArray();
         }
 
-            //EVENTS/////////////////////////////////////////////////
-            //WORK TIME********************************************************************************************************************************************************************/
+        private void SetWorkTime()
+        {
+            if(addWorkTimePersonComboBox.Text!="" && addWorkTimeTextBox.Text!="" && addWorkTimeMultiplierComboBox.Text!="" && addWorkTimeDateTimePicker.Value!=null && workShiftComboBox.Text!="")
+            {
+                bool checkResult = false;
 
+                string personName = ((Person)addWorkTimePersonComboBox.SelectedItem).name;
+                string personStatus = ((Person)addWorkTimePersonComboBox.SelectedItem).position;
+                int year = Convert.ToInt32(addWorkTimeDateTimePicker.Value.ToString("yyyy"));
+                string month = "";
+                int day = Convert.ToInt32(addWorkTimeDateTimePicker.Value.ToString("dd"));
+                int multiplier = Convert.ToInt32(addWorkTimeMultiplierComboBox.Text);
+                int shift = Convert.ToInt32(workShiftComboBox.Text);
+
+                for (int i=1; i<13; i++)
+                {
+                    switch(Convert.ToInt32(addWorkTimeDateTimePicker.Value.ToString("MM")))
+                    {
+                        case 1: month = "January"; break;
+                        case 2: month = "February"; break;
+                        case 3: month = "March"; break;
+                        case 4: month = "April"; break;
+                        case 5: month = "May"; break;
+                        case 6: month = "June"; break;
+                        case 7: month = "July"; break;
+                        case 8: month = "August"; break;
+                        case 9: month = "September"; break;
+                        case 10: month = "October"; break;
+                        case 11: month = "November"; break;
+                        case 12: month = "December"; break;
+                        default: break;
+                    }
+                }
+                WorkTimeDBCommand = new OleDbCommand("SELECT workHours FROM WorkTime WHERE personName='" + addWorkTimePersonComboBox.Text +
+                    "' AND workYear=" + year + " AND workMonth='" + month + "' AND workDay=" + day, WorkTimeDBConnection);
+                this.WorkTimeDBReader = WorkTimeDBCommand.ExecuteReader();
+                if(WorkTimeDBReader.Read())
+                {
+                    checkResult = false;
+                    MessageBox.Show("Not Empty Value");
+                }
+                else
+                {
+                    checkResult = true;
+                }
+
+                if(checkResult)
+                {
+                    int workHours = Convert.ToInt32(addWorkTimeTextBox.Text);
+                    WorkTimeDBCommand = new OleDbCommand("INSERT INTO WorkTime VALUES('" + personName + "', '" + personStatus + "', " + year + ", '" + month + "', "
+                        + day + ", " + workHours + ", " + multiplier + ", " + shift + ")", WorkTimeDBConnection);
+                    WorkTimeDBCommand.ExecuteNonQuery();
+                }
+
+            }
+            else
+            {
+                MessageBox.Show("Some Fields Are Empty");
+            }
         }
+
+
+
+        //EVENTS/////////////////////////////////////////////////
+        private void searchWorkTimePersonComboBox_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            e.Handled = true;
+        }
+
+        private void searchWorkTimeYearComboBox_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            e.Handled = true;
+        }
+
+        private void searchWorkTimeMonthComboBox_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            e.Handled = true;
+        }
+
+        private void addWorkTimeDateTimePicker_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            e.Handled = true;
+        }
+
+        private void addWorkTimeTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            Char number = e.KeyChar;
+            if (!Char.IsDigit(number) && number != 8)
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void addWorkTimeMultiplierComboBox_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            e.Handled = true;
+        }
+
+        private void addWorkTimePersonComboBox_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            e.Handled = true;
+        }
+        private void workShiftComboBox_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            e.Handled = true;
+        }
+
+        private void searchWorkTimePersonComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            GetWorkTime(PrepareWorkTimeSearchCommand());
+        }
+
+        private void searchWorkTimeYearComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            GetWorkTime(PrepareWorkTimeSearchCommand());
+        }
+
+        private void searchWorkTimeMonthComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            GetWorkTime(PrepareWorkTimeSearchCommand());
+        }
+
+        private void addWorkTimeButton_Click(object sender, EventArgs e)
+        {
+            SetWorkTime();
+        }
+
+        private void addWorkTimeTextBox_TextChanged(object sender, EventArgs e)
+        {
+            if(addWorkTimeTextBox.Text=="")
+            {
+                addWorkTimeTextBox.Text = "0";
+            }
+            if(Convert.ToInt32(addWorkTimeTextBox.Text)>8)
+            {
+                addWorkTimeTextBox.Text = "8";
+            }
+        }
+
+
+
+
+
+
+
+
+        //WORK TIME********************************************************************************************************************************************************************/
+
+    }
 
 
 
