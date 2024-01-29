@@ -2777,14 +2777,14 @@ namespace EnergyService
 
         public class WorkTime
         {
-            string personName;
-            string personStatus;
-            int workYear;
-            string workMonth;
-            int workDay;
-            int workHours;
-            int paymentMultiplier;
-            int workShift;
+            public string personName;
+            public string personStatus;
+            public int workYear;
+            public string workMonth;
+            public int workDay;
+            public int workHours;
+            public int paymentMultiplier;
+            public int workShift;
             public WorkTime(string personName, string personStatus, int workYear, string workMonth, int workDay, int workHours, int paymentMultiplier, int workShift)
             {
                 this.personName = personName;
@@ -2801,14 +2801,46 @@ namespace EnergyService
         //FUNCTIONS////////////////////////////////////////////////
         private string PrepareWorkTimeSearchCommand()
         {
-            string tmp = " personName='" + searchWorkTimePersonComboBox.Text + "' AND" + " workYear=" + Convert.ToInt32(searchWorkTimeYearComboBox.Text) + " AND" + " workMonth='" + searchWorkTimeMonthComboBox.Text+"'";
+
+            string tmp = "workYear=" + Convert.ToInt32(searchWorkTimeYearComboBox.Text) + " AND" + " workMonth='" + searchWorkTimeMonthComboBox.Text+"'";
+            if(showAllPersonsCheckBox.Checked==false)
+            {
+                tmp += " AND personName='" + searchWorkTimePersonComboBox.Text + "'";
+            }
             return tmp;
         }
 
         private void GetWorkTime(string command)
         {
-            command = "SELECT * FROM WorkTime WHERE" + command;
 
+
+
+
+
+
+
+
+
+            /*
+            int month = 0;
+            switch (searchWorkTimeMonthComboBox.Text)
+            {
+                case "January": month = 1; break;
+                case "February": month = 2; break;
+                case "March": month = 3; break;
+                case "April": month = 4; break;
+                case "May": month = 5; break;
+                case "June": month = 6; break;
+                case "July": month = 7; break;
+                case "August": month = 8; break;
+                case "September": month = 9; break;
+                case "October": month = 10; break;
+                case "November": month = 11; break;
+                case "December": month = 12; break;
+                default: break;
+            }
+            int maxDays = DateTime.DaysInMonth(Convert.ToInt32(searchWorkTimeYearComboBox.Text), month);
+            command = "SELECT * FROM WorkTime WHERE " + command;
             WorkTimeDBCommand = new OleDbCommand(command, WorkTimeDBConnection);
 
             WorkTime[] tmp = new WorkTime[1000];
@@ -2824,6 +2856,122 @@ namespace EnergyService
                 i++;
             }
             tmp = tmp.Where(temp => temp != null).ToArray();
+            */
+            /*
+
+
+
+            
+            string[] workers = new string[10];
+            if(showAllPersonsCheckBox.Checked==true)
+            {
+                for (i = 0; i < searchWorkTimePersonComboBox.Items.Count; i++)
+                {
+                    workers[i] = ((Person)searchWorkTimePersonComboBox.Items[i]).name;
+                }
+            }
+            else
+            {
+                workers[0] = ((Person)searchWorkTimePersonComboBox.SelectedItem).name;
+            }
+
+
+            workers = workers.Where(temp => temp != null).ToArray();
+            
+
+
+
+
+
+
+            WorkTime[,] temp1 = new WorkTime[workers.Length, maxDays];
+
+            for (i = 0; i < tmp.Length; i++)
+            {
+                string name = tmp[i].personName;
+                int day = tmp[i].workDay;
+                int index = 0;
+                for(int y=0; y<workers.Length; y++)
+                {
+                    if(name==workers[y])
+                    {
+                        index = y;
+                        y = workers.Length;
+                    }
+                }
+                temp1[index, day-1] = tmp[i];
+            }
+
+            */
+
+
+
+
+
+
+            workTimeDataGridView.Rows.Clear();
+            workTimeDataGridView.Columns.Clear();
+
+
+
+
+
+            DataGridViewColumn column = new DataGridViewTextBoxColumn();
+            column.HeaderText = "Name";
+            column.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            column.DefaultCellStyle = new DataGridViewCellStyle();
+            column.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            workTimeDataGridView.Columns.Add(column);
+
+            column = new DataGridViewTextBoxColumn();
+            column.HeaderText = "Position";
+            column.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            column.DefaultCellStyle = new DataGridViewCellStyle();
+            column.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            workTimeDataGridView.Columns.Add(column);
+
+            column = new DataGridViewTextBoxColumn();
+            column.HeaderText = "Year";
+            column.Width = 50;
+            column.DefaultCellStyle = new DataGridViewCellStyle();
+            column.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            workTimeDataGridView.Columns.Add(column);
+
+            column = new DataGridViewTextBoxColumn();
+            column.HeaderText = "Month";
+            column.Width = 70;
+            column.DefaultCellStyle = new DataGridViewCellStyle();
+            column.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            workTimeDataGridView.Columns.Add(column);
+
+
+            for (i=0;i<maxDays;i++)
+            {
+                column = new DataGridViewTextBoxColumn();
+                column.HeaderText = Convert.ToString(i + 1);
+                column.AutoSizeMode = DataGridViewAutoSizeColumnMode.NotSet;
+                column.Width = 30;
+
+
+                workTimeDataGridView.Columns.Add(column);
+            }
+/*
+            for(i=0; i<workers.Length; i++)
+            {
+                workTimeDataGridView.Rows.Add();
+                workTimeDataGridView.Rows[workTimeDataGridView.Rows.Count - 2].Cells[0].Value = workers[i];
+
+            
+
+
+            }*/
+
+
+
+
+
+
+
         }
 
         private void SetWorkTime()
@@ -2963,6 +3111,11 @@ namespace EnergyService
             {
                 addWorkTimeTextBox.Text = "8";
             }
+        }
+
+        private void showAllPersonsCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            GetWorkTime(PrepareWorkTimeSearchCommand());
         }
 
 
