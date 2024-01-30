@@ -2781,11 +2781,11 @@ namespace EnergyService
             public string personStatus;
             public int workYear;
             public string workMonth;
-            public int workDay;
-            public int workHours;
-            public int paymentMultiplier;
-            public int workShift;
-            public WorkTime(string personName, string personStatus, int workYear, string workMonth, int workDay, int workHours, int paymentMultiplier, int workShift)
+            public int[] workDay;
+            public int[] workHours;
+            public int[] paymentMultiplier;
+            public int[] workShift;
+            public WorkTime(string personName, string personStatus, int workYear, string workMonth, int[] workDay, int[] workHours, int[] paymentMultiplier, int[] workShift)
             {
                 this.personName = personName;
                 this.personStatus = personStatus;
@@ -2799,18 +2799,9 @@ namespace EnergyService
         }
 
         //FUNCTIONS////////////////////////////////////////////////
-        private string PrepareWorkTimeSearchCommand()
-        {
 
-            string tmp = "workYear=" + Convert.ToInt32(searchWorkTimeYearComboBox.Text) + " AND" + " workMonth='" + searchWorkTimeMonthComboBox.Text+"'";
-            if(showAllPersonsCheckBox.Checked==false)
-            {
-                tmp += " AND personName='" + searchWorkTimePersonComboBox.Text + "'";
-            }
-            return tmp;
-        }
 
-        private void GetWorkTime(string command)
+        private void GetWorkTime()
         {
             int month = 0;
             switch (searchWorkTimeMonthComboBox.Text)
@@ -2830,6 +2821,186 @@ namespace EnergyService
                 default: break;
             }
             int maxDays = DateTime.DaysInMonth(Convert.ToInt32(searchWorkTimeYearComboBox.Text), month);
+
+
+            WorkTime[] tmp = new WorkTime[10];
+            string name = "";
+            string status = "";
+            int year = 0;
+
+            string comm = "workYear=" + Convert.ToInt32(searchWorkTimeYearComboBox.Text) + " AND" + " workMonth='" + searchWorkTimeMonthComboBox.Text + "' AND personName='";
+
+
+            if (showAllPersonsCheckBox.Checked == false)
+            {
+
+
+                int[] hours = new int[40];
+                int[] days = new int[40];
+                int[] multiplier = new int[40];
+                int[] shift = new int[40];
+
+                name = ((Person)searchWorkTimePersonComboBox.SelectedItem).name;
+                status = ((Person)searchWorkTimePersonComboBox.SelectedItem).position;
+                year = Convert.ToInt32(searchWorkTimeYearComboBox.Text);
+
+
+                int i = 0;
+
+                string command = "SELECT workDay FROM WorkTime WHERE " + comm + name + "'";
+                WorkTimeDBCommand = new OleDbCommand(command, WorkTimeDBConnection);
+
+                this.WorkTimeDBReader = WorkTimeDBCommand.ExecuteReader();
+                while (WorkTimeDBReader.Read())
+                {
+                    days[i] = Convert.ToInt32(WorkTimeDBReader[0]);
+                    i++;
+                }
+
+                i = 0;
+                command = "SELECT workHours FROM WorkTime WHERE " + comm + name + "'";
+                WorkTimeDBCommand = new OleDbCommand(command, WorkTimeDBConnection);
+
+                this.WorkTimeDBReader = WorkTimeDBCommand.ExecuteReader();
+                while (WorkTimeDBReader.Read())
+                {
+                    hours[i] = Convert.ToInt32(WorkTimeDBReader[0]);
+                    i++;
+                }
+
+                i = 0;
+                command = "SELECT paymentMultiplicator FROM WorkTime WHERE " + comm + name + "'";
+                WorkTimeDBCommand = new OleDbCommand(command, WorkTimeDBConnection);
+
+                this.WorkTimeDBReader = WorkTimeDBCommand.ExecuteReader();
+                while (WorkTimeDBReader.Read())
+                {
+                    multiplier[i] = Convert.ToInt32(WorkTimeDBReader[0]);
+                    i++;
+                }
+
+                i = 0;
+                command = "SELECT workShift FROM WorkTime WHERE " + comm + name + "'";
+                WorkTimeDBCommand = new OleDbCommand(command, WorkTimeDBConnection);
+
+                this.WorkTimeDBReader = WorkTimeDBCommand.ExecuteReader();
+                while (WorkTimeDBReader.Read())
+                {
+                    shift[i] = Convert.ToInt32(WorkTimeDBReader[0]);
+                    i++;
+                }
+
+                tmp[0] = new WorkTime(name, status, year, searchWorkTimeMonthComboBox.Text, days, hours, multiplier, shift);
+
+                Array.Resize(ref tmp[0].workDay, maxDays);
+                Array.Resize(ref tmp[0].workHours, maxDays);
+                Array.Resize(ref tmp[0].paymentMultiplier, maxDays);
+                Array.Resize(ref tmp[0].workShift, maxDays);
+            }
+            else
+            {
+                for (int i = 0; i < searchWorkTimePersonComboBox.Items.Count; i++)
+                {
+                    name = ((Person)searchWorkTimePersonComboBox.Items[i]).name;
+                    status = ((Person)searchWorkTimePersonComboBox.Items[i]).position;
+                    year = Convert.ToInt32(searchWorkTimeYearComboBox.Text);
+
+                    int[] hours = new int[40];
+                    int[] days = new int[40];
+                    int[] multiplier = new int[40];
+                    int[] shift = new int[40];
+
+                    int y = 0;
+
+                    string command = "SELECT workDay FROM WorkTime WHERE " + comm + name + "'";
+                    WorkTimeDBCommand = new OleDbCommand(command, WorkTimeDBConnection);
+
+                    this.WorkTimeDBReader = WorkTimeDBCommand.ExecuteReader();
+                    while (WorkTimeDBReader.Read())
+                    {
+                        days[y] = Convert.ToInt32(WorkTimeDBReader[0]);
+                        y++;
+                    }
+
+                    y = 0;
+                    command = "SELECT workHours FROM WorkTime WHERE " + comm + name + "'";
+                    WorkTimeDBCommand = new OleDbCommand(command, WorkTimeDBConnection);
+
+                    this.WorkTimeDBReader = WorkTimeDBCommand.ExecuteReader();
+                    while (WorkTimeDBReader.Read())
+                    {
+                        hours[y] = Convert.ToInt32(WorkTimeDBReader[0]);
+                        y++;
+                    }
+
+                    y = 0;
+                    command = "SELECT paymentMultiplicator FROM WorkTime WHERE " + comm + name + "'";
+                    WorkTimeDBCommand = new OleDbCommand(command, WorkTimeDBConnection);
+
+                    this.WorkTimeDBReader = WorkTimeDBCommand.ExecuteReader();
+                    while (WorkTimeDBReader.Read())
+                    {
+                        multiplier[y] = Convert.ToInt32(WorkTimeDBReader[0]);
+                        y++;
+                    }
+
+                    y = 0;
+                    command = "SELECT workShift FROM WorkTime WHERE " + comm + name + "'";
+                    WorkTimeDBCommand = new OleDbCommand(command, WorkTimeDBConnection);
+
+                    this.WorkTimeDBReader = WorkTimeDBCommand.ExecuteReader();
+                    while (WorkTimeDBReader.Read())
+                    {
+                        shift[y] = Convert.ToInt32(WorkTimeDBReader[0]);
+                        y++;
+                    }
+
+                    tmp[i] = new WorkTime(name, status, year, searchWorkTimeMonthComboBox.Text, days, hours, multiplier, shift);
+
+                    Array.Resize(ref tmp[i].workDay, maxDays);
+                    Array.Resize(ref tmp[i].workHours, maxDays);
+                    Array.Resize(ref tmp[i].paymentMultiplier, maxDays);
+                    Array.Resize(ref tmp[i].workShift, maxDays);
+
+                }
+
+            }
+
+            tmp = tmp.Where(temp => temp != null).ToArray();
+
+            for (int i = 0; i < tmp.Length; i++)
+            {
+                int[] temp = new int[maxDays];
+                for (int y = 0; y < tmp[i].workHours.Length; y++)
+                {
+                    if(tmp[i].workDay[y]!=0)
+                    {
+                        temp[tmp[i].workDay[y] - 1] = tmp[i].workHours[y];
+                    }
+                }
+                tmp[i].workHours = temp;
+
+                int[] temp1 = new int[maxDays];
+                for (int y = 0; y < tmp[i].workShift.Length; y++)
+                {
+                    if (tmp[i].workDay[y] != 0)
+                    {
+                        temp1[tmp[i].workDay[y] - 1] = tmp[i].workShift[y];
+                    }
+                }
+                tmp[i].workShift = temp1;
+
+                int[] temp2 = new int[maxDays];
+                for (int y = 0; y < tmp[i].paymentMultiplier.Length; y++)
+                {
+                    if (tmp[i].workDay[y] != 0)
+                    {
+                        temp2[tmp[i].workDay[y] - 1] = tmp[i].paymentMultiplier[y];
+                    }
+                }
+                tmp[i].paymentMultiplier = temp2;
+
+            }
 
             workTimeDataGridView.Rows.Clear();
             workTimeDataGridView.Columns.Clear();
@@ -2872,126 +3043,39 @@ namespace EnergyService
                 workTimeDataGridView.Columns.Add(column);
             }
 
-            Person[] workers = new Person[searchWorkTimePersonComboBox.Items.Count];
-            for(int i=0; i<workers.Length; i++)
+            column = new DataGridViewTextBoxColumn();
+            column.HeaderText = "Total";
+            column.Width = 70;
+            column.DefaultCellStyle = new DataGridViewCellStyle();
+            column.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            workTimeDataGridView.Columns.Add(column);
+
+
+            for (int i = 0; i < tmp.Length; i++)
             {
-                workers[i] = ((Person)searchWorkTimePersonComboBox.Items[i]);
-            }
-
-            WorkTime[,] temp1 = new WorkTime[workers.Length, maxDays];
-
-            for(int i=0; i<workers.Length; i++)
-            {
-
-
-                for(int y=0; y<maxDays; y++)
+                workTimeDataGridView.Rows.Add();
+                workTimeDataGridView.Rows[workTimeDataGridView.Rows.Count - 2].Cells[0].Value = tmp[i].personName;
+                workTimeDataGridView.Rows[workTimeDataGridView.Rows.Count - 2].Cells[1].Value = tmp[i].personStatus;
+                workTimeDataGridView.Rows[workTimeDataGridView.Rows.Count - 2].Cells[2].Value = tmp[i].workYear;
+                workTimeDataGridView.Rows[workTimeDataGridView.Rows.Count - 2].Cells[3].Value = tmp[i].workMonth;
+                for (int y = 4; y < (maxDays + 4); y++)
                 {
-
+                    workTimeDataGridView.Rows[workTimeDataGridView.Rows.Count - 2].Cells[y].Value = tmp[i].workHours[y-4];
                 }
-            }
-
-
-
-
-            /*
-            int month = 0;
-            switch (searchWorkTimeMonthComboBox.Text)
-            {
-                case "January": month = 1; break;
-                case "February": month = 2; break;
-                case "March": month = 3; break;
-                case "April": month = 4; break;
-                case "May": month = 5; break;
-                case "June": month = 6; break;
-                case "July": month = 7; break;
-                case "August": month = 8; break;
-                case "September": month = 9; break;
-                case "October": month = 10; break;
-                case "November": month = 11; break;
-                case "December": month = 12; break;
-                default: break;
-            }
-            int maxDays = DateTime.DaysInMonth(Convert.ToInt32(searchWorkTimeYearComboBox.Text), month);
-            command = "SELECT * FROM WorkTime WHERE " + command;
-            WorkTimeDBCommand = new OleDbCommand(command, WorkTimeDBConnection);
-
-            WorkTime[] tmp = new WorkTime[1000];
-
-            int i = 0;
-
-            this.WorkTimeDBReader = WorkTimeDBCommand.ExecuteReader();
-            while (WorkTimeDBReader.Read())
-            {
-                tmp[i] = new WorkTime(WorkTimeDBReader[0].ToString(), WorkTimeDBReader[1].ToString(), Convert.ToInt32(WorkTimeDBReader[2]), 
-                    WorkTimeDBReader[3].ToString(), Convert.ToInt32(WorkTimeDBReader[4]), Convert.ToInt32(WorkTimeDBReader[5]), 
-                    Convert.ToInt32(WorkTimeDBReader[6]), Convert.ToInt32(WorkTimeDBReader[7]));
-                i++;
-            }
-            tmp = tmp.Where(temp => temp != null).ToArray();
-            */
-            /*
-
-
-
-            
-            string[] workers = new string[10];
-            if(showAllPersonsCheckBox.Checked==true)
-            {
-                for (i = 0; i < searchWorkTimePersonComboBox.Items.Count; i++)
+                workTimeDataGridView.Rows.Add();
+                workTimeDataGridView.Rows[workTimeDataGridView.Rows.Count - 2].Cells[3].Value = "Shift";
+                for (int y = 4; y < (maxDays + 4); y++)
                 {
-                    workers[i] = ((Person)searchWorkTimePersonComboBox.Items[i]).name;
+                    workTimeDataGridView.Rows[workTimeDataGridView.Rows.Count - 2].Cells[y].Value = tmp[i].workShift[y - 4];
                 }
-            }
-            else
-            {
-                workers[0] = ((Person)searchWorkTimePersonComboBox.SelectedItem).name;
-            }
-
-
-            workers = workers.Where(temp => temp != null).ToArray();
-            
-
-
-
-
-
-
-            WorkTime[,] temp1 = new WorkTime[workers.Length, maxDays];
-
-            for (i = 0; i < tmp.Length; i++)
-            {
-                string name = tmp[i].personName;
-                int day = tmp[i].workDay;
-                int index = 0;
-                for(int y=0; y<workers.Length; y++)
+                workTimeDataGridView.Rows.Add();
+                workTimeDataGridView.Rows[workTimeDataGridView.Rows.Count - 2].Cells[3].Value = "Multiplier";
+                for (int y = 4; y < (maxDays + 4); y++)
                 {
-                    if(name==workers[y])
-                    {
-                        index = y;
-                        y = workers.Length;
-                    }
+                    workTimeDataGridView.Rows[workTimeDataGridView.Rows.Count - 2].Cells[y].Value = tmp[i].paymentMultiplier[y - 4];
                 }
-                temp1[index, day-1] = tmp[i];
+
             }
-
-            */
-
-
-
-
-
-
-
-            /*
-                        for(i=0; i<workers.Length; i++)
-                        {
-                            workTimeDataGridView.Rows.Add();
-                            workTimeDataGridView.Rows[workTimeDataGridView.Rows.Count - 2].Cells[0].Value = workers[i];
-
-
-
-
-                        }*/
 
 
 
@@ -3110,17 +3194,17 @@ namespace EnergyService
 
         private void searchWorkTimePersonComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            GetWorkTime(PrepareWorkTimeSearchCommand());
+            GetWorkTime();
         }
 
         private void searchWorkTimeYearComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            GetWorkTime(PrepareWorkTimeSearchCommand());
+            GetWorkTime();
         }
 
         private void searchWorkTimeMonthComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            GetWorkTime(PrepareWorkTimeSearchCommand());
+            GetWorkTime();
         }
 
         private void addWorkTimeButton_Click(object sender, EventArgs e)
@@ -3142,7 +3226,7 @@ namespace EnergyService
 
         private void showAllPersonsCheckBox_CheckedChanged(object sender, EventArgs e)
         {
-            GetWorkTime(PrepareWorkTimeSearchCommand());
+            GetWorkTime();
         }
 
 
