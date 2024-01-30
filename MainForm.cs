@@ -63,14 +63,21 @@ namespace EnergyService
             addWorkTimePersonComboBox.Items.AddRange(GetPersons("Engineer"));
             searchWorkTimePersonComboBox.Items.AddRange(GetPersons("Worker"));
             searchWorkTimePersonComboBox.Items.AddRange(GetPersons("Engineer"));
-            addWorkTimeMultiplierComboBox.SelectedIndex = 0;
-            searchWorkTimePersonComboBox.SelectedIndex = 0;
-            addWorkTimePersonComboBox.SelectedIndex = 0;
-            workShiftComboBox.SelectedIndex = 0;
+
 
 
             mainTabControl.SelectedIndex = 5;
 
+        }
+
+        private void loadDelayTimer_Tick(object sender, EventArgs e)
+        {
+            loadDelayTimer.Enabled = false;
+
+            addWorkTimeMultiplierComboBox.SelectedIndex = 0;
+            searchWorkTimePersonComboBox.SelectedIndex = 0;
+            addWorkTimePersonComboBox.SelectedIndex = 0;
+            workShiftComboBox.SelectedIndex = 0;
         }
 
         private void mainTabControl_SelectedIndexChanged(object sender, EventArgs e)
@@ -640,6 +647,7 @@ namespace EnergyService
         }
         public void GetResources(Group group)
         {
+            Cursor.Current = Cursors.WaitCursor;
             int[] groupID = new int[10];
             groupID[0] = group.L0ID;
             groupID[1] = group.L1ID;
@@ -724,10 +732,8 @@ namespace EnergyService
                 t = temp[x].Split('_');
                 CurrentStockDataGridView.Rows.Add(t[0], t[1], t[2], t[3], t[4], t[5], t[6]);
             }
-
-
             CurrentStockDataGridView.ClearSelection();
-
+            Cursor.Current = Cursors.Default;
         }
         private void SearchResources(int ID)
         {
@@ -1516,9 +1522,8 @@ namespace EnergyService
         }
         private void GetMaintenances(string searchParameters)
         {
-
-
-                string searchParameter = "";
+            Cursor.Current = Cursors.WaitCursor;
+            string searchParameter = "";
                 string commandText = "";
 
                 if (searchParameters != "")
@@ -1653,22 +1658,15 @@ namespace EnergyService
                         {
                             MessageBox.Show("Something is wrong with maintenance month in database");
                         }
-
-
                     }
-
-
                 }
                 maintenanceDataGridView.ClearSelection();
-
-           
-
             maintenanceDataGridView.ClearSelection();
 
             maintenanceAddNotePanel.Enabled = false;
             maintenanceNoteTextBox.Text = "";
             //maintenanceDoneButton.Enabled = false;
-
+            Cursor.Current = Cursors.Default;
         }
 
         //EVENTS//////////////////////////////////////////////////
@@ -1911,6 +1909,7 @@ namespace EnergyService
         }
         private void GetPlannedExpenses(string command)
         {
+            Cursor.Current = Cursors.WaitCursor;
             if (command != "")
             {
                 command = " WHERE " + command;
@@ -2001,23 +2000,9 @@ namespace EnergyService
                     {
                         MessageBox.Show("Something is wrong with month in database");
                     }
-
-
                 }
-
-
-
-
-
-
-
-
-
-
-
             }
 
-            
             if (plannedExpensesDataGridView.Rows.Count>1)
             {
                 int total = 0;
@@ -2031,12 +2016,8 @@ namespace EnergyService
                 plannedExpensesDataGridView.Rows[plannedExpensesDataGridView.Rows.Count - 2].Cells[3].Value = "TOTAL:";
                 plannedExpensesDataGridView.Rows[plannedExpensesDataGridView.Rows.Count - 2].Cells[4].Value = total;
             }
-            
-
-
-
-
             plannedExpensesDataGridView.ClearSelection();
+            Cursor.Current = Cursors.Default;
         }   
         //EVENTS//////////////////////////////////////////////////
         private void addPlannedExpensesYearComboBox_KeyPress(object sender, KeyPressEventArgs e)
@@ -2372,6 +2353,7 @@ namespace EnergyService
         }
         private void RedrawChart(Consumption[] consumptions)
         {
+            Cursor.Current = Cursors.WaitCursor;
             Consumption[] tmp = new Consumption[12];
             tmp = consumptions;
             double yearTotal = 0;
@@ -2457,16 +2439,7 @@ namespace EnergyService
                     consumptionChart.Series[3].Points[i].Label = consumptionChart.Series[3].Points[i].YValues[0].ToString();
                 }
             }
-
-
-
-
-
-
-
-
-
-
+            Cursor.Current = Cursors.Default;
         }
 
         private bool CheckMonth()
@@ -2803,6 +2776,7 @@ namespace EnergyService
 
         private void GetWorkTime()
         {
+            Cursor.Current = Cursors.WaitCursor;
             int month = 0;
             switch (searchWorkTimeMonthComboBox.Text)
             {
@@ -2822,7 +2796,6 @@ namespace EnergyService
             }
             int maxDays = DateTime.DaysInMonth(Convert.ToInt32(searchWorkTimeYearComboBox.Text), month);
 
-
             WorkTime[] tmp = new WorkTime[10];
             string name = "";
             string status = "";
@@ -2830,11 +2803,8 @@ namespace EnergyService
 
             string comm = "workYear=" + Convert.ToInt32(searchWorkTimeYearComboBox.Text) + " AND" + " workMonth='" + searchWorkTimeMonthComboBox.Text + "' AND personName='";
 
-
             if (showAllPersonsCheckBox.Checked == false)
             {
-
-
                 int[] hours = new int[40];
                 int[] days = new int[40];
                 int[] multiplier = new int[40];
@@ -3010,6 +2980,8 @@ namespace EnergyService
             column.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
             column.DefaultCellStyle = new DataGridViewCellStyle();
             column.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            column.SortMode = DataGridViewColumnSortMode.NotSortable;
+            column.Resizable = DataGridViewTriState.True;
             workTimeDataGridView.Columns.Add(column);
 
             column = new DataGridViewTextBoxColumn();
@@ -3017,6 +2989,8 @@ namespace EnergyService
             column.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
             column.DefaultCellStyle = new DataGridViewCellStyle();
             column.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            column.SortMode = DataGridViewColumnSortMode.NotSortable;
+            column.Resizable = DataGridViewTriState.True;
             workTimeDataGridView.Columns.Add(column);
 
             column = new DataGridViewTextBoxColumn();
@@ -3024,6 +2998,8 @@ namespace EnergyService
             column.Width = 50;
             column.DefaultCellStyle = new DataGridViewCellStyle();
             column.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            column.SortMode = DataGridViewColumnSortMode.NotSortable;
+            column.Resizable = DataGridViewTriState.False;
             workTimeDataGridView.Columns.Add(column);
 
             column = new DataGridViewTextBoxColumn();
@@ -3031,6 +3007,8 @@ namespace EnergyService
             column.Width = 70;
             column.DefaultCellStyle = new DataGridViewCellStyle();
             column.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            column.SortMode = DataGridViewColumnSortMode.NotSortable;
+            column.Resizable = DataGridViewTriState.False;
             workTimeDataGridView.Columns.Add(column);
 
             for (int i = 0; i < maxDays; i++)
@@ -3038,6 +3016,9 @@ namespace EnergyService
                 column = new DataGridViewTextBoxColumn();
                 column.HeaderText = Convert.ToString(i + 1);
                 column.AutoSizeMode = DataGridViewAutoSizeColumnMode.NotSet;
+                column.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                column.SortMode = DataGridViewColumnSortMode.NotSortable;
+                column.Resizable = DataGridViewTriState.False;
                 column.Width = 30;
 
                 workTimeDataGridView.Columns.Add(column);
@@ -3048,7 +3029,10 @@ namespace EnergyService
             column.Width = 70;
             column.DefaultCellStyle = new DataGridViewCellStyle();
             column.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            column.SortMode = DataGridViewColumnSortMode.NotSortable;
             workTimeDataGridView.Columns.Add(column);
+
+            
 
 
             for (int i = 0; i < tmp.Length; i++)
@@ -3060,14 +3044,23 @@ namespace EnergyService
                 workTimeDataGridView.Rows[workTimeDataGridView.Rows.Count - 2].Cells[3].Value = tmp[i].workMonth;
                 for (int y = 4; y < (maxDays + 4); y++)
                 {
-                    workTimeDataGridView.Rows[workTimeDataGridView.Rows.Count - 2].Cells[y].Value = tmp[i].workHours[y-4];
+                    workTimeDataGridView.Rows[workTimeDataGridView.Rows.Count - 2].Cells[y].Value = tmp[i].workHours[y - 4];
                 }
+                int total = 0;
+                for (int y = 0; y < tmp[i].workHours.Length; y++)
+                {
+                    total += tmp[i].workHours[y];
+                }
+                workTimeDataGridView.Rows[workTimeDataGridView.Rows.Count - 2].Cells[workTimeDataGridView.Rows[workTimeDataGridView.Rows.Count - 2].Cells.Count - 1].Value = total;
+
                 workTimeDataGridView.Rows.Add();
                 workTimeDataGridView.Rows[workTimeDataGridView.Rows.Count - 2].Cells[3].Value = "Shift";
                 for (int y = 4; y < (maxDays + 4); y++)
                 {
                     workTimeDataGridView.Rows[workTimeDataGridView.Rows.Count - 2].Cells[y].Value = tmp[i].workShift[y - 4];
                 }
+
+
                 workTimeDataGridView.Rows.Add();
                 workTimeDataGridView.Rows[workTimeDataGridView.Rows.Count - 2].Cells[3].Value = "Multiplier";
                 for (int y = 4; y < (maxDays + 4); y++)
@@ -3075,14 +3068,11 @@ namespace EnergyService
                     workTimeDataGridView.Rows[workTimeDataGridView.Rows.Count - 2].Cells[y].Value = tmp[i].paymentMultiplier[y - 4];
                 }
 
+
             }
 
-
-
-
-
-
-
+            workTimeDataGridView.ClearSelection();
+            Cursor.Current = Cursors.Default;
         }
 
         private void SetWorkTime()
@@ -3195,16 +3185,19 @@ namespace EnergyService
         private void searchWorkTimePersonComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             GetWorkTime();
+            workTimeDataGridView.ClearSelection();
         }
 
         private void searchWorkTimeYearComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             GetWorkTime();
+            workTimeDataGridView.ClearSelection();
         }
 
         private void searchWorkTimeMonthComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             GetWorkTime();
+            workTimeDataGridView.ClearSelection();
         }
 
         private void addWorkTimeButton_Click(object sender, EventArgs e)
@@ -3228,6 +3221,8 @@ namespace EnergyService
         {
             GetWorkTime();
         }
+
+     
 
 
 
