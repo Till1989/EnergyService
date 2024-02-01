@@ -1649,7 +1649,7 @@ namespace EnergyService
                                 }
                                 if (maintenanceDataGridView.Rows[x].Cells[10].Value.ToString() == "True" && maintenanceDataGridView.Rows[x].Cells[13].Value.ToString() == "True")
                                 {
-                                    Color clr = Color.Red;
+                                    Color clr = Color.LightGreen;
                                     maintenanceDataGridView.Rows[x].Cells[10].Style.BackColor = clr;
                                 }
                             }
@@ -2758,7 +2758,8 @@ namespace EnergyService
             public int[] workHours;
             public int[] paymentMultiplier;
             public int[] workShift;
-            public WorkTime(string personName, string personStatus, int workYear, string workMonth, int[] workDay, int[] workHours, int[] paymentMultiplier, int[] workShift)
+            public string[] rate;
+            public WorkTime(string personName, string personStatus, int workYear, string workMonth, int[] workDay, int[] workHours, int[] paymentMultiplier, int[] workShift, string[] rate)
             {
                 this.personName = personName;
                 this.personStatus = personStatus;
@@ -2768,6 +2769,7 @@ namespace EnergyService
                 this.workHours = workHours;
                 this.paymentMultiplier = paymentMultiplier;
                 this.workShift = workShift;
+                this.rate = rate;
             }
         }
 
@@ -2775,7 +2777,7 @@ namespace EnergyService
 
 
         private void GetWorkTime()
-        {
+        {         
             Cursor.Current = Cursors.WaitCursor;
             int month = 0;
             switch (searchWorkTimeMonthComboBox.Text)
@@ -2809,6 +2811,7 @@ namespace EnergyService
                 int[] days = new int[40];
                 int[] multiplier = new int[40];
                 int[] shift = new int[40];
+                string[] rate = new string[40];
 
                 name = ((Person)searchWorkTimePersonComboBox.SelectedItem).name;
                 status = ((Person)searchWorkTimePersonComboBox.SelectedItem).position;
@@ -2860,12 +2863,24 @@ namespace EnergyService
                     i++;
                 }
 
-                tmp[0] = new WorkTime(name, status, year, searchWorkTimeMonthComboBox.Text, days, hours, multiplier, shift);
+                i = 0;
+                command = "SELECT rate FROM WorkTime WHERE " + comm + name + "'";
+                WorkTimeDBCommand = new OleDbCommand(command, WorkTimeDBConnection);
+
+                this.WorkTimeDBReader = WorkTimeDBCommand.ExecuteReader();
+                while (WorkTimeDBReader.Read())
+                {
+                    rate[i] = WorkTimeDBReader[0].ToString();
+                    i++;
+                }
+
+                tmp[0] = new WorkTime(name, status, year, searchWorkTimeMonthComboBox.Text, days, hours, multiplier, shift, rate);
 
                 Array.Resize(ref tmp[0].workDay, maxDays);
                 Array.Resize(ref tmp[0].workHours, maxDays);
                 Array.Resize(ref tmp[0].paymentMultiplier, maxDays);
                 Array.Resize(ref tmp[0].workShift, maxDays);
+                Array.Resize(ref tmp[0].rate, maxDays);
             }
             else
             {
@@ -2879,6 +2894,7 @@ namespace EnergyService
                     int[] days = new int[40];
                     int[] multiplier = new int[40];
                     int[] shift = new int[40];
+                    string[] rate = new string[40];
 
                     int y = 0;
 
@@ -2925,13 +2941,24 @@ namespace EnergyService
                         y++;
                     }
 
-                    tmp[i] = new WorkTime(name, status, year, searchWorkTimeMonthComboBox.Text, days, hours, multiplier, shift);
+                    i = 0;
+                    command = "SELECT rate FROM WorkTime WHERE " + comm + name + "'";
+                    WorkTimeDBCommand = new OleDbCommand(command, WorkTimeDBConnection);
+
+                    this.WorkTimeDBReader = WorkTimeDBCommand.ExecuteReader();
+                    while (WorkTimeDBReader.Read())
+                    {
+                        rate[i] = WorkTimeDBReader[0].ToString();
+                        i++;
+                    }
+                   
+                    tmp[i] = new WorkTime(name, status, year, searchWorkTimeMonthComboBox.Text, days, hours, multiplier, shift, rate);
 
                     Array.Resize(ref tmp[i].workDay, maxDays);
                     Array.Resize(ref tmp[i].workHours, maxDays);
                     Array.Resize(ref tmp[i].paymentMultiplier, maxDays);
                     Array.Resize(ref tmp[i].workShift, maxDays);
-
+                    Array.Resize(ref tmp[i].rate, maxDays);
                 }
 
             }
@@ -2970,6 +2997,15 @@ namespace EnergyService
                 }
                 tmp[i].paymentMultiplier = temp2;
 
+                string[] temp3 = new string[maxDays];
+                for (int y = 0; y < tmp[i].rate.Length; y++)
+                {
+                    if (tmp[i].workDay[y] != 0)
+                    {
+                        temp3[tmp[i].workDay[y] - 1] = tmp[i].rate[y];
+                    }
+                }
+                tmp[i].rate = temp3;
             }
 
             workTimeDataGridView.Rows.Clear();
@@ -3068,7 +3104,23 @@ namespace EnergyService
                     workTimeDataGridView.Rows[workTimeDataGridView.Rows.Count - 2].Cells[y].Value = tmp[i].paymentMultiplier[y - 4];
                 }
 
+                workTimeDataGridView.Rows.Add();
+                workTimeDataGridView.Rows[workTimeDataGridView.Rows.Count - 2].Cells[3].Value = "Rate, UAH";
+                for (int y = 4; y < (maxDays + 4); y++)
+                {
+                    workTimeDataGridView.Rows[workTimeDataGridView.Rows.Count - 2].Cells[y].Value = tmp[i].rate[y - 4];
+                }
 
+                double totalPayment = 0;
+                for (int y = 0; y < tmp[i].workHours.Length; y++)
+                {
+                    totalPayment += tmp[i].workHours[y] * tmp[i].paymentMultiplier[y] * Convert.ToDouble(tmp[i].rate[y]);
+                }
+
+
+
+
+                workTimeDataGridView.Rows[workTimeDataGridView.Rows.Count - 2].Cells[workTimeDataGridView.Rows[workTimeDataGridView.Rows.Count - 2].Cells.Count - 1].Value = totalPayment;
             }
 
             workTimeDataGridView.ClearSelection();
@@ -3088,6 +3140,7 @@ namespace EnergyService
                 int day = Convert.ToInt32(addWorkTimeDateTimePicker.Value.ToString("dd"));
                 int multiplier = Convert.ToInt32(addWorkTimeMultiplierComboBox.Text);
                 int shift = Convert.ToInt32(workShiftComboBox.Text);
+                string rate = rateTextBox.Text;
 
                 for (int i=1; i<13; i++)
                 {
@@ -3125,7 +3178,7 @@ namespace EnergyService
                 {
                     int workHours = Convert.ToInt32(addWorkTimeTextBox.Text);
                     WorkTimeDBCommand = new OleDbCommand("INSERT INTO WorkTime VALUES('" + personName + "', '" + personStatus + "', " + year + ", '" + month + "', "
-                        + day + ", " + workHours + ", " + multiplier + ", " + shift + ")", WorkTimeDBConnection);
+                        + day + ", " + workHours + ", " + multiplier + ", " + shift + ", '" + rate + "')", WorkTimeDBConnection);
                     WorkTimeDBCommand.ExecuteNonQuery();
                 }
 
@@ -3163,6 +3216,15 @@ namespace EnergyService
         {
             Char number = e.KeyChar;
             if (!Char.IsDigit(number) && number != 8)
+            {
+                e.Handled = true;
+            }
+        }
+        private void rateTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            //MessageBox.Show((Convert.ToInt32(e.KeyChar)).ToString());
+            Char number = e.KeyChar;
+            if (!Char.IsDigit(number) && number != 8 && number !=44)
             {
                 e.Handled = true;
             }
@@ -3216,13 +3278,53 @@ namespace EnergyService
                 addWorkTimeTextBox.Text = "8";
             }
         }
+        private void rateTextBox_TextChanged(object sender, EventArgs e)
+        {
+            if (rateTextBox.Text == "")
+            {
+                rateTextBox.Text = "0";
+            }
+            if (rateTextBox.Text == ",")
+            {
+                rateTextBox.Text = "0";
+            }
+            if (rateTextBox.Text == "0,")
+            {
+                rateTextBox.Text = "0";
+            }
+            if (rateTextBox.Text == ",0")
+            {
+                rateTextBox.Text = "0";
+            }
+            if (Convert.ToDouble(rateTextBox.Text) > 1000)
+            {
+                rateTextBox.Text = "1000";
+            }
+
+            string tmp = "";
+            tmp = rateTextBox.Text.Substring(0, 1);
+            if (tmp == ",")
+            {
+                rateTextBox.Text = "0" + rateTextBox.Text;
+            }
+            tmp = rateTextBox.Text.Substring(rateTextBox.Text.Length-1, 1);
+            if (tmp == ",")
+            {
+                rateTextBox.Text = rateTextBox.Text + "0";
+            }
+
+        }
 
         private void showAllPersonsCheckBox_CheckedChanged(object sender, EventArgs e)
         {
             GetWorkTime();
         }
 
-     
+
+
+
+
+
 
 
 
