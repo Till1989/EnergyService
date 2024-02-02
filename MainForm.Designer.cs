@@ -2137,7 +2137,6 @@ namespace EnergyService
             // showAllPersonsCheckBox
             // 
             this.showAllPersonsCheckBox.AutoSize = true;
-            this.showAllPersonsCheckBox.Enabled = false;
             this.showAllPersonsCheckBox.Location = new System.Drawing.Point(59, 30);
             this.showAllPersonsCheckBox.Name = "showAllPersonsCheckBox";
             this.showAllPersonsCheckBox.Size = new System.Drawing.Size(108, 17);

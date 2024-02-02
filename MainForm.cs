@@ -2820,57 +2820,16 @@ namespace EnergyService
 
                 int i = 0;
 
-                string command = "SELECT workDay FROM WorkTime WHERE " + comm + name + "'";
+                string command = "SELECT * FROM WorkTime WHERE " + comm + name + "'";
                 WorkTimeDBCommand = new OleDbCommand(command, WorkTimeDBConnection);
-
                 this.WorkTimeDBReader = WorkTimeDBCommand.ExecuteReader();
                 while (WorkTimeDBReader.Read())
                 {
-                    days[i] = Convert.ToInt32(WorkTimeDBReader[0]);
-                    i++;
-                }
-
-                i = 0;
-                command = "SELECT workHours FROM WorkTime WHERE " + comm + name + "'";
-                WorkTimeDBCommand = new OleDbCommand(command, WorkTimeDBConnection);
-
-                this.WorkTimeDBReader = WorkTimeDBCommand.ExecuteReader();
-                while (WorkTimeDBReader.Read())
-                {
-                    hours[i] = Convert.ToInt32(WorkTimeDBReader[0]);
-                    i++;
-                }
-
-                i = 0;
-                command = "SELECT paymentMultiplicator FROM WorkTime WHERE " + comm + name + "'";
-                WorkTimeDBCommand = new OleDbCommand(command, WorkTimeDBConnection);
-
-                this.WorkTimeDBReader = WorkTimeDBCommand.ExecuteReader();
-                while (WorkTimeDBReader.Read())
-                {
-                    multiplier[i] = Convert.ToInt32(WorkTimeDBReader[0]);
-                    i++;
-                }
-
-                i = 0;
-                command = "SELECT workShift FROM WorkTime WHERE " + comm + name + "'";
-                WorkTimeDBCommand = new OleDbCommand(command, WorkTimeDBConnection);
-
-                this.WorkTimeDBReader = WorkTimeDBCommand.ExecuteReader();
-                while (WorkTimeDBReader.Read())
-                {
-                    shift[i] = Convert.ToInt32(WorkTimeDBReader[0]);
-                    i++;
-                }
-
-                i = 0;
-                command = "SELECT rate FROM WorkTime WHERE " + comm + name + "'";
-                WorkTimeDBCommand = new OleDbCommand(command, WorkTimeDBConnection);
-
-                this.WorkTimeDBReader = WorkTimeDBCommand.ExecuteReader();
-                while (WorkTimeDBReader.Read())
-                {
-                    rate[i] = WorkTimeDBReader[0].ToString();
+                    days[i] = Convert.ToInt32(WorkTimeDBReader[4]);
+                    hours[i] = Convert.ToInt32(WorkTimeDBReader[5]);
+                    multiplier[i] = Convert.ToInt32(WorkTimeDBReader[6]);
+                    shift[i] = Convert.ToInt32(WorkTimeDBReader[7]);
+                    rate[i] = WorkTimeDBReader[8].ToString();
                     i++;
                 }
 
@@ -2898,60 +2857,19 @@ namespace EnergyService
 
                     int y = 0;
 
-                    string command = "SELECT workDay FROM WorkTime WHERE " + comm + name + "'";
+                    string command = "SELECT * FROM WorkTime WHERE " + comm + name + "'";
                     WorkTimeDBCommand = new OleDbCommand(command, WorkTimeDBConnection);
-
                     this.WorkTimeDBReader = WorkTimeDBCommand.ExecuteReader();
                     while (WorkTimeDBReader.Read())
                     {
-                        days[y] = Convert.ToInt32(WorkTimeDBReader[0]);
+                        days[y] = Convert.ToInt32(WorkTimeDBReader[4]);
+                        hours[y] = Convert.ToInt32(WorkTimeDBReader[5]);
+                        multiplier[y] = Convert.ToInt32(WorkTimeDBReader[6]);
+                        shift[y] = Convert.ToInt32(WorkTimeDBReader[7]);
+                        rate[y] = WorkTimeDBReader[8].ToString();
                         y++;
                     }
 
-                    y = 0;
-                    command = "SELECT workHours FROM WorkTime WHERE " + comm + name + "'";
-                    WorkTimeDBCommand = new OleDbCommand(command, WorkTimeDBConnection);
-
-                    this.WorkTimeDBReader = WorkTimeDBCommand.ExecuteReader();
-                    while (WorkTimeDBReader.Read())
-                    {
-                        hours[y] = Convert.ToInt32(WorkTimeDBReader[0]);
-                        y++;
-                    }
-
-                    y = 0;
-                    command = "SELECT paymentMultiplicator FROM WorkTime WHERE " + comm + name + "'";
-                    WorkTimeDBCommand = new OleDbCommand(command, WorkTimeDBConnection);
-
-                    this.WorkTimeDBReader = WorkTimeDBCommand.ExecuteReader();
-                    while (WorkTimeDBReader.Read())
-                    {
-                        multiplier[y] = Convert.ToInt32(WorkTimeDBReader[0]);
-                        y++;
-                    }
-
-                    y = 0;
-                    command = "SELECT workShift FROM WorkTime WHERE " + comm + name + "'";
-                    WorkTimeDBCommand = new OleDbCommand(command, WorkTimeDBConnection);
-
-                    this.WorkTimeDBReader = WorkTimeDBCommand.ExecuteReader();
-                    while (WorkTimeDBReader.Read())
-                    {
-                        shift[y] = Convert.ToInt32(WorkTimeDBReader[0]);
-                        y++;
-                    }
-
-                    i = 0;
-                    command = "SELECT rate FROM WorkTime WHERE " + comm + name + "'";
-                    WorkTimeDBCommand = new OleDbCommand(command, WorkTimeDBConnection);
-
-                    this.WorkTimeDBReader = WorkTimeDBCommand.ExecuteReader();
-                    while (WorkTimeDBReader.Read())
-                    {
-                        rate[i] = WorkTimeDBReader[0].ToString();
-                        i++;
-                    }
-                   
                     tmp[i] = new WorkTime(name, status, year, searchWorkTimeMonthComboBox.Text, days, hours, multiplier, shift, rate);
 
                     Array.Resize(ref tmp[i].workDay, maxDays);
@@ -3087,7 +3005,7 @@ namespace EnergyService
                 {
                     total += tmp[i].workHours[y];
                 }
-                workTimeDataGridView.Rows[workTimeDataGridView.Rows.Count - 2].Cells[workTimeDataGridView.Rows[workTimeDataGridView.Rows.Count - 2].Cells.Count - 1].Value = total;
+                workTimeDataGridView.Rows[workTimeDataGridView.Rows.Count - 2].Cells[workTimeDataGridView.Rows[workTimeDataGridView.Rows.Count - 2].Cells.Count - 1].Value = total + "HRS";
 
                 workTimeDataGridView.Rows.Add();
                 workTimeDataGridView.Rows[workTimeDataGridView.Rows.Count - 2].Cells[3].Value = "Shift";
@@ -3095,7 +3013,6 @@ namespace EnergyService
                 {
                     workTimeDataGridView.Rows[workTimeDataGridView.Rows.Count - 2].Cells[y].Value = tmp[i].workShift[y - 4];
                 }
-
 
                 workTimeDataGridView.Rows.Add();
                 workTimeDataGridView.Rows[workTimeDataGridView.Rows.Count - 2].Cells[3].Value = "Multiplier";
@@ -3109,6 +3026,10 @@ namespace EnergyService
                 for (int y = 4; y < (maxDays + 4); y++)
                 {
                     workTimeDataGridView.Rows[workTimeDataGridView.Rows.Count - 2].Cells[y].Value = tmp[i].rate[y - 4];
+                    if(workTimeDataGridView.Rows[workTimeDataGridView.Rows.Count - 2].Cells[y].Value==null)
+                    {
+                        workTimeDataGridView.Rows[workTimeDataGridView.Rows.Count - 2].Cells[y].Value = "0";
+                    }
                 }
 
                 double totalPayment = 0;
@@ -3117,10 +3038,16 @@ namespace EnergyService
                     totalPayment += tmp[i].workHours[y] * tmp[i].paymentMultiplier[y] * Convert.ToDouble(tmp[i].rate[y]);
                 }
 
+                workTimeDataGridView.Rows[workTimeDataGridView.Rows.Count - 2].Cells[workTimeDataGridView.Rows[workTimeDataGridView.Rows.Count - 2].Cells.Count - 1].Value = totalPayment.ToString() + "UAH";
+
+                workTimeDataGridView.Rows.Add();
+                double tax = Math.Round(totalPayment / 100 * 19.5, 2);
+                workTimeDataGridView.Rows[workTimeDataGridView.Rows.Count - 2].Cells[workTimeDataGridView.Rows[workTimeDataGridView.Rows.Count - 2].Cells.Count - 1].Value = "-" + tax.ToString() + "UAH";
+                workTimeDataGridView.Rows.Add();
+                double rest = totalPayment - tax;
+                workTimeDataGridView.Rows[workTimeDataGridView.Rows.Count - 2].Cells[workTimeDataGridView.Rows[workTimeDataGridView.Rows.Count - 2].Cells.Count - 1].Value = rest.ToString() + "UAH";
 
 
-
-                workTimeDataGridView.Rows[workTimeDataGridView.Rows.Count - 2].Cells[workTimeDataGridView.Rows[workTimeDataGridView.Rows.Count - 2].Cells.Count - 1].Value = totalPayment;
             }
 
             workTimeDataGridView.ClearSelection();
@@ -3265,6 +3192,7 @@ namespace EnergyService
         private void addWorkTimeButton_Click(object sender, EventArgs e)
         {
             SetWorkTime();
+            GetWorkTime();
         }
 
         private void addWorkTimeTextBox_TextChanged(object sender, EventArgs e)
