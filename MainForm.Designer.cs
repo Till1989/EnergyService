@@ -252,6 +252,9 @@ namespace EnergyService
             this.EURCurrencyLabel = new System.Windows.Forms.Label();
             this.currencyTimer = new System.Windows.Forms.Timer(this.components);
             this.loadDelayTimer = new System.Windows.Forms.Timer(this.components);
+            this.label46 = new System.Windows.Forms.Label();
+            this.nightHoursTextBox = new System.Windows.Forms.TextBox();
+            this.label47 = new System.Windows.Forms.Label();
             this.mainTabControl.SuspendLayout();
             this.LogIntabPage.SuspendLayout();
             this.logInPanel.SuspendLayout();
@@ -2226,6 +2229,9 @@ namespace EnergyService
             this.addWorkTimePanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.addWorkTimePanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.addWorkTimePanel.Controls.Add(this.label46);
+            this.addWorkTimePanel.Controls.Add(this.nightHoursTextBox);
+            this.addWorkTimePanel.Controls.Add(this.label47);
             this.addWorkTimePanel.Controls.Add(this.label44);
             this.addWorkTimePanel.Controls.Add(this.rateTextBox);
             this.addWorkTimePanel.Controls.Add(this.label45);
@@ -2249,7 +2255,7 @@ namespace EnergyService
             // label44
             // 
             this.label44.AutoSize = true;
-            this.label44.Location = new System.Drawing.Point(436, 32);
+            this.label44.Location = new System.Drawing.Point(541, 32);
             this.label44.Name = "label44";
             this.label44.Size = new System.Drawing.Size(30, 13);
             this.label44.TabIndex = 12;
@@ -2257,7 +2263,7 @@ namespace EnergyService
             // 
             // rateTextBox
             // 
-            this.rateTextBox.Location = new System.Drawing.Point(386, 29);
+            this.rateTextBox.Location = new System.Drawing.Point(499, 29);
             this.rateTextBox.MaxLength = 6;
             this.rateTextBox.Name = "rateTextBox";
             this.rateTextBox.Size = new System.Drawing.Size(42, 20);
@@ -2269,7 +2275,7 @@ namespace EnergyService
             // label45
             // 
             this.label45.AutoSize = true;
-            this.label45.Location = new System.Drawing.Point(347, 32);
+            this.label45.Location = new System.Drawing.Point(470, 32);
             this.label45.Name = "label45";
             this.label45.Size = new System.Drawing.Size(33, 13);
             this.label45.TabIndex = 10;
@@ -2278,7 +2284,7 @@ namespace EnergyService
             // label43
             // 
             this.label43.AutoSize = true;
-            this.label43.Location = new System.Drawing.Point(138, 32);
+            this.label43.Location = new System.Drawing.Point(122, 32);
             this.label43.Name = "label43";
             this.label43.Size = new System.Drawing.Size(31, 13);
             this.label43.TabIndex = 9;
@@ -2291,17 +2297,18 @@ namespace EnergyService
             "1",
             "2",
             "3"});
-            this.workShiftComboBox.Location = new System.Drawing.Point(175, 28);
+            this.workShiftComboBox.Location = new System.Drawing.Point(153, 28);
             this.workShiftComboBox.MaxLength = 1;
             this.workShiftComboBox.Name = "workShiftComboBox";
             this.workShiftComboBox.Size = new System.Drawing.Size(36, 21);
             this.workShiftComboBox.TabIndex = 8;
+            this.workShiftComboBox.SelectedIndexChanged += new System.EventHandler(this.workShiftComboBox_SelectedIndexChanged);
             this.workShiftComboBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.workShiftComboBox_KeyPress);
             // 
             // label42
             // 
             this.label42.AutoSize = true;
-            this.label42.Location = new System.Drawing.Point(232, 32);
+            this.label42.Location = new System.Drawing.Point(353, 32);
             this.label42.Name = "label42";
             this.label42.Size = new System.Drawing.Size(51, 13);
             this.label42.TabIndex = 4;
@@ -2313,7 +2320,7 @@ namespace EnergyService
             this.addWorkTimeMultiplierComboBox.Items.AddRange(new object[] {
             "1",
             "2"});
-            this.addWorkTimeMultiplierComboBox.Location = new System.Drawing.Point(290, 29);
+            this.addWorkTimeMultiplierComboBox.Location = new System.Drawing.Point(404, 29);
             this.addWorkTimeMultiplierComboBox.MaxLength = 1;
             this.addWorkTimeMultiplierComboBox.Name = "addWorkTimeMultiplierComboBox";
             this.addWorkTimeMultiplierComboBox.Size = new System.Drawing.Size(36, 21);
@@ -2333,7 +2340,7 @@ namespace EnergyService
             // label38
             // 
             this.label38.AutoSize = true;
-            this.label38.Location = new System.Drawing.Point(98, 32);
+            this.label38.Location = new System.Drawing.Point(67, 32);
             this.label38.Name = "label38";
             this.label38.Size = new System.Drawing.Size(23, 13);
             this.label38.TabIndex = 6;
@@ -2341,11 +2348,10 @@ namespace EnergyService
             // 
             // addWorkTimeTextBox
             // 
-            this.addWorkTimeTextBox.Location = new System.Drawing.Point(58, 29);
+            this.addWorkTimeTextBox.Location = new System.Drawing.Point(44, 29);
             this.addWorkTimeTextBox.MaxLength = 1;
             this.addWorkTimeTextBox.Name = "addWorkTimeTextBox";
-            this.addWorkTimeTextBox.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.addWorkTimeTextBox.Size = new System.Drawing.Size(34, 20);
+            this.addWorkTimeTextBox.Size = new System.Drawing.Size(20, 20);
             this.addWorkTimeTextBox.TabIndex = 5;
             this.addWorkTimeTextBox.TextChanged += new System.EventHandler(this.addWorkTimeTextBox_TextChanged);
             this.addWorkTimeTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.addWorkTimeTextBox_KeyPress);
@@ -2353,7 +2359,7 @@ namespace EnergyService
             // label37
             // 
             this.label37.AutoSize = true;
-            this.label37.Location = new System.Drawing.Point(14, 32);
+            this.label37.Location = new System.Drawing.Point(6, 32);
             this.label37.Name = "label37";
             this.label37.Size = new System.Drawing.Size(37, 13);
             this.label37.TabIndex = 4;
@@ -2371,7 +2377,7 @@ namespace EnergyService
             // label30
             // 
             this.label30.AutoSize = true;
-            this.label30.Location = new System.Drawing.Point(8, 6);
+            this.label30.Location = new System.Drawing.Point(5, 6);
             this.label30.Name = "label30";
             this.label30.Size = new System.Drawing.Size(43, 13);
             this.label30.TabIndex = 2;
@@ -2380,7 +2386,7 @@ namespace EnergyService
             // addWorkTimeDateTimePicker
             // 
             this.addWorkTimeDateTimePicker.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.addWorkTimeDateTimePicker.Location = new System.Drawing.Point(276, 4);
+            this.addWorkTimeDateTimePicker.Location = new System.Drawing.Point(265, 4);
             this.addWorkTimeDateTimePicker.Name = "addWorkTimeDateTimePicker";
             this.addWorkTimeDateTimePicker.Size = new System.Drawing.Size(92, 20);
             this.addWorkTimeDateTimePicker.TabIndex = 1;
@@ -2389,7 +2395,7 @@ namespace EnergyService
             // addWorkTimePersonComboBox
             // 
             this.addWorkTimePersonComboBox.FormattingEnabled = true;
-            this.addWorkTimePersonComboBox.Location = new System.Drawing.Point(57, 3);
+            this.addWorkTimePersonComboBox.Location = new System.Drawing.Point(48, 3);
             this.addWorkTimePersonComboBox.Name = "addWorkTimePersonComboBox";
             this.addWorkTimePersonComboBox.Size = new System.Drawing.Size(154, 21);
             this.addWorkTimePersonComboBox.TabIndex = 0;
@@ -2493,6 +2499,35 @@ namespace EnergyService
             this.loadDelayTimer.Enabled = true;
             this.loadDelayTimer.Interval = 1000;
             this.loadDelayTimer.Tick += new System.EventHandler(this.loadDelayTimer_Tick);
+            // 
+            // label46
+            // 
+            this.label46.AutoSize = true;
+            this.label46.Location = new System.Drawing.Point(289, 32);
+            this.label46.Name = "label46";
+            this.label46.Size = new System.Drawing.Size(23, 13);
+            this.label46.TabIndex = 15;
+            this.label46.Text = "Hrs";
+            // 
+            // nightHoursTextBox
+            // 
+            this.nightHoursTextBox.Location = new System.Drawing.Point(267, 29);
+            this.nightHoursTextBox.MaxLength = 1;
+            this.nightHoursTextBox.Name = "nightHoursTextBox";
+            this.nightHoursTextBox.Size = new System.Drawing.Size(20, 20);
+            this.nightHoursTextBox.TabIndex = 14;
+            this.nightHoursTextBox.Text = "0";
+            this.nightHoursTextBox.TextChanged += new System.EventHandler(this.nightHoursTextBox_TextChanged);
+            this.nightHoursTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.nightHoursTextBox_KeyPress);
+            // 
+            // label47
+            // 
+            this.label47.AutoSize = true;
+            this.label47.Location = new System.Drawing.Point(216, 32);
+            this.label47.Name = "label47";
+            this.label47.Size = new System.Drawing.Size(52, 13);
+            this.label47.TabIndex = 13;
+            this.label47.Text = "Night hrs:";
             // 
             // MainForm
             // 
@@ -2757,6 +2792,9 @@ namespace EnergyService
         private System.Windows.Forms.Label label44;
         private System.Windows.Forms.TextBox rateTextBox;
         private System.Windows.Forms.Label label45;
+        private System.Windows.Forms.Label label46;
+        private System.Windows.Forms.TextBox nightHoursTextBox;
+        private System.Windows.Forms.Label label47;
     }
 }
 

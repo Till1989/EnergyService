@@ -2759,7 +2759,8 @@ namespace EnergyService
             public int[] paymentMultiplier;
             public int[] workShift;
             public string[] rate;
-            public WorkTime(string personName, string personStatus, int workYear, string workMonth, int[] workDay, int[] workHours, int[] paymentMultiplier, int[] workShift, string[] rate)
+            public int[] nightWorkHours;
+            public WorkTime(string personName, string personStatus, int workYear, string workMonth, int[] workDay, int[] workHours, int[] nightWorkHours, int[] paymentMultiplier, int[] workShift, string[] rate)
             {
                 this.personName = personName;
                 this.personStatus = personStatus;
@@ -2767,6 +2768,7 @@ namespace EnergyService
                 this.workMonth = workMonth;
                 this.workDay = workDay;
                 this.workHours = workHours;
+                this.nightWorkHours = nightWorkHours;
                 this.paymentMultiplier = paymentMultiplier;
                 this.workShift = workShift;
                 this.rate = rate;
@@ -2808,6 +2810,7 @@ namespace EnergyService
             if (showAllPersonsCheckBox.Checked == false)
             {
                 int[] hours = new int[40];
+                int[] nightHours = new int[40];
                 int[] days = new int[40];
                 int[] multiplier = new int[40];
                 int[] shift = new int[40];
@@ -2830,13 +2833,15 @@ namespace EnergyService
                     multiplier[i] = Convert.ToInt32(WorkTimeDBReader[6]);
                     shift[i] = Convert.ToInt32(WorkTimeDBReader[7]);
                     rate[i] = WorkTimeDBReader[8].ToString();
+                    nightHours[i] = Convert.ToInt32(WorkTimeDBReader[9]);
                     i++;
                 }
 
-                tmp[0] = new WorkTime(name, status, year, searchWorkTimeMonthComboBox.Text, days, hours, multiplier, shift, rate);
+                tmp[0] = new WorkTime(name, status, year, searchWorkTimeMonthComboBox.Text, days, hours, nightHours, multiplier, shift, rate);
 
                 Array.Resize(ref tmp[0].workDay, maxDays);
                 Array.Resize(ref tmp[0].workHours, maxDays);
+                Array.Resize(ref tmp[0].nightWorkHours, maxDays);
                 Array.Resize(ref tmp[0].paymentMultiplier, maxDays);
                 Array.Resize(ref tmp[0].workShift, maxDays);
                 Array.Resize(ref tmp[0].rate, maxDays);
@@ -2850,6 +2855,7 @@ namespace EnergyService
                     year = Convert.ToInt32(searchWorkTimeYearComboBox.Text);
 
                     int[] hours = new int[40];
+                    int[] nightHours = new int[40];
                     int[] days = new int[40];
                     int[] multiplier = new int[40];
                     int[] shift = new int[40];
@@ -2867,13 +2873,15 @@ namespace EnergyService
                         multiplier[y] = Convert.ToInt32(WorkTimeDBReader[6]);
                         shift[y] = Convert.ToInt32(WorkTimeDBReader[7]);
                         rate[y] = WorkTimeDBReader[8].ToString();
+                        nightHours[i] = Convert.ToInt32(WorkTimeDBReader[9]);
                         y++;
                     }
 
-                    tmp[i] = new WorkTime(name, status, year, searchWorkTimeMonthComboBox.Text, days, hours, multiplier, shift, rate);
+                    tmp[i] = new WorkTime(name, status, year, searchWorkTimeMonthComboBox.Text, days, hours, nightHours, multiplier, shift, rate);
 
                     Array.Resize(ref tmp[i].workDay, maxDays);
                     Array.Resize(ref tmp[i].workHours, maxDays);
+                    Array.Resize(ref tmp[i].nightWorkHours, maxDays);
                     Array.Resize(ref tmp[i].paymentMultiplier, maxDays);
                     Array.Resize(ref tmp[i].workShift, maxDays);
                     Array.Resize(ref tmp[i].rate, maxDays);
@@ -2924,6 +2932,16 @@ namespace EnergyService
                     }
                 }
                 tmp[i].rate = temp3;
+
+                int[] temp4 = new int[maxDays];
+                for (int y = 0; y < tmp[i].nightWorkHours.Length; y++)
+                {
+                    if (tmp[i].workDay[y] != 0)
+                    {
+                        temp4[tmp[i].workDay[y] - 1] = tmp[i].nightWorkHours[y];
+                    }
+                }
+                tmp[i].nightWorkHours = temp4;
             }
 
             workTimeDataGridView.Rows.Clear();
@@ -2948,8 +2966,8 @@ namespace EnergyService
             workTimeDataGridView.Columns.Add(column);
 
             column = new DataGridViewTextBoxColumn();
-            column.HeaderText = "Year";
-            column.Width = 50;
+            column.HeaderText = "Year/Month";
+            column.Width = 100;
             column.DefaultCellStyle = new DataGridViewCellStyle();
             column.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             column.SortMode = DataGridViewColumnSortMode.NotSortable;
@@ -2957,7 +2975,7 @@ namespace EnergyService
             workTimeDataGridView.Columns.Add(column);
 
             column = new DataGridViewTextBoxColumn();
-            column.HeaderText = "Month";
+            column.HeaderText = "Description";
             column.Width = 70;
             column.DefaultCellStyle = new DataGridViewCellStyle();
             column.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
@@ -2994,8 +3012,8 @@ namespace EnergyService
                 workTimeDataGridView.Rows.Add();
                 workTimeDataGridView.Rows[workTimeDataGridView.Rows.Count - 2].Cells[0].Value = tmp[i].personName;
                 workTimeDataGridView.Rows[workTimeDataGridView.Rows.Count - 2].Cells[1].Value = tmp[i].personStatus;
-                workTimeDataGridView.Rows[workTimeDataGridView.Rows.Count - 2].Cells[2].Value = tmp[i].workYear;
-                workTimeDataGridView.Rows[workTimeDataGridView.Rows.Count - 2].Cells[3].Value = tmp[i].workMonth;
+                workTimeDataGridView.Rows[workTimeDataGridView.Rows.Count - 2].Cells[2].Value = tmp[i].workYear + "/"+ tmp[i].workMonth;
+                workTimeDataGridView.Rows[workTimeDataGridView.Rows.Count - 2].Cells[3].Value = "Hours";
                 for (int y = 4; y < (maxDays + 4); y++)
                 {
                     workTimeDataGridView.Rows[workTimeDataGridView.Rows.Count - 2].Cells[y].Value = tmp[i].workHours[y - 4];
@@ -3013,6 +3031,14 @@ namespace EnergyService
                 {
                     workTimeDataGridView.Rows[workTimeDataGridView.Rows.Count - 2].Cells[y].Value = tmp[i].workShift[y - 4];
                 }
+
+                workTimeDataGridView.Rows.Add();
+                workTimeDataGridView.Rows[workTimeDataGridView.Rows.Count - 2].Cells[3].Value = "Night Hours";
+                for (int y = 4; y < (maxDays + 4); y++)
+                {
+                    workTimeDataGridView.Rows[workTimeDataGridView.Rows.Count - 2].Cells[y].Value = tmp[i].nightWorkHours[y - 4];
+                }
+
 
                 workTimeDataGridView.Rows.Add();
                 workTimeDataGridView.Rows[workTimeDataGridView.Rows.Count - 2].Cells[3].Value = "Multiplier";
@@ -3246,6 +3272,40 @@ namespace EnergyService
         private void showAllPersonsCheckBox_CheckedChanged(object sender, EventArgs e)
         {
             GetWorkTime();
+        }
+
+        private void workShiftComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if(workShiftComboBox.Text=="1")
+            {
+                nightHoursTextBox.Text = "0";
+                nightHoursTextBox.Enabled = false;
+            }
+            else
+            {
+                nightHoursTextBox.Enabled = true;
+            }
+        }
+
+        private void nightHoursTextBox_TextChanged(object sender, EventArgs e)
+        {
+            if (nightHoursTextBox.Text == "")
+            {
+                nightHoursTextBox.Text = "0";
+            }
+            if (Convert.ToInt32(nightHoursTextBox.Text) > 8)
+            {
+                nightHoursTextBox.Text = "8";
+            }
+        }
+
+        private void nightHoursTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            Char number = e.KeyChar;
+            if (!Char.IsDigit(number) && number != 8)
+            {
+                e.Handled = true;
+            }
         }
 
 
