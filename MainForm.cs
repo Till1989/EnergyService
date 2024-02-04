@@ -10,6 +10,7 @@ using System.Threading;
 using System.Windows.Forms;
 using System.Data.OleDb;
 using System.Xml.XPath;
+using System.Globalization;
 
 namespace EnergyService
 {
@@ -76,6 +77,7 @@ namespace EnergyService
 
             addWorkTimeMultiplierComboBox.SelectedIndex = 0;
             searchWorkTimePersonComboBox.SelectedIndex = 0;
+            searchWorkTimeMonthComboBox.Text = DateTime.Now.ToString("MMMM", new CultureInfo("en-US"));
             addWorkTimePersonComboBox.SelectedIndex = 0;
             workShiftComboBox.SelectedIndex = 0;
         }
@@ -3061,7 +3063,8 @@ namespace EnergyService
                 double totalPayment = 0;
                 for (int y = 0; y < tmp[i].workHours.Length; y++)
                 {
-                    totalPayment += tmp[i].workHours[y] * tmp[i].paymentMultiplier[y] * Convert.ToDouble(tmp[i].rate[y]);
+                    totalPayment += ((tmp[i].workHours[y] - tmp[i].nightWorkHours[y]) * tmp[i].paymentMultiplier[y] * Convert.ToDouble(tmp[i].rate[y])) +
+                        (tmp[i].nightWorkHours[y] * tmp[i].paymentMultiplier[y] * Convert.ToDouble(tmp[i].rate[y]) * 1.2);
                 }
 
                 workTimeDataGridView.Rows[workTimeDataGridView.Rows.Count - 2].Cells[workTimeDataGridView.Rows[workTimeDataGridView.Rows.Count - 2].Cells.Count - 1].Value = totalPayment.ToString() + "UAH";
@@ -3094,6 +3097,7 @@ namespace EnergyService
                 int multiplier = Convert.ToInt32(addWorkTimeMultiplierComboBox.Text);
                 int shift = Convert.ToInt32(workShiftComboBox.Text);
                 string rate = rateTextBox.Text;
+                int nightHours = Convert.ToInt32(nightHoursTextBox.Text);
 
                 for (int i=1; i<13; i++)
                 {
@@ -3131,7 +3135,7 @@ namespace EnergyService
                 {
                     int workHours = Convert.ToInt32(addWorkTimeTextBox.Text);
                     WorkTimeDBCommand = new OleDbCommand("INSERT INTO WorkTime VALUES('" + personName + "', '" + personStatus + "', " + year + ", '" + month + "', "
-                        + day + ", " + workHours + ", " + multiplier + ", " + shift + ", '" + rate + "')", WorkTimeDBConnection);
+                        + day + ", " + workHours + ", " + multiplier + ", " + shift + ", '" + rate + "', " + nightHours + ")", WorkTimeDBConnection);
                     WorkTimeDBCommand.ExecuteNonQuery();
                 }
 
