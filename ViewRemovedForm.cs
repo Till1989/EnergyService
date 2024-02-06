@@ -98,8 +98,8 @@ namespace EnergyService
         public class Supplier
         {
             public string title;
-            public int taxNumber;
-            public Supplier(string title, int taxNumber)
+            public long taxNumber;
+            public Supplier(string title, long taxNumber)
             {
                 this.title = title;
                 this.taxNumber = taxNumber;
@@ -196,7 +196,7 @@ namespace EnergyService
             StockReader = StockDBCommand.ExecuteReader();
             while (StockReader.Read())
             {
-                tmp[i] = new Supplier(StockReader[0].ToString(), Convert.ToInt32(StockReader[1]));
+                tmp[i] = new Supplier(StockReader[0].ToString(), Convert.ToInt64(StockReader[1]));
                 i++;
             }
             tmp = tmp.Where(t => t != null).ToArray();

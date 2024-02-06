@@ -29,6 +29,11 @@ namespace EnergyService
 
         private void MainForm_Load(object sender, EventArgs e)
         {
+
+
+
+
+
             currentUser = new User(-1, "", "", "UNREGISTERED");
 
             this.LoginDBConnection = new OleDbConnection(SetProvider("Users.accdb"));
@@ -1345,8 +1350,8 @@ namespace EnergyService
                 string senderPerson = WriteOffSenderPersonComboBox.Text;
                 string offDate = WriteOffDateMaskedTextBox.Text;
 
-                OffResource offRes = new OffResource(ID, title, quantity, units, supplier, invoice, supplyDate, equipment, recipientPerson, offDate, currentGroupID[0], currentGroupID[1],
-                    currentGroupID[2], currentGroupID[3], currentGroupID[4], currentGroupID[5], currentGroupID[6], currentGroupID[7], currentGroupID[8], currentGroupID[9], senderPerson);
+                OffResource offRes = new OffResource(ID, title, quantity, units, supplier, invoice, supplyDate, equipment, senderPerson, offDate, currentGroupID[0], currentGroupID[1],
+                    currentGroupID[2], currentGroupID[3], currentGroupID[4], currentGroupID[5], currentGroupID[6], currentGroupID[7], currentGroupID[8], currentGroupID[9], recipientPerson);
 
 
                 StockDBCommand = new OleDbCommand("INSERT INTO WroteOffResources (ID, title, quantity, units, supplier, invoice, supplyDate," +
@@ -2969,7 +2974,7 @@ namespace EnergyService
 
             column = new DataGridViewTextBoxColumn();
             column.HeaderText = "Year/Month";
-            column.Width = 100;
+            column.Width = 80;
             column.DefaultCellStyle = new DataGridViewCellStyle();
             column.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             column.SortMode = DataGridViewColumnSortMode.NotSortable;
@@ -2993,7 +2998,7 @@ namespace EnergyService
                 column.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
                 column.SortMode = DataGridViewColumnSortMode.NotSortable;
                 column.Resizable = DataGridViewTriState.False;
-                column.Width = 30;
+                column.Width = 41;
 
                 workTimeDataGridView.Columns.Add(column);
             }
@@ -3018,7 +3023,11 @@ namespace EnergyService
                 workTimeDataGridView.Rows[workTimeDataGridView.Rows.Count - 2].Cells[3].Value = "Hours";
                 for (int y = 4; y < (maxDays + 4); y++)
                 {
-                    workTimeDataGridView.Rows[workTimeDataGridView.Rows.Count - 2].Cells[y].Value = tmp[i].workHours[y - 4];
+                    if (tmp[i].workHours[y - 4]!=0)
+                    {
+                        workTimeDataGridView.Rows[workTimeDataGridView.Rows.Count - 2].Cells[y].Value = tmp[i].workHours[y - 4];
+                    }
+                    
                 }
                 int total = 0;
                 for (int y = 0; y < tmp[i].workHours.Length; y++)
@@ -3031,22 +3040,30 @@ namespace EnergyService
                 workTimeDataGridView.Rows[workTimeDataGridView.Rows.Count - 2].Cells[3].Value = "Shift";
                 for (int y = 4; y < (maxDays + 4); y++)
                 {
-                    workTimeDataGridView.Rows[workTimeDataGridView.Rows.Count - 2].Cells[y].Value = tmp[i].workShift[y - 4];
+                    if (tmp[i].workShift[y - 4]!=0)
+                    {
+                        workTimeDataGridView.Rows[workTimeDataGridView.Rows.Count - 2].Cells[y].Value = tmp[i].workShift[y - 4];
+                    }
                 }
 
                 workTimeDataGridView.Rows.Add();
                 workTimeDataGridView.Rows[workTimeDataGridView.Rows.Count - 2].Cells[3].Value = "Night Hours";
                 for (int y = 4; y < (maxDays + 4); y++)
                 {
-                    workTimeDataGridView.Rows[workTimeDataGridView.Rows.Count - 2].Cells[y].Value = tmp[i].nightWorkHours[y - 4];
+                    if (tmp[i].nightWorkHours[y - 4]!=0)
+                    {
+                        workTimeDataGridView.Rows[workTimeDataGridView.Rows.Count - 2].Cells[y].Value = tmp[i].nightWorkHours[y - 4];
+                    }
                 }
-
 
                 workTimeDataGridView.Rows.Add();
                 workTimeDataGridView.Rows[workTimeDataGridView.Rows.Count - 2].Cells[3].Value = "Multiplier";
                 for (int y = 4; y < (maxDays + 4); y++)
                 {
-                    workTimeDataGridView.Rows[workTimeDataGridView.Rows.Count - 2].Cells[y].Value = tmp[i].paymentMultiplier[y - 4];
+                    if (tmp[i].paymentMultiplier[y - 4]!=0)
+                    {
+                        workTimeDataGridView.Rows[workTimeDataGridView.Rows.Count - 2].Cells[y].Value = tmp[i].paymentMultiplier[y - 4];
+                    }
                 }
 
                 workTimeDataGridView.Rows.Add();
@@ -3056,9 +3073,22 @@ namespace EnergyService
                     workTimeDataGridView.Rows[workTimeDataGridView.Rows.Count - 2].Cells[y].Value = tmp[i].rate[y - 4];
                     if(workTimeDataGridView.Rows[workTimeDataGridView.Rows.Count - 2].Cells[y].Value==null)
                     {
-                        workTimeDataGridView.Rows[workTimeDataGridView.Rows.Count - 2].Cells[y].Value = "0";
+                        //workTimeDataGridView.Rows[workTimeDataGridView.Rows.Count - 2].Cells[y].Value = "0";
                     }
                 }
+
+
+                string decimalSeparator = CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator;
+
+                for (int y = 0; y < tmp[i].rate.Length; y++)
+                {
+                    if (tmp[i].rate[y] != null)
+                    {
+                        tmp[i].rate[y]=tmp[i].rate[y].Replace(".", decimalSeparator);
+                    }
+                }
+
+
 
                 double totalPayment = 0;
                 for (int y = 0; y < tmp[i].workHours.Length; y++)
@@ -3311,19 +3341,6 @@ namespace EnergyService
                 e.Handled = true;
             }
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
         //WORK TIME********************************************************************************************************************************************************************/
 

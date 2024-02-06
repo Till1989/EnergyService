@@ -225,6 +225,9 @@ namespace EnergyService
             this.label39 = new System.Windows.Forms.Label();
             this.searchWorkTimePersonComboBox = new System.Windows.Forms.ComboBox();
             this.addWorkTimePanel = new System.Windows.Forms.Panel();
+            this.label46 = new System.Windows.Forms.Label();
+            this.nightHoursTextBox = new System.Windows.Forms.TextBox();
+            this.label47 = new System.Windows.Forms.Label();
             this.label44 = new System.Windows.Forms.Label();
             this.rateTextBox = new System.Windows.Forms.TextBox();
             this.label45 = new System.Windows.Forms.Label();
@@ -252,9 +255,6 @@ namespace EnergyService
             this.EURCurrencyLabel = new System.Windows.Forms.Label();
             this.currencyTimer = new System.Windows.Forms.Timer(this.components);
             this.loadDelayTimer = new System.Windows.Forms.Timer(this.components);
-            this.label46 = new System.Windows.Forms.Label();
-            this.nightHoursTextBox = new System.Windows.Forms.TextBox();
-            this.label47 = new System.Windows.Forms.Label();
             this.mainTabControl.SuspendLayout();
             this.LogIntabPage.SuspendLayout();
             this.logInPanel.SuspendLayout();
@@ -2252,6 +2252,35 @@ namespace EnergyService
             this.addWorkTimePanel.Size = new System.Drawing.Size(587, 55);
             this.addWorkTimePanel.TabIndex = 0;
             // 
+            // label46
+            // 
+            this.label46.AutoSize = true;
+            this.label46.Location = new System.Drawing.Point(289, 32);
+            this.label46.Name = "label46";
+            this.label46.Size = new System.Drawing.Size(23, 13);
+            this.label46.TabIndex = 15;
+            this.label46.Text = "Hrs";
+            // 
+            // nightHoursTextBox
+            // 
+            this.nightHoursTextBox.Location = new System.Drawing.Point(267, 29);
+            this.nightHoursTextBox.MaxLength = 1;
+            this.nightHoursTextBox.Name = "nightHoursTextBox";
+            this.nightHoursTextBox.Size = new System.Drawing.Size(20, 20);
+            this.nightHoursTextBox.TabIndex = 14;
+            this.nightHoursTextBox.Text = "0";
+            this.nightHoursTextBox.TextChanged += new System.EventHandler(this.nightHoursTextBox_TextChanged);
+            this.nightHoursTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.nightHoursTextBox_KeyPress);
+            // 
+            // label47
+            // 
+            this.label47.AutoSize = true;
+            this.label47.Location = new System.Drawing.Point(216, 32);
+            this.label47.Name = "label47";
+            this.label47.Size = new System.Drawing.Size(52, 13);
+            this.label47.TabIndex = 13;
+            this.label47.Text = "Night hrs:";
+            // 
             // label44
             // 
             this.label44.AutoSize = true;
@@ -2268,7 +2297,7 @@ namespace EnergyService
             this.rateTextBox.Name = "rateTextBox";
             this.rateTextBox.Size = new System.Drawing.Size(42, 20);
             this.rateTextBox.TabIndex = 11;
-            this.rateTextBox.Text = "120,20";
+            this.rateTextBox.Text = "120.20";
             this.rateTextBox.TextChanged += new System.EventHandler(this.rateTextBox_TextChanged);
             this.rateTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.rateTextBox_KeyPress);
             // 
@@ -2499,35 +2528,6 @@ namespace EnergyService
             this.loadDelayTimer.Enabled = true;
             this.loadDelayTimer.Interval = 1000;
             this.loadDelayTimer.Tick += new System.EventHandler(this.loadDelayTimer_Tick);
-            // 
-            // label46
-            // 
-            this.label46.AutoSize = true;
-            this.label46.Location = new System.Drawing.Point(289, 32);
-            this.label46.Name = "label46";
-            this.label46.Size = new System.Drawing.Size(23, 13);
-            this.label46.TabIndex = 15;
-            this.label46.Text = "Hrs";
-            // 
-            // nightHoursTextBox
-            // 
-            this.nightHoursTextBox.Location = new System.Drawing.Point(267, 29);
-            this.nightHoursTextBox.MaxLength = 1;
-            this.nightHoursTextBox.Name = "nightHoursTextBox";
-            this.nightHoursTextBox.Size = new System.Drawing.Size(20, 20);
-            this.nightHoursTextBox.TabIndex = 14;
-            this.nightHoursTextBox.Text = "0";
-            this.nightHoursTextBox.TextChanged += new System.EventHandler(this.nightHoursTextBox_TextChanged);
-            this.nightHoursTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.nightHoursTextBox_KeyPress);
-            // 
-            // label47
-            // 
-            this.label47.AutoSize = true;
-            this.label47.Location = new System.Drawing.Point(216, 32);
-            this.label47.Name = "label47";
-            this.label47.Size = new System.Drawing.Size(52, 13);
-            this.label47.TabIndex = 13;
-            this.label47.Text = "Night hrs:";
             // 
             // MainForm
             // 
