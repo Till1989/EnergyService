@@ -60,6 +60,7 @@ namespace EnergyService
             this.CreateActButton = new System.Windows.Forms.Button();
             this.RemovedStockDataGridView = new System.Windows.Forms.DataGridView();
             this.ID = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.commID = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.title = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.quantity = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.units = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -374,6 +375,7 @@ namespace EnergyService
             this.CreateActButton.TabIndex = 3;
             this.CreateActButton.Text = "Create Act";
             this.CreateActButton.UseVisualStyleBackColor = true;
+            this.CreateActButton.Click += new System.EventHandler(this.CreateActButton_Click);
             // 
             // RemovedStockDataGridView
             // 
@@ -384,6 +386,7 @@ namespace EnergyService
             this.RemovedStockDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.RemovedStockDataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ID,
+            this.commID,
             this.title,
             this.quantity,
             this.units,
@@ -414,6 +417,15 @@ namespace EnergyService
             this.ID.ReadOnly = true;
             this.ID.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.ID.Width = 50;
+            // 
+            // commID
+            // 
+            this.commID.Frozen = true;
+            this.commID.HeaderText = "Common ID";
+            this.commID.Name = "commID";
+            this.commID.ReadOnly = true;
+            this.commID.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.commID.Width = 50;
             // 
             // title
             // 
@@ -544,6 +556,7 @@ namespace EnergyService
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.CheckBox SearchBySenderPersonCheckBox;
         private System.Windows.Forms.DataGridViewTextBoxColumn ID;
+        private System.Windows.Forms.DataGridViewTextBoxColumn commID;
         private System.Windows.Forms.DataGridViewTextBoxColumn title;
         private System.Windows.Forms.DataGridViewTextBoxColumn quantity;
         private System.Windows.Forms.DataGridViewTextBoxColumn units;

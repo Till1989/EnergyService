@@ -65,6 +65,7 @@ namespace EnergyService
         }
         public class WroteOffResource
         {
+            public int commID;
             public int ID;
             public string title;
             public int quantity;
@@ -79,7 +80,7 @@ namespace EnergyService
             public bool actIsCreated;
 
             public WroteOffResource(int ID, string title, int quantity, string units, string supplier,
-                string invoice, string supplyDate, string equipment, string recipientPerson, string offDate, bool actIsCreated, string senderPerson)
+                string invoice, string supplyDate, string equipment, string recipientPerson, string offDate, bool actIsCreated, string senderPerson, int commID)
             {
                 this.ID = ID;
                 this.title = title;
@@ -93,6 +94,7 @@ namespace EnergyService
                 this.senderPerson = senderPerson;
                 this.offDate = offDate;
                 this.actIsCreated = actIsCreated;
+                this.commID = commID;
             }
         }
         public class Supplier
@@ -172,7 +174,8 @@ namespace EnergyService
 
 
                 tmp[i] = new WroteOffResource(Convert.ToInt32(StockReader[0]), StockReader[1].ToString(), Convert.ToInt32(StockReader[2]), StockReader[3].ToString(), StockReader[4].ToString(),
-                    StockReader[5].ToString(), StockReader[6].ToString(), StockReader[7].ToString(), StockReader[8].ToString(), StockReader[9].ToString(), Convert.ToBoolean(StockReader[10]), StockReader[11].ToString());
+                    StockReader[5].ToString(), StockReader[6].ToString(), StockReader[7].ToString(), StockReader[8].ToString(), StockReader[9].ToString(), Convert.ToBoolean(StockReader[10]),
+                    StockReader[11].ToString(), Convert.ToInt32(StockReader[30]));
 
                 i++;
             }
@@ -181,8 +184,27 @@ namespace EnergyService
 
             for (int y = 0; y < tmp.Length; y++)
             {
-                RemovedStockDataGridView.Rows.Add(tmp[y].ID, tmp[y].title, tmp[y].quantity, tmp[y].units, tmp[y].equipment, tmp[y].senderPerson.ToString(), tmp[y].recipientPerson, tmp[y].offDate, tmp[y].supplyDate, tmp[y].actIsCreated.ToString(), tmp[y].supplier, tmp[y].invoice);
+                RemovedStockDataGridView.Rows.Add(tmp[y].ID, tmp[y].commID, tmp[y].title, tmp[y].quantity, tmp[y].units, tmp[y].equipment, tmp[y].senderPerson.ToString(), 
+                    tmp[y].recipientPerson, tmp[y].offDate, tmp[y].supplyDate, tmp[y].actIsCreated.ToString(), tmp[y].supplier, tmp[y].invoice);
             }
+
+            for (int y = 0; y < RemovedStockDataGridView.Rows.Count-1; y++)
+            {
+                if (RemovedStockDataGridView.Rows[y].Cells[10].Value.ToString() == "False")
+                {
+                    RemovedStockDataGridView.Rows[y].Cells[10].Style.BackColor = Color.Orange;
+                }
+                if (RemovedStockDataGridView.Rows[y].Cells[10].Value.ToString() == "True")
+                {
+                    RemovedStockDataGridView.Rows[y].Cells[10].Style.BackColor = Color.LightGreen;
+                }
+
+            }
+
+
+
+
+
 
             RemovedStockDataGridView.ClearSelection();
         }
@@ -607,6 +629,27 @@ namespace EnergyService
             {
                 RemovedStockDataGridView.ClearSelection();
             }
+        }
+
+        private void CreateActButton_Click(object sender, EventArgs e)
+        {
+            int[] ID = new int[100];
+            int y = 0;
+            bool zsdvcsz = true;
+            for (int i = 0; i < RemovedStockDataGridView.SelectedRows.Count; i++)
+            {
+                ID[y] =Convert.ToInt32(RemovedStockDataGridView.SelectedRows[y].Cells[1].Value);
+                y++;
+            }
+            ID = ID.Where(t => t != 0).ToArray();
+
+            for (int i = 0; i < ID.Length; i++)
+            {
+                StockDBCommand = new OleDbCommand("UPDATE WroteOffResources SET actIsCreated="+zsdvcsz+" WHERE commID="+ID[i], StockDBConnection);
+                StockDBCommand.ExecuteNonQuery();
+            }
+
+            LoadClearedData("SELECT * FROM WroteOffResources");
         }
     }
 }
