@@ -30,11 +30,6 @@ namespace EnergyService
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            
-
-
-
-
             currentUser = new User(-1, "", "", "UNREGISTERED");
 
             this.LoginDBConnection = new OleDbConnection(SetProvider("Users.accdb"));
@@ -73,6 +68,23 @@ namespace EnergyService
 
 
 
+
+            addWorkTimeMultiplierComboBox.SelectedIndex = 0;
+            searchWorkTimePersonComboBox.SelectedIndex = 0;
+            searchWorkTimeMonthComboBox.Text = DateTime.Now.ToString("MMMM", new CultureInfo("en-US"));
+            addWorkTimePersonComboBox.SelectedIndex = 0;
+            workShiftComboBox.SelectedIndex = 0;
+
+            maintenanceYearComboBox.Text = DateTime.Now.ToString("yyyy", new CultureInfo("en-US"));
+            maintenanceMonthComboBox.Text = DateTime.Now.ToString("MMMM", new CultureInfo("en-US"));
+
+            plannedExpensesYearComboBox.Text = DateTime.Now.ToString("yyyy", new CultureInfo("en-US"));
+            plannedExpensesMonthComboBox.Text = DateTime.Now.ToString("MMMM", new CultureInfo("en-US"));
+
+            consumptionYearComboBox.Text = DateTime.Now.ToString("yyyy", new CultureInfo("en-US"));
+
+
+
             mainTabControl.SelectedIndex = 5;
 
         }
@@ -81,11 +93,7 @@ namespace EnergyService
         {
             loadDelayTimer.Enabled = false;
 
-            addWorkTimeMultiplierComboBox.SelectedIndex = 0;
-            searchWorkTimePersonComboBox.SelectedIndex = 0;
-            searchWorkTimeMonthComboBox.Text = DateTime.Now.ToString("MMMM", new CultureInfo("en-US"));
-            addWorkTimePersonComboBox.SelectedIndex = 0;
-            workShiftComboBox.SelectedIndex = 0;
+
         }
 
         private void mainTabControl_SelectedIndexChanged(object sender, EventArgs e)
@@ -3101,13 +3109,20 @@ namespace EnergyService
                 }
 
                 workTimeDataGridView.Rows[workTimeDataGridView.Rows.Count - 2].Cells[workTimeDataGridView.Rows[workTimeDataGridView.Rows.Count - 2].Cells.Count - 1].Value = totalPayment.ToString() + "UAH";
+                
+                workTimeDataGridView.Rows.Add();
+                double bonus = 0;
+                bonus = totalPayment / 100 * (Convert.ToInt32(additionalComboBox.Text) + Convert.ToInt32(bonusComboBox.Text));
+                workTimeDataGridView.Rows[workTimeDataGridView.Rows.Count - 2].Cells[workTimeDataGridView.Rows[workTimeDataGridView.Rows.Count - 2].Cells.Count - 1].Value = bonus.ToString() + "UAH";
 
                 workTimeDataGridView.Rows.Add();
-                double tax = Math.Round(totalPayment / 100 * 19.5, 2);
+                double tax = Math.Round((totalPayment + bonus) / 100 * 19.5, 2);
                 workTimeDataGridView.Rows[workTimeDataGridView.Rows.Count - 2].Cells[workTimeDataGridView.Rows[workTimeDataGridView.Rows.Count - 2].Cells.Count - 1].Value = "-" + tax.ToString() + "UAH";
+                
                 workTimeDataGridView.Rows.Add();
                 double rest = totalPayment - tax;
                 workTimeDataGridView.Rows[workTimeDataGridView.Rows.Count - 2].Cells[workTimeDataGridView.Rows[workTimeDataGridView.Rows.Count - 2].Cells.Count - 1].Value = rest.ToString() + "UAH";
+
 
 
             }
@@ -3344,6 +3359,15 @@ namespace EnergyService
                 e.Handled = true;
             }
         }
+        private void additionalComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            GetWorkTime();
+        }
+
+        private void bonusComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            GetWorkTime();
+        }
 
         //WORK TIME********************************************************************************************************************************************************************/
 
@@ -3379,6 +3403,8 @@ namespace EnergyService
                 CopyAll(diSourceSubDir, nextTargetSubDir);
             }
         }
+
+
 
         //BACKUP********************************************************************************************************************************************************************/
 
