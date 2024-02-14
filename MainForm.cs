@@ -3120,7 +3120,7 @@ namespace EnergyService
                 workTimeDataGridView.Rows[workTimeDataGridView.Rows.Count - 2].Cells[workTimeDataGridView.Rows[workTimeDataGridView.Rows.Count - 2].Cells.Count - 1].Value = "-" + tax.ToString() + "UAH";
                 
                 workTimeDataGridView.Rows.Add();
-                double rest = totalPayment - tax;
+                double rest = (totalPayment + bonus) - tax;
                 workTimeDataGridView.Rows[workTimeDataGridView.Rows.Count - 2].Cells[workTimeDataGridView.Rows[workTimeDataGridView.Rows.Count - 2].Cells.Count - 1].Value = rest.ToString() + "UAH";
 
 
