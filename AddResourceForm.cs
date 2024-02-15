@@ -508,8 +508,24 @@ namespace EnergyService
 
 
             reader = StockDBCommand.ExecuteReader();
-            reader.Read();
-            ID = Convert.ToInt32(reader[0]);
+            if(reader.Read())
+            {
+                ID = Convert.ToInt32(reader[0]);
+            }
+            else
+            {
+                ID = -2;
+                /*StockDBCommand = new OleDbCommand("SELECT ID FROM WroteOffResources ORDER BY ID DESC", StockDBConnection);
+                reader = StockDBCommand.ExecuteReader();
+                if (reader.Read())
+                {
+                    ID = Convert.ToInt32(reader[0]);
+                }
+                else
+                {
+                    ID = 1;
+                }*/
+            }
 
 
             return ID;
@@ -779,7 +795,15 @@ namespace EnergyService
                     }
                     else
                     {
-                        ID = Convert.ToInt32(AddPreviewDataGridView.Rows[AddPreviewDataGridView.Rows.Count - 2].Cells[0].Value) + 1;
+                        if (Convert.ToInt32(AddPreviewDataGridView.Rows[AddPreviewDataGridView.Rows.Count - 2].Cells[0].Value)!=-1)
+                        {
+                            ID = Convert.ToInt32(AddPreviewDataGridView.Rows[AddPreviewDataGridView.Rows.Count - 2].Cells[0].Value) + 1;
+                        }
+                        else
+                        {
+                            ID = Convert.ToInt32(AddPreviewDataGridView.Rows[AddPreviewDataGridView.Rows.Count - 2].Cells[0].Value);
+                        }
+                        
                     }
 
                     string title = TitleTextBox.Text;
