@@ -217,6 +217,10 @@ namespace EnergyService
             this.workTimePanel = new System.Windows.Forms.Panel();
             this.workTimeDataGridView = new System.Windows.Forms.DataGridView();
             this.searchWorkTimePanel = new System.Windows.Forms.Panel();
+            this.label48 = new System.Windows.Forms.Label();
+            this.label49 = new System.Windows.Forms.Label();
+            this.bonusComboBox = new System.Windows.Forms.ComboBox();
+            this.additionalComboBox = new System.Windows.Forms.ComboBox();
             this.showAllPersonsCheckBox = new System.Windows.Forms.CheckBox();
             this.label41 = new System.Windows.Forms.Label();
             this.label40 = new System.Windows.Forms.Label();
@@ -255,10 +259,7 @@ namespace EnergyService
             this.EURCurrencyLabel = new System.Windows.Forms.Label();
             this.currencyTimer = new System.Windows.Forms.Timer(this.components);
             this.loadDelayTimer = new System.Windows.Forms.Timer(this.components);
-            this.label48 = new System.Windows.Forms.Label();
-            this.label49 = new System.Windows.Forms.Label();
-            this.bonusComboBox = new System.Windows.Forms.ComboBox();
-            this.additionalComboBox = new System.Windows.Forms.ComboBox();
+            this.printWorkTimeButton = new System.Windows.Forms.Button();
             this.mainTabControl.SuspendLayout();
             this.LogIntabPage.SuspendLayout();
             this.logInPanel.SuspendLayout();
@@ -2129,6 +2130,7 @@ namespace EnergyService
             // 
             this.searchWorkTimePanel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.searchWorkTimePanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.searchWorkTimePanel.Controls.Add(this.printWorkTimeButton);
             this.searchWorkTimePanel.Controls.Add(this.label48);
             this.searchWorkTimePanel.Controls.Add(this.label49);
             this.searchWorkTimePanel.Controls.Add(this.bonusComboBox);
@@ -2144,6 +2146,57 @@ namespace EnergyService
             this.searchWorkTimePanel.Name = "searchWorkTimePanel";
             this.searchWorkTimePanel.Size = new System.Drawing.Size(639, 55);
             this.searchWorkTimePanel.TabIndex = 1;
+            // 
+            // label48
+            // 
+            this.label48.AutoSize = true;
+            this.label48.Location = new System.Drawing.Point(340, 32);
+            this.label48.Name = "label48";
+            this.label48.Size = new System.Drawing.Size(40, 13);
+            this.label48.TabIndex = 9;
+            this.label48.Text = "Bonus:";
+            // 
+            // label49
+            // 
+            this.label49.AutoSize = true;
+            this.label49.Location = new System.Drawing.Point(226, 32);
+            this.label49.Name = "label49";
+            this.label49.Size = new System.Drawing.Size(56, 13);
+            this.label49.TabIndex = 11;
+            this.label49.Text = "Additional:";
+            // 
+            // bonusComboBox
+            // 
+            this.bonusComboBox.FormattingEnabled = true;
+            this.bonusComboBox.Items.AddRange(new object[] {
+            "0",
+            "5",
+            "10",
+            "15",
+            "20",
+            "30"});
+            this.bonusComboBox.Location = new System.Drawing.Point(389, 28);
+            this.bonusComboBox.Name = "bonusComboBox";
+            this.bonusComboBox.Size = new System.Drawing.Size(38, 21);
+            this.bonusComboBox.TabIndex = 8;
+            this.bonusComboBox.Text = "30";
+            this.bonusComboBox.SelectedIndexChanged += new System.EventHandler(this.bonusComboBox_SelectedIndexChanged);
+            // 
+            // additionalComboBox
+            // 
+            this.additionalComboBox.FormattingEnabled = true;
+            this.additionalComboBox.Items.AddRange(new object[] {
+            "0",
+            "5",
+            "10",
+            "15",
+            "20"});
+            this.additionalComboBox.Location = new System.Drawing.Point(288, 29);
+            this.additionalComboBox.Name = "additionalComboBox";
+            this.additionalComboBox.Size = new System.Drawing.Size(37, 21);
+            this.additionalComboBox.TabIndex = 10;
+            this.additionalComboBox.Text = "20";
+            this.additionalComboBox.SelectedIndexChanged += new System.EventHandler(this.additionalComboBox_SelectedIndexChanged);
             // 
             // showAllPersonsCheckBox
             // 
@@ -2536,56 +2589,15 @@ namespace EnergyService
             this.loadDelayTimer.Interval = 1000;
             this.loadDelayTimer.Tick += new System.EventHandler(this.loadDelayTimer_Tick);
             // 
-            // label48
+            // printWorkTimeButton
             // 
-            this.label48.AutoSize = true;
-            this.label48.Location = new System.Drawing.Point(340, 32);
-            this.label48.Name = "label48";
-            this.label48.Size = new System.Drawing.Size(40, 13);
-            this.label48.TabIndex = 9;
-            this.label48.Text = "Bonus:";
-            // 
-            // label49
-            // 
-            this.label49.AutoSize = true;
-            this.label49.Location = new System.Drawing.Point(226, 32);
-            this.label49.Name = "label49";
-            this.label49.Size = new System.Drawing.Size(56, 13);
-            this.label49.TabIndex = 11;
-            this.label49.Text = "Additional:";
-            // 
-            // bonusComboBox
-            // 
-            this.bonusComboBox.FormattingEnabled = true;
-            this.bonusComboBox.Items.AddRange(new object[] {
-            "0",
-            "5",
-            "10",
-            "15",
-            "20",
-            "30"});
-            this.bonusComboBox.Location = new System.Drawing.Point(389, 28);
-            this.bonusComboBox.Name = "bonusComboBox";
-            this.bonusComboBox.Size = new System.Drawing.Size(38, 21);
-            this.bonusComboBox.TabIndex = 8;
-            this.bonusComboBox.Text = "30";
-            this.bonusComboBox.SelectedIndexChanged += new System.EventHandler(this.bonusComboBox_SelectedIndexChanged);
-            // 
-            // additionalComboBox
-            // 
-            this.additionalComboBox.FormattingEnabled = true;
-            this.additionalComboBox.Items.AddRange(new object[] {
-            "0",
-            "5",
-            "10",
-            "15",
-            "20"});
-            this.additionalComboBox.Location = new System.Drawing.Point(288, 29);
-            this.additionalComboBox.Name = "additionalComboBox";
-            this.additionalComboBox.Size = new System.Drawing.Size(37, 21);
-            this.additionalComboBox.TabIndex = 10;
-            this.additionalComboBox.Text = "20";
-            this.additionalComboBox.SelectedIndexChanged += new System.EventHandler(this.additionalComboBox_SelectedIndexChanged);
+            this.printWorkTimeButton.Location = new System.Drawing.Point(559, 2);
+            this.printWorkTimeButton.Name = "printWorkTimeButton";
+            this.printWorkTimeButton.Size = new System.Drawing.Size(75, 23);
+            this.printWorkTimeButton.TabIndex = 12;
+            this.printWorkTimeButton.Text = "Print";
+            this.printWorkTimeButton.UseVisualStyleBackColor = true;
+            this.printWorkTimeButton.Click += new System.EventHandler(this.printWorkTimeButton_Click);
             // 
             // MainForm
             // 
@@ -2858,6 +2870,7 @@ namespace EnergyService
         private System.Windows.Forms.Label label49;
         private System.Windows.Forms.ComboBox bonusComboBox;
         private System.Windows.Forms.ComboBox additionalComboBox;
+        private System.Windows.Forms.Button printWorkTimeButton;
     }
 }
 

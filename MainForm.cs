@@ -12,6 +12,7 @@ using System.Data.OleDb;
 using System.Xml.XPath;
 using System.Globalization;
 using System.IO;
+using OfficeOpenXml;
 
 namespace EnergyService
 {
@@ -2794,8 +2795,6 @@ namespace EnergyService
         }
 
         //FUNCTIONS////////////////////////////////////////////////
-
-
         private void GetWorkTime()
         {         
             Cursor.Current = Cursors.WaitCursor;
@@ -3130,7 +3129,6 @@ namespace EnergyService
             workTimeDataGridView.ClearSelection();
             Cursor.Current = Cursors.Default;
         }
-
         private void SetWorkTime()
         {
             if(addWorkTimePersonComboBox.Text!="" && addWorkTimeTextBox.Text!="" && addWorkTimeMultiplierComboBox.Text!="" && addWorkTimeDateTimePicker.Value!=null && workShiftComboBox.Text!="")
@@ -3194,7 +3192,89 @@ namespace EnergyService
             }
         }
 
+        private void CreateWorkTimeTable()
+        {
+            string dir= Environment.CurrentDirectory + "\\Data\\WorkTime\\";
+            string fil = searchWorkTimeYearComboBox.Text + "_" + searchWorkTimeMonthComboBox.Text;
 
+
+            // Создание чистой книги(workbook). Используйте оператор using,
+            // чтобы удалить пакет по завершению работы.
+            using (var p = new ExcelPackage())
+            {
+                // Книга должна состоять как минимум из листа и нескольких ячеек.
+                string wsName = "Енергослужба" + searchWorkTimeMonthComboBox.Text + searchWorkTimeYearComboBox.Text;
+                var ws = p.Workbook.Worksheets.Add(wsName);
+                // Сохранение новой книги. Имя файла не было указано, поэтому
+                // используйте метод SaveAs (сохранить как).
+                p.SaveAs(new FileInfo(dir + fil + ".xlsx"));
+            }
+            using (var p = new ExcelPackage(new FileInfo(dir + fil + ".xlsx")))
+            {
+                // Получение листа (Worksheet), созданного в предыдущем примере:
+                string wsName = "Енергослужба" + searchWorkTimeMonthComboBox.Text + searchWorkTimeYearComboBox.Text;
+                var ws = p.Workbook.Worksheets[wsName];
+                // Установка значения ячейки с использованием строки и колонки.
+                //ws.Cells[2, 1].Value = "This is cell A2. It is set to bolds";
+                // Объект Style дает доступ к форматированию и стилям содержимого
+                // ячеек. В этом примере текст делается "жирным":
+                //ws.Cells[2, 1].Style.Font.Bold = true;
+                for (int i = 1; i < workTimeDataGridView.ColumnCount+1; i++)
+                {
+                    ws.Cells[1, i].Value = workTimeDataGridView.Columns[i - 1].HeaderText;
+                    ws.Cells[1, i].Style.Font.Bold = true;
+                }
+                for (int i = 2; i < workTimeDataGridView.Rows.Count+1; i++)
+                {
+                    for (int y = 0; y < workTimeDataGridView.ColumnCount; y++)
+                    {
+                        ws.Cells[i, y + 1].Value = workTimeDataGridView.Rows[i - 2].Cells[y].Value;
+                    }
+                }
+                ws.Cells.Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+                ws.Cells.Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
+
+                ws.Column(1).Width = 20;
+                ws.Column(2).Width = 20;
+                ws.Column(3).Width = 20;
+                ws.Column(4).Width = 15;
+
+                int columnCount = ws.Dimension.Columns;
+                for (int i = 5; i < ws.Dimension.Columns; i++)
+                {
+                    ws.Column(i).Width = 7;
+                }
+                ws.Column(ws.Dimension.Columns).Width = 15;
+
+                for (int i = 1; i < workTimeDataGridView.Rows.Count+1; i++)
+                {
+                    for (int y = 1; y < workTimeDataGridView.ColumnCount; y++)
+                    {
+                        ws.Cells[i, y].Style.Border.Top.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
+                        ws.Cells[i, y].Style.Border.Left.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
+                        ws.Cells[i, y].Style.Border.Right.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
+                        ws.Cells[i, y].Style.Border.Bottom.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
+                    }
+                }
+
+                for (int i = 1; i < workTimeDataGridView.Rows.Count + 1; i++)
+                {
+                    ws.Cells[i, workTimeDataGridView.ColumnCount].Style.Border.Top.Style = OfficeOpenXml.Style.ExcelBorderStyle.Medium;
+                    ws.Cells[i, workTimeDataGridView.ColumnCount].Style.Border.Left.Style = OfficeOpenXml.Style.ExcelBorderStyle.Medium;
+                    ws.Cells[i, workTimeDataGridView.ColumnCount].Style.Border.Right.Style = OfficeOpenXml.Style.ExcelBorderStyle.Medium;
+                    ws.Cells[i, workTimeDataGridView.ColumnCount].Style.Border.Bottom.Style = OfficeOpenXml.Style.ExcelBorderStyle.Medium;
+                }
+
+
+                ws.Protection.IsProtected = true;
+                ws.Protection.SetPassword("2");
+
+
+
+                // Сохранение файла и закрытие пакета:
+                p.Save();
+            }
+        }
 
         //EVENTS/////////////////////////////////////////////////
         private void searchWorkTimePersonComboBox_KeyPress(object sender, KeyPressEventArgs e)
@@ -3369,6 +3449,11 @@ namespace EnergyService
             GetWorkTime();
         }
 
+        private void printWorkTimeButton_Click(object sender, EventArgs e)
+        {
+            CreateWorkTimeTable();
+        }
+
         //WORK TIME********************************************************************************************************************************************************************/
 
         //BACKUP********************************************************************************************************************************************************************/
@@ -3403,6 +3488,8 @@ namespace EnergyService
                 CopyAll(diSourceSubDir, nextTargetSubDir);
             }
         }
+
+
 
 
 
