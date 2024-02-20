@@ -2761,12 +2761,7 @@ namespace EnergyService
         OleDbConnection WorkTimeDBConnection;
         OleDbCommand WorkTimeDBCommand;
         OleDbDataReader WorkTimeDBReader;
-
-
         //CLASSES/////////////////////////////////////////////////
-
-
-
         public class WorkTime
         {
             public string personName;
@@ -2793,7 +2788,6 @@ namespace EnergyService
                 this.rate = rate;
             }
         }
-
         //FUNCTIONS////////////////////////////////////////////////
         private void GetWorkTime()
         {         
@@ -3195,30 +3189,18 @@ namespace EnergyService
         private void CreateWorkTimeTable()
         {
             string dir= Environment.CurrentDirectory + "\\Data\\WorkTime\\";
-            string fil = searchWorkTimeYearComboBox.Text + "_" + searchWorkTimeMonthComboBox.Text;
+            string file = searchWorkTimeYearComboBox.Text + "_" + searchWorkTimeMonthComboBox.Text;
 
-
-            // Создание чистой книги(workbook). Используйте оператор using,
-            // чтобы удалить пакет по завершению работы.
             using (var p = new ExcelPackage())
             {
-                // Книга должна состоять как минимум из листа и нескольких ячеек.
-                string wsName = "Енергослужба" + searchWorkTimeMonthComboBox.Text + searchWorkTimeYearComboBox.Text;
+                string wsName = "Енергослужба_" + searchWorkTimeMonthComboBox.Text + "_" + searchWorkTimeYearComboBox.Text;
                 var ws = p.Workbook.Worksheets.Add(wsName);
-                // Сохранение новой книги. Имя файла не было указано, поэтому
-                // используйте метод SaveAs (сохранить как).
-                p.SaveAs(new FileInfo(dir + fil + ".xlsx"));
+                p.SaveAs(new FileInfo(dir + file + ".xlsx"));
             }
-            using (var p = new ExcelPackage(new FileInfo(dir + fil + ".xlsx")))
+            using (var p = new ExcelPackage(new FileInfo(dir + file + ".xlsx")))
             {
-                // Получение листа (Worksheet), созданного в предыдущем примере:
-                string wsName = "Енергослужба" + searchWorkTimeMonthComboBox.Text + searchWorkTimeYearComboBox.Text;
+                string wsName = "Енергослужба_" + searchWorkTimeMonthComboBox.Text + "_" + searchWorkTimeYearComboBox.Text;
                 var ws = p.Workbook.Worksheets[wsName];
-                // Установка значения ячейки с использованием строки и колонки.
-                //ws.Cells[2, 1].Value = "This is cell A2. It is set to bolds";
-                // Объект Style дает доступ к форматированию и стилям содержимого
-                // ячеек. В этом примере текст делается "жирным":
-                //ws.Cells[2, 1].Style.Font.Bold = true;
                 for (int i = 1; i < workTimeDataGridView.ColumnCount+1; i++)
                 {
                     ws.Cells[1, i].Value = workTimeDataGridView.Columns[i - 1].HeaderText;
@@ -3245,7 +3227,6 @@ namespace EnergyService
                     ws.Column(i).Width = 7;
                 }
                 ws.Column(ws.Dimension.Columns).Width = 15;
-
                 for (int i = 1; i < workTimeDataGridView.Rows.Count+1; i++)
                 {
                     for (int y = 1; y < workTimeDataGridView.ColumnCount; y++)
@@ -3256,7 +3237,6 @@ namespace EnergyService
                         ws.Cells[i, y].Style.Border.Bottom.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
                     }
                 }
-
                 for (int i = 1; i < workTimeDataGridView.Rows.Count + 1; i++)
                 {
                     ws.Cells[i, workTimeDataGridView.ColumnCount].Style.Border.Top.Style = OfficeOpenXml.Style.ExcelBorderStyle.Medium;
@@ -3264,14 +3244,8 @@ namespace EnergyService
                     ws.Cells[i, workTimeDataGridView.ColumnCount].Style.Border.Right.Style = OfficeOpenXml.Style.ExcelBorderStyle.Medium;
                     ws.Cells[i, workTimeDataGridView.ColumnCount].Style.Border.Bottom.Style = OfficeOpenXml.Style.ExcelBorderStyle.Medium;
                 }
-
-
                 ws.Protection.IsProtected = true;
                 ws.Protection.SetPassword("2");
-
-
-
-                // Сохранение файла и закрытие пакета:
                 p.Save();
             }
         }
