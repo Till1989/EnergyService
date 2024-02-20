@@ -3225,7 +3225,13 @@ namespace EnergyService
                 int columnCount = ws.Dimension.Columns;
                 for (int i = 5; i < ws.Dimension.Columns; i++)
                 {
-                    ws.Column(i).Width = 7;
+                    ws.Column(i).Width = 3;
+                }
+
+                for (int i = 5; i < ws.Dimension.Columns; i++)
+                {
+                    ws.Cells[6, i].Style.TextRotation = 90;
+                    ws.Row(6).Height = 35;
                 }
                 ws.Column(ws.Dimension.Columns).Width = 15;
                 for (int i = 1; i < workTimeDataGridView.Rows.Count+1; i++)
