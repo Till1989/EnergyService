@@ -3188,6 +3188,7 @@ namespace EnergyService
 
         private void CreateWorkTimeTable()
         {
+            Cursor.Current = Cursors.WaitCursor;
             string dir= Environment.CurrentDirectory + "\\Data\\WorkTime\\";
             string file = searchWorkTimeYearComboBox.Text + "_" + searchWorkTimeMonthComboBox.Text;
 
@@ -3248,6 +3249,7 @@ namespace EnergyService
                 ws.Protection.SetPassword("2");
                 p.Save();
             }
+            Cursor.Current = Cursors.Default;
         }
 
         //EVENTS/////////////////////////////////////////////////
