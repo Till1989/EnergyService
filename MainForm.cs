@@ -3135,14 +3135,6 @@ namespace EnergyService
 
 
                 }
-                /*for (int y = 4; y < (maxDays + 4); y++)
-                {
-                    if (tmp[i].daysOfWeek[y - 4] == 0 || tmp[i].daysOfWeek[y - 4] == 6)
-                    {
-                        workTimeDataGridView.Columns[y].DefaultCellStyle.BackColor = Color.LightGray;
-                    }
-                }
-                */
 
                 string decimalSeparator = CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator;
 
@@ -3157,8 +3149,8 @@ namespace EnergyService
 
 
                 double totalPayment = 0;
-                int bonus = Convert.ToInt32(bonusComboBox.Text);
-                int add = Convert.ToInt32(additionalComboBox.Text);
+                int bonus = Convert.ToInt32(bonusComboBox.Text)*10;
+                int add = Convert.ToInt32(additionalComboBox.Text)*10;
 
 
 
@@ -3169,13 +3161,13 @@ namespace EnergyService
                     {
                         double t = ((tmp[i].workHours[y] - tmp[i].nightWorkHours[y]) * Convert.ToDouble(tmp[i].rate[y])) +
                             ((tmp[i].nightWorkHours[y]) * Convert.ToDouble(tmp[i].rate[y]) * 1.2);
-                        totalPayment += t + t / 100 * (add + bonus);
+                        totalPayment += t + t / 1000 * (add + bonus);
                     }
                     else
                     {
                         double t = ((tmp[i].workHours[y] - tmp[i].nightWorkHours[y]) * Convert.ToDouble(tmp[i].rate[y])) +
                             ((tmp[i].nightWorkHours[y]) * Convert.ToDouble(tmp[i].rate[y]) * 1.2);
-                        totalPayment += t + t / 100 * bonus;
+                        totalPayment += t + t / 1000 * bonus;
                         if (tmp[i].paymentMultiplier[y] == 2)
                         {
                             totalPayment += t;
@@ -3187,15 +3179,22 @@ namespace EnergyService
 
 
                 workTimeDataGridView.Rows.Add();
+                workTimeDataGridView.Rows[workTimeDataGridView.Rows.Count - 2].Cells[3].Value = "Payment, UAH";
                 workTimeDataGridView.Rows[workTimeDataGridView.Rows.Count - 2].Cells[workTimeDataGridView.Rows[workTimeDataGridView.Rows.Count - 2].Cells.Count - 1].Value = totalPayment.ToString() + "UAH";
 
                 workTimeDataGridView.Rows.Add();
-                double tax = Math.Round(totalPayment / 100 * 19.5, 2);
+                workTimeDataGridView.Rows[workTimeDataGridView.Rows.Count - 2].Cells[3].Value = "Tax, UAH";
+                double tax = Math.Round(totalPayment / 1000 * 180, 2);
                 workTimeDataGridView.Rows[workTimeDataGridView.Rows.Count - 2].Cells[workTimeDataGridView.Rows[workTimeDataGridView.Rows.Count - 2].Cells.Count - 1].Value = "-" + tax.ToString() + "UAH";
 
+                workTimeDataGridView.Rows.Add();
+                workTimeDataGridView.Rows[workTimeDataGridView.Rows.Count - 2].Cells[3].Value = "War Tax, UAH";
+                double warTax = Math.Round(totalPayment / 1000 * 15, 2);
+                workTimeDataGridView.Rows[workTimeDataGridView.Rows.Count - 2].Cells[workTimeDataGridView.Rows[workTimeDataGridView.Rows.Count - 2].Cells.Count - 1].Value = "-" + warTax.ToString() + "UAH";
 
                 workTimeDataGridView.Rows.Add();
-                double rest = totalPayment - tax;
+                workTimeDataGridView.Rows[workTimeDataGridView.Rows.Count - 2].Cells[3].Value = "Res. Payment, UAH";
+                double rest = totalPayment - tax - warTax;
                 workTimeDataGridView.Rows[workTimeDataGridView.Rows.Count - 2].Cells[workTimeDataGridView.Rows[workTimeDataGridView.Rows.Count - 2].Cells.Count - 1].Value = rest.ToString() + "UAH";
 
                 /*
@@ -3245,7 +3244,11 @@ namespace EnergyService
                 int shift = Convert.ToInt32(workShiftComboBox.Text);
                 string rate = rateTextBox.Text;
                 int nightHours = Convert.ToInt32(nightHoursTextBox.Text);
-                int dayOfWeek = Convert.ToInt32(DateTime.Now.DayOfWeek);
+                int dayOfWeek = Convert.ToInt32(addWorkTimeDateTimePicker.Value.DayOfWeek);
+
+
+
+
 
                 for (int i=1; i<13; i++)
                 {
@@ -3320,7 +3323,14 @@ namespace EnergyService
                     for (int y = 0; y < workTimeDataGridView.ColumnCount; y++)
                     {
                         ws.Cells[i, y + 1].Value = workTimeDataGridView.Rows[i - 2].Cells[y].Value;
+                        if (workTimeDataGridView.Rows[i - 2].Cells[y].Style.BackColor == Color.LightGray)
+                        {
+                            ws.Cells[i, y + 1].Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
+                            ws.Cells[i, y + 1].Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.LightGray);   
+                        }
+                        ws.Cells[i, y + 1].Style.WrapText = true;
                     }
+
                 }
                 ws.Cells.Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
                 ws.Cells.Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
