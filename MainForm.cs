@@ -2774,7 +2774,9 @@ namespace EnergyService
             public int[] workShift;
             public string[] rate;
             public int[] nightWorkHours;
-            public WorkTime(string personName, string personStatus, int workYear, string workMonth, int[] workDay, int[] workHours, int[] nightWorkHours, int[] paymentMultiplier, int[] workShift, string[] rate)
+            public int[] daysOfWeek;
+
+            public WorkTime(string personName, string personStatus, int workYear, string workMonth, int[] workDay, int[] workHours, int[] nightWorkHours, int[] paymentMultiplier, int[] workShift, string[] rate, int[] daysOfWeek)
             {
                 this.personName = personName;
                 this.personStatus = personStatus;
@@ -2786,6 +2788,7 @@ namespace EnergyService
                 this.paymentMultiplier = paymentMultiplier;
                 this.workShift = workShift;
                 this.rate = rate;
+                this.daysOfWeek = daysOfWeek;
             }
         }
         //FUNCTIONS////////////////////////////////////////////////
@@ -2826,6 +2829,7 @@ namespace EnergyService
                 int[] multiplier = new int[40];
                 int[] shift = new int[40];
                 string[] rate = new string[40];
+                int[] daysOfWeek = new int[40];
 
                 name = ((Person)searchWorkTimePersonComboBox.SelectedItem).name;
                 status = ((Person)searchWorkTimePersonComboBox.SelectedItem).position;
@@ -2845,10 +2849,11 @@ namespace EnergyService
                     shift[i] = Convert.ToInt32(WorkTimeDBReader[7]);
                     rate[i] = WorkTimeDBReader[8].ToString();
                     nightHours[i] = Convert.ToInt32(WorkTimeDBReader[9]);
+                    daysOfWeek[i] = Convert.ToInt32(WorkTimeDBReader[10]);
                     i++;
                 }
 
-                tmp[0] = new WorkTime(name, status, year, searchWorkTimeMonthComboBox.Text, days, hours, nightHours, multiplier, shift, rate);
+                tmp[0] = new WorkTime(name, status, year, searchWorkTimeMonthComboBox.Text, days, hours, nightHours, multiplier, shift, rate, daysOfWeek);
 
                 Array.Resize(ref tmp[0].workDay, maxDays);
                 Array.Resize(ref tmp[0].workHours, maxDays);
@@ -2856,6 +2861,8 @@ namespace EnergyService
                 Array.Resize(ref tmp[0].paymentMultiplier, maxDays);
                 Array.Resize(ref tmp[0].workShift, maxDays);
                 Array.Resize(ref tmp[0].rate, maxDays);
+                Array.Resize(ref tmp[0].rate, maxDays);
+                Array.Resize(ref tmp[0].daysOfWeek, maxDays);
             }
             else
             {
@@ -2871,6 +2878,7 @@ namespace EnergyService
                     int[] multiplier = new int[40];
                     int[] shift = new int[40];
                     string[] rate = new string[40];
+                    int[] daysOfWeek = new int[40];
 
                     int y = 0;
 
@@ -2884,11 +2892,12 @@ namespace EnergyService
                         multiplier[y] = Convert.ToInt32(WorkTimeDBReader[6]);
                         shift[y] = Convert.ToInt32(WorkTimeDBReader[7]);
                         rate[y] = WorkTimeDBReader[8].ToString();
-                        nightHours[i] = Convert.ToInt32(WorkTimeDBReader[9]);
+                        nightHours[y] = Convert.ToInt32(WorkTimeDBReader[9]);
+                        daysOfWeek[y] = Convert.ToInt32(WorkTimeDBReader[10]);
                         y++;
                     }
 
-                    tmp[i] = new WorkTime(name, status, year, searchWorkTimeMonthComboBox.Text, days, hours, nightHours, multiplier, shift, rate);
+                    tmp[i] = new WorkTime(name, status, year, searchWorkTimeMonthComboBox.Text, days, hours, nightHours, multiplier, shift, rate, daysOfWeek);
 
                     Array.Resize(ref tmp[i].workDay, maxDays);
                     Array.Resize(ref tmp[i].workHours, maxDays);
@@ -2896,6 +2905,7 @@ namespace EnergyService
                     Array.Resize(ref tmp[i].paymentMultiplier, maxDays);
                     Array.Resize(ref tmp[i].workShift, maxDays);
                     Array.Resize(ref tmp[i].rate, maxDays);
+                    Array.Resize(ref tmp[i].daysOfWeek, maxDays);
                 }
 
             }
@@ -2953,6 +2963,16 @@ namespace EnergyService
                     }
                 }
                 tmp[i].nightWorkHours = temp4;
+
+                int[] temp5 = new int[maxDays];
+                for (int y = 0; y < tmp[i].daysOfWeek.Length; y++)
+                {
+                    if (tmp[i].workDay[y] != 0)
+                    {
+                        temp5[tmp[i].workDay[y] - 1] = tmp[i].daysOfWeek[y];
+                    }
+                }
+                tmp[i].daysOfWeek = temp5;
             }
 
             workTimeDataGridView.Rows.Clear();
@@ -3031,7 +3051,10 @@ namespace EnergyService
                     {
                         workTimeDataGridView.Rows[workTimeDataGridView.Rows.Count - 2].Cells[y].Value = tmp[i].workHours[y - 4];
                     }
-                    
+                    if (tmp[i].daysOfWeek[y - 4] == 0 || tmp[i].daysOfWeek[y - 4] == 6)
+                    {
+                        workTimeDataGridView.Rows[workTimeDataGridView.Rows.Count - 2].Cells[y].Style.BackColor = Color.LightGray;
+                    }
                 }
                 int total = 0;
                 for (int y = 0; y < tmp[i].workHours.Length; y++)
@@ -3048,6 +3071,10 @@ namespace EnergyService
                     {
                         workTimeDataGridView.Rows[workTimeDataGridView.Rows.Count - 2].Cells[y].Value = tmp[i].workShift[y - 4];
                     }
+                    if (tmp[i].daysOfWeek[y - 4] == 0 || tmp[i].daysOfWeek[y - 4] == 6)
+                    {
+                        workTimeDataGridView.Rows[workTimeDataGridView.Rows.Count - 2].Cells[y].Style.BackColor = Color.LightGray;
+                    }
                 }
 
                 workTimeDataGridView.Rows.Add();
@@ -3058,6 +3085,10 @@ namespace EnergyService
                     {
                         workTimeDataGridView.Rows[workTimeDataGridView.Rows.Count - 2].Cells[y].Value = tmp[i].nightWorkHours[y - 4];
                     }
+                    if (tmp[i].daysOfWeek[y - 4] == 0 || tmp[i].daysOfWeek[y - 4] == 6)
+                    {
+                        workTimeDataGridView.Rows[workTimeDataGridView.Rows.Count - 2].Cells[y].Style.BackColor = Color.LightGray;
+                    }
                 }
 
                 workTimeDataGridView.Rows.Add();
@@ -3067,6 +3098,10 @@ namespace EnergyService
                     if (tmp[i].paymentMultiplier[y - 4]!=0)
                     {
                         workTimeDataGridView.Rows[workTimeDataGridView.Rows.Count - 2].Cells[y].Value = tmp[i].paymentMultiplier[y - 4];
+                    }
+                    if (tmp[i].daysOfWeek[y - 4] == 0 || tmp[i].daysOfWeek[y - 4] == 6)
+                    {
+                        workTimeDataGridView.Rows[workTimeDataGridView.Rows.Count - 2].Cells[y].Style.BackColor = Color.LightGray;
                     }
                 }
 
@@ -3079,8 +3114,35 @@ namespace EnergyService
                     {
                         //workTimeDataGridView.Rows[workTimeDataGridView.Rows.Count - 2].Cells[y].Value = "0";
                     }
+                    if (tmp[i].daysOfWeek[y - 4] == 0 || tmp[i].daysOfWeek[y - 4] == 6)
+                    {
+                        workTimeDataGridView.Rows[workTimeDataGridView.Rows.Count - 2].Cells[y].Style.BackColor = Color.LightGray;
+                    }
                 }
 
+                workTimeDataGridView.Rows.Add();
+                workTimeDataGridView.Rows[workTimeDataGridView.Rows.Count - 2].Cells[3].Value = "WeekDay";
+                for (int y = 4; y < (maxDays + 4); y++)
+                {
+                    if (tmp[i].workHours[y - 4] != 0)
+                    {
+                        workTimeDataGridView.Rows[workTimeDataGridView.Rows.Count - 2].Cells[y].Value = tmp[i].daysOfWeek[y - 4];
+                    }
+                    if (tmp[i].daysOfWeek[y - 4] == 0 || tmp[i].daysOfWeek[y - 4] == 6)
+                    {
+                        workTimeDataGridView.Rows[workTimeDataGridView.Rows.Count - 2].Cells[y].Style.BackColor = Color.LightGray;
+                    }
+
+
+                }
+                /*for (int y = 4; y < (maxDays + 4); y++)
+                {
+                    if (tmp[i].daysOfWeek[y - 4] == 0 || tmp[i].daysOfWeek[y - 4] == 6)
+                    {
+                        workTimeDataGridView.Columns[y].DefaultCellStyle.BackColor = Color.LightGray;
+                    }
+                }
+                */
 
                 string decimalSeparator = CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator;
 
@@ -3095,8 +3157,53 @@ namespace EnergyService
 
 
                 double totalPayment = 0;
+                int bonus = Convert.ToInt32(bonusComboBox.Text);
+                int add = Convert.ToInt32(additionalComboBox.Text);
+
+
+
+
                 for (int y = 0; y < tmp[i].workHours.Length; y++)
                 {
+                    if (tmp[i].daysOfWeek[y] > 0 && tmp[i].daysOfWeek[y] < 6)
+                    {
+                        double t = ((tmp[i].workHours[y] - tmp[i].nightWorkHours[y]) * Convert.ToDouble(tmp[i].rate[y])) +
+                            ((tmp[i].nightWorkHours[y]) * Convert.ToDouble(tmp[i].rate[y]) * 1.2);
+                        totalPayment += t + t / 100 * (add + bonus);
+                    }
+                    else
+                    {
+                        double t = ((tmp[i].workHours[y] - tmp[i].nightWorkHours[y]) * Convert.ToDouble(tmp[i].rate[y])) +
+                            ((tmp[i].nightWorkHours[y]) * Convert.ToDouble(tmp[i].rate[y]) * 1.2);
+                        totalPayment += t + t / 100 * bonus;
+                        if (tmp[i].paymentMultiplier[y] == 2)
+                        {
+                            totalPayment += t;
+                        }
+                    }
+
+                }
+
+
+
+                workTimeDataGridView.Rows.Add();
+                workTimeDataGridView.Rows[workTimeDataGridView.Rows.Count - 2].Cells[workTimeDataGridView.Rows[workTimeDataGridView.Rows.Count - 2].Cells.Count - 1].Value = totalPayment.ToString() + "UAH";
+
+                workTimeDataGridView.Rows.Add();
+                double tax = Math.Round(totalPayment / 100 * 19.5, 2);
+                workTimeDataGridView.Rows[workTimeDataGridView.Rows.Count - 2].Cells[workTimeDataGridView.Rows[workTimeDataGridView.Rows.Count - 2].Cells.Count - 1].Value = "-" + tax.ToString() + "UAH";
+
+
+                workTimeDataGridView.Rows.Add();
+                double rest = totalPayment - tax;
+                workTimeDataGridView.Rows[workTimeDataGridView.Rows.Count - 2].Cells[workTimeDataGridView.Rows[workTimeDataGridView.Rows.Count - 2].Cells.Count - 1].Value = rest.ToString() + "UAH";
+
+                /*
+                for (int y = 0; y < tmp[i].workHours.Length; y++)
+                {
+
+
+
                     totalPayment += ((tmp[i].workHours[y] - tmp[i].nightWorkHours[y]) * tmp[i].paymentMultiplier[y] * Convert.ToDouble(tmp[i].rate[y])) +
                         (tmp[i].nightWorkHours[y] * tmp[i].paymentMultiplier[y] * Convert.ToDouble(tmp[i].rate[y]) * 1.2);
                 }
@@ -3115,7 +3222,7 @@ namespace EnergyService
                 workTimeDataGridView.Rows.Add();
                 double rest = (totalPayment + bonus) - tax;
                 workTimeDataGridView.Rows[workTimeDataGridView.Rows.Count - 2].Cells[workTimeDataGridView.Rows[workTimeDataGridView.Rows.Count - 2].Cells.Count - 1].Value = rest.ToString() + "UAH";
-
+                */
 
 
             }
@@ -3138,6 +3245,7 @@ namespace EnergyService
                 int shift = Convert.ToInt32(workShiftComboBox.Text);
                 string rate = rateTextBox.Text;
                 int nightHours = Convert.ToInt32(nightHoursTextBox.Text);
+                int dayOfWeek = Convert.ToInt32(DateTime.Now.DayOfWeek);
 
                 for (int i=1; i<13; i++)
                 {
@@ -3175,7 +3283,7 @@ namespace EnergyService
                 {
                     int workHours = Convert.ToInt32(addWorkTimeTextBox.Text);
                     WorkTimeDBCommand = new OleDbCommand("INSERT INTO WorkTime VALUES('" + personName + "', '" + personStatus + "', " + year + ", '" + month + "', "
-                        + day + ", " + workHours + ", " + multiplier + ", " + shift + ", '" + rate + "', " + nightHours + ")", WorkTimeDBConnection);
+                        + day + ", " + workHours + ", " + multiplier + ", " + shift + ", '" + rate + "', " + nightHours + "," + dayOfWeek + ")", WorkTimeDBConnection);
                     WorkTimeDBCommand.ExecuteNonQuery();
                 }
 
