@@ -48,6 +48,8 @@ namespace EnergyService
             WriteOffRecipientPersonComboBox.Items.AddRange(GetPersons("Manager"));
             WriteOffSenderPersonComboBox.Items.AddRange(GetPersons("Engineer"));
             WriteOffSenderPersonComboBox.Items.AddRange(GetPersons("Manager"));
+            GetResources(new Group("", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0), 0);
+            UpdatePath();
 
             this.MaintenanceDBConnection = new OleDbConnection(SetProvider("Maintenance.accdb"));
             MaintenanceDBConnection.Open();
@@ -662,7 +664,7 @@ namespace EnergyService
 
             return tmp;
         }
-        public void GetResources(Group group)
+        public void GetResources(Group group, int mode)
         {
             Cursor.Current = Cursors.WaitCursor;
             int[] groupID = new int[10];
@@ -678,9 +680,16 @@ namespace EnergyService
             groupID[9] = group.L9ID;
 
             string[] result = new string[1000];
+            if (mode == 0)
+            {
+                StockDBCommand = new OleDbCommand("SELECT * FROM Resources ORDER BY title ASC", StockDBConnection);
+            }
+            else
+            {
+                StockDBCommand = new OleDbCommand("SELECT * FROM Resources WHERE L0ID=" + groupID[0] + " AND L1ID=" + groupID[1] + " AND L2ID=" + groupID[2] + " AND L3ID=" + groupID[3] +
+                    " AND L4ID=" + groupID[4] + " AND L5ID=" + groupID[5] + " AND L6ID=" + groupID[6] + " AND L7ID=" + groupID[7] + " AND L8ID=" + groupID[8] + " AND L9ID=" + groupID[9] + " ORDER BY title ASC", StockDBConnection);
+            }
 
-            StockDBCommand = new OleDbCommand("SELECT * FROM Resources WHERE L0ID=" + groupID[0] + " AND L1ID=" + groupID[1] + " AND L2ID=" + groupID[2] + " AND L3ID=" + groupID[3] +
-                " AND L4ID=" + groupID[4] + " AND L5ID=" + groupID[5] + " AND L6ID=" + groupID[6] + " AND L7ID=" + groupID[7] + " AND L8ID=" + groupID[8] + " AND L9ID=" + groupID[9], StockDBConnection);
 
             string[,] tmp = new string[1000, 30];
             int i = 0;
@@ -907,7 +916,7 @@ namespace EnergyService
             L8_ComboBox.Items.Clear();
             L9_ComboBox.Items.Clear();
             CurrentStockDataGridView.Rows.Clear(); 
-            GetResources(new Group("",0,0,0,0,0,0,0,0,0,0));
+            GetResources(new Group("",0,0,0,0,0,0,0,0,0,0),0);
 
             UpdatePath();
         }
@@ -934,7 +943,7 @@ namespace EnergyService
             L9_ComboBox.Items.Clear();
 
             CurrentStockDataGridView.Rows.Clear();
-            if (L0_ComboBox.Text != "--") GetResources((Group)L0_ComboBox.SelectedItem);
+            if (L0_ComboBox.Text != "--") GetResources((Group)L0_ComboBox.SelectedItem, 1);
             UpdatePath();
         }
 
@@ -958,7 +967,7 @@ namespace EnergyService
             L9_ComboBox.Items.Clear();
 
             CurrentStockDataGridView.Rows.Clear();
-            if (L1_ComboBox.Text != "--") GetResources((Group)L1_ComboBox.SelectedItem);
+            if (L1_ComboBox.Text != "--") GetResources((Group)L1_ComboBox.SelectedItem, 1);
             UpdatePath();
         }
 
@@ -980,7 +989,7 @@ namespace EnergyService
             L9_ComboBox.Items.Clear();
 
             CurrentStockDataGridView.Rows.Clear();
-            if (L2_ComboBox.Text != "--") GetResources((Group)L2_ComboBox.SelectedItem);
+            if (L2_ComboBox.Text != "--") GetResources((Group)L2_ComboBox.SelectedItem, 1);
             UpdatePath();
         }
 
@@ -1000,7 +1009,7 @@ namespace EnergyService
             L9_ComboBox.Items.Clear();
 
             CurrentStockDataGridView.Rows.Clear();
-            if (L3_ComboBox.Text != "--") GetResources((Group)L3_ComboBox.SelectedItem);
+            if (L3_ComboBox.Text != "--") GetResources((Group)L3_ComboBox.SelectedItem, 1);
             UpdatePath();
         }
 
@@ -1018,7 +1027,7 @@ namespace EnergyService
             L9_ComboBox.Items.Clear();
 
             CurrentStockDataGridView.Rows.Clear();
-            if (L4_ComboBox.Text != "--") GetResources((Group)L4_ComboBox.SelectedItem);
+            if (L4_ComboBox.Text != "--") GetResources((Group)L4_ComboBox.SelectedItem, 1);
             UpdatePath();
         }
 
@@ -1034,7 +1043,7 @@ namespace EnergyService
             L9_ComboBox.Items.Clear();
 
             CurrentStockDataGridView.Rows.Clear();
-            if (L5_ComboBox.Text != "--") GetResources((Group)L5_ComboBox.SelectedItem);
+            if (L5_ComboBox.Text != "--") GetResources((Group)L5_ComboBox.SelectedItem, 1);
             UpdatePath();
         }
 
@@ -1048,7 +1057,7 @@ namespace EnergyService
             L9_ComboBox.Items.Clear();
 
             CurrentStockDataGridView.Rows.Clear();
-            if (L6_ComboBox.Text != "--") GetResources((Group)L6_ComboBox.SelectedItem);
+            if (L6_ComboBox.Text != "--") GetResources((Group)L6_ComboBox.SelectedItem, 1);
             UpdatePath();
         }
 
@@ -1060,7 +1069,7 @@ namespace EnergyService
             L9_ComboBox.Items.Clear();
 
             CurrentStockDataGridView.Rows.Clear();
-            if (L7_ComboBox.Text != "--") GetResources((Group)L7_ComboBox.SelectedItem);
+            if (L7_ComboBox.Text != "--") GetResources((Group)L7_ComboBox.SelectedItem, 1);
             UpdatePath();
         }
 
@@ -1068,7 +1077,7 @@ namespace EnergyService
         {
             L9_ComboBox.Text = "--";
             CurrentStockDataGridView.Rows.Clear();
-            if (L8_ComboBox.Text != "--") GetResources((Group)L8_ComboBox.SelectedItem);
+            if (L8_ComboBox.Text != "--") GetResources((Group)L8_ComboBox.SelectedItem, 1);
             UpdatePath();
         }
 
@@ -1080,7 +1089,7 @@ namespace EnergyService
             if (L0_ComboBox.SelectedIndex != -1)
             {
                 L1_ComboBox.Items.AddRange(GetGroups(1));
-                GetResources((Group)L0_ComboBox.SelectedItem);
+                GetResources((Group)L0_ComboBox.SelectedItem, 1);
             }
             UpdatePath();
         }
@@ -1093,7 +1102,7 @@ namespace EnergyService
             if (L1_ComboBox.SelectedIndex != -1)
             {
                 L2_ComboBox.Items.AddRange(GetGroups(2));
-                GetResources((Group)L1_ComboBox.SelectedItem);
+                GetResources((Group)L1_ComboBox.SelectedItem, 1);
             }
             UpdatePath();
         }
@@ -1106,7 +1115,7 @@ namespace EnergyService
             if (L2_ComboBox.SelectedIndex != -1)
             {
                 L3_ComboBox.Items.AddRange(GetGroups(3));
-                GetResources((Group)L2_ComboBox.SelectedItem);
+                GetResources((Group)L2_ComboBox.SelectedItem, 1);
             }
             UpdatePath();
         }
@@ -1119,7 +1128,7 @@ namespace EnergyService
             if (L3_ComboBox.SelectedIndex != -1)
             {
                 L4_ComboBox.Items.AddRange(GetGroups(4));
-                GetResources((Group)L3_ComboBox.SelectedItem);
+                GetResources((Group)L3_ComboBox.SelectedItem, 1);
             }
             UpdatePath();
         }
@@ -1132,7 +1141,7 @@ namespace EnergyService
             if (L4_ComboBox.SelectedIndex != -1)
             {
                 L5_ComboBox.Items.AddRange(GetGroups(5));
-                GetResources((Group)L4_ComboBox.SelectedItem);
+                GetResources((Group)L4_ComboBox.SelectedItem, 1);
             }
             UpdatePath();
         }
@@ -1145,7 +1154,7 @@ namespace EnergyService
             if (L5_ComboBox.SelectedIndex != -1)
             {
                 L6_ComboBox.Items.AddRange(GetGroups(6));
-                GetResources((Group)L5_ComboBox.SelectedItem);
+                GetResources((Group)L5_ComboBox.SelectedItem, 1);
             }
             UpdatePath();
         }
@@ -1158,7 +1167,7 @@ namespace EnergyService
             if (L6_ComboBox.SelectedIndex != -1)
             {
                 L7_ComboBox.Items.AddRange(GetGroups(7));
-                GetResources((Group)L6_ComboBox.SelectedItem);
+                GetResources((Group)L6_ComboBox.SelectedItem, 1);
             }
             UpdatePath();
         }
@@ -1171,7 +1180,7 @@ namespace EnergyService
             if (L7_ComboBox.SelectedIndex != -1)
             {
                 L8_ComboBox.Items.AddRange(GetGroups(8));
-                GetResources((Group)L7_ComboBox.SelectedItem);
+                GetResources((Group)L7_ComboBox.SelectedItem, 1);
             }
             UpdatePath();
         }
@@ -1184,7 +1193,7 @@ namespace EnergyService
             if (L8_ComboBox.SelectedIndex != -1)
             {
                 L9_ComboBox.Items.AddRange(GetGroups(9));
-                GetResources((Group)L8_ComboBox.SelectedItem);
+                GetResources((Group)L8_ComboBox.SelectedItem, 1);
             }
             UpdatePath();
         }
@@ -1194,7 +1203,7 @@ namespace EnergyService
             search = false;
             if (L9_ComboBox.SelectedIndex != -1)
             {
-                GetResources((Group)L9_ComboBox.SelectedItem);
+                GetResources((Group)L9_ComboBox.SelectedItem, 1);
             }
             UpdatePath();
         }
@@ -1385,7 +1394,7 @@ namespace EnergyService
                 }
                 else
                 {
-                    GetResources(currentGroup);
+                    GetResources(currentGroup, 1);
                 }
 
                 WriteOffQuantityTextBox.Text = "";
