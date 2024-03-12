@@ -86,7 +86,11 @@ namespace EnergyService
 
             consumptionYearComboBox.Text = DateTime.Now.ToString("yyyy", new CultureInfo("en-US"));
 
-
+            StockDBConnection.Close();
+            MaintenanceDBConnection.Close();
+            PlannedExpensesDBConnection.Close();
+            ConsumptionDBConnection.Close();
+            WorkTimeDBConnection.Close();
 
             mainTabControl.SelectedIndex = 5;
 
@@ -103,20 +107,68 @@ namespace EnergyService
         {
             if (mainTabControl.SelectedIndex == 1)
             {
-
+                StockDBConnection.Open();
+                MaintenanceDBConnection.Close();
+                PlannedExpensesDBConnection.Close();
+                ConsumptionDBConnection.Close();
+                WorkTimeDBConnection.Close();
             }
             if (mainTabControl.SelectedIndex == 2)
             {
+                StockDBConnection.Close();
+                MaintenanceDBConnection.Open();
+                PlannedExpensesDBConnection.Close();
+                ConsumptionDBConnection.Close();
+                WorkTimeDBConnection.Close();
+
                 GetMaintenances(PrepareSearchCommand());
             }
             if (mainTabControl.SelectedIndex==3)
             {
+                StockDBConnection.Close();
+                MaintenanceDBConnection.Close();
+                PlannedExpensesDBConnection.Open();
+                ConsumptionDBConnection.Close();
+                WorkTimeDBConnection.Close();
+
                 GetPlannedExpenses(PreparePlannedExpensesSearchCommand());
             }
             if (mainTabControl.SelectedIndex == 4)
             {
+                StockDBConnection.Close();
+                MaintenanceDBConnection.Close();
+                PlannedExpensesDBConnection.Close();
+                ConsumptionDBConnection.Open();
+                WorkTimeDBConnection.Close();
+
                 SetConsumptionsLabels();
                 RedrawChart(GetConsumptionData(GetCommand()));
+            }
+            if (mainTabControl.SelectedIndex == 5)
+            {
+                StockDBConnection.Close();
+                MaintenanceDBConnection.Close();
+                PlannedExpensesDBConnection.Close();
+                ConsumptionDBConnection.Close();
+                WorkTimeDBConnection.Open();
+
+                GetWorkTime();
+            }
+            if (mainTabControl.SelectedIndex == 6)
+            {
+                StockDBConnection.Close();
+                MaintenanceDBConnection.Close();
+                PlannedExpensesDBConnection.Close();
+                ConsumptionDBConnection.Close();
+                WorkTimeDBConnection.Close();
+            }
+            if (mainTabControl.SelectedIndex == 7)
+            {
+                StockDBConnection.Close();
+                MaintenanceDBConnection.Close();
+                PlannedExpensesDBConnection.Close();
+                ConsumptionDBConnection.Close();
+                WorkTimeDBConnection.Close();
             }
         }
 
