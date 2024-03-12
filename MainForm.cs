@@ -13,11 +13,14 @@ using System.Xml.XPath;
 using System.Globalization;
 using System.IO;
 using OfficeOpenXml;
+using System.Runtime;
+using System.Runtime.InteropServices;
 
 namespace EnergyService
 {
     public partial class MainForm : Form
     {
+
         public MainForm()
         {
             InitializeComponent();
@@ -98,9 +101,7 @@ namespace EnergyService
 
         private void loadDelayTimer_Tick(object sender, EventArgs e)
         {
-            loadDelayTimer.Enabled = false;
-
-
+            //loadDelayTimer.Enabled = false;
         }
 
         private void mainTabControl_SelectedIndexChanged(object sender, EventArgs e)
