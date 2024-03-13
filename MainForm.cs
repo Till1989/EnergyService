@@ -99,7 +99,7 @@ namespace EnergyService
 
             SetEventsHandlers();
 
-            mainTabControl.SelectedIndex = 2;
+            mainTabControl.SelectedIndex = 0;
 
         }
 
