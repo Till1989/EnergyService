@@ -162,5 +162,11 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="animated-loading-icon-11553530367ia5sfylgph.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="loading.gif" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

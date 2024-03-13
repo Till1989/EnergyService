@@ -54,40 +54,42 @@ namespace EnergyService
             GetResources(new Group("", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0), 0);
             UpdatePath();
 
+
+            maintenanceYearComboBox.Text = DateTime.Now.ToString("yyyy", new CultureInfo("en-US"));
+            maintenanceMonthComboBox.Text = DateTime.Now.ToString("MMMM", new CultureInfo("en-US"));
             this.MaintenanceDBConnection = new OleDbConnection(SetProvider("Maintenance.accdb"));
             MaintenanceDBConnection.Open();
             maintenanceExecutorComboBox.Items.AddRange(GetPersons("Worker"));
             maintenanceExecutorComboBox.Items.AddRange(GetPersons("Engineer"));
 
+
+            plannedExpensesYearComboBox.Text = DateTime.Now.ToString("yyyy", new CultureInfo("en-US"));
+            plannedExpensesMonthComboBox.Text = DateTime.Now.ToString("MMMM", new CultureInfo("en-US"));
             this.PlannedExpensesDBConnection = new OleDbConnection(SetProvider("PlannedExpenses.accdb"));
             PlannedExpensesDBConnection.Open();
 
+
+            consumptionYearComboBox.Text = DateTime.Now.ToString("yyyy", new CultureInfo("en-US"));
             this.ConsumptionDBConnection = new OleDbConnection(SetProvider("Consumption.accdb"));
             ConsumptionDBConnection.Open();
 
+
+
+            searchWorkTimeMonthComboBox.Text = DateTime.Now.ToString("MMMM", new CultureInfo("en-US"));
+            searchWorkTimeYearComboBox.Text = DateTime.Now.ToString("yyyy", new CultureInfo("en-US"));
             this.WorkTimeDBConnection = new OleDbConnection(SetProvider("WorkTime.accdb"));
             WorkTimeDBConnection.Open();
             addWorkTimePersonComboBox.Items.AddRange(GetPersons("Worker"));
             addWorkTimePersonComboBox.Items.AddRange(GetPersons("Engineer"));
             searchWorkTimePersonComboBox.Items.AddRange(GetPersons("Worker"));
             searchWorkTimePersonComboBox.Items.AddRange(GetPersons("Engineer"));
-
-
-
-
             addWorkTimeMultiplierComboBox.SelectedIndex = 0;
             searchWorkTimePersonComboBox.SelectedIndex = 0;
-            searchWorkTimeMonthComboBox.Text = DateTime.Now.ToString("MMMM", new CultureInfo("en-US"));
             addWorkTimePersonComboBox.SelectedIndex = 0;
             workShiftComboBox.SelectedIndex = 0;
 
-            maintenanceYearComboBox.Text = DateTime.Now.ToString("yyyy", new CultureInfo("en-US"));
-            maintenanceMonthComboBox.Text = DateTime.Now.ToString("MMMM", new CultureInfo("en-US"));
 
-            plannedExpensesYearComboBox.Text = DateTime.Now.ToString("yyyy", new CultureInfo("en-US"));
-            plannedExpensesMonthComboBox.Text = DateTime.Now.ToString("MMMM", new CultureInfo("en-US"));
 
-            consumptionYearComboBox.Text = DateTime.Now.ToString("yyyy", new CultureInfo("en-US"));
 
             StockDBConnection.Close();
             MaintenanceDBConnection.Close();
@@ -95,8 +97,30 @@ namespace EnergyService
             ConsumptionDBConnection.Close();
             WorkTimeDBConnection.Close();
 
-            mainTabControl.SelectedIndex = 5;
+            SetEventsHandlers();
 
+            mainTabControl.SelectedIndex = 2;
+
+        }
+
+        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Cursor.Current = Cursors.AppStarting;
+
+            MaintenanceDBConnection.Close();
+            StockDBConnection.Close();
+            PersonsDBConnection.Close();
+            LoginDBConnection.Close();
+            PlannedExpensesDBConnection.Close();
+            ConsumptionDBConnection.Close();
+            WorkTimeDBConnection.Close();
+
+            Copy(sourceDirectory, targetDirectory);
+        }
+
+        private void MainForm_SizeChanged(object sender, EventArgs e)
+        {
+            centerLoadingImage();
         }
 
         private void loadDelayTimer_Tick(object sender, EventArgs e)
@@ -104,8 +128,53 @@ namespace EnergyService
             //loadDelayTimer.Enabled = false;
         }
 
+        private void centerLoadingImage()
+        {
+            //loadingPictureBox.Location = new Point(this.Size.Width / 2 - 50, this.Height / 2 - 50);
+        }
+
+        private void hidePanels()
+        {
+            StockPanel.Visible = false;
+            maintenancePanel.Visible = false;
+            plannedExpensesPanel.Visible = false;
+            consumptionPanel.Visible = false;
+            workTimePanel.Visible = false;
+        }
+
+        private void SetEventsHandlers()
+        {
+            this.plannedExpensesYearComboBox.SelectedIndexChanged += new System.EventHandler(this.plannedExpensesYearComboBox_SelectedIndexChanged);
+            this.plannedExpensesYearComboBox.TextChanged += new System.EventHandler(this.plannedExpensesYearComboBox_TextChanged);
+            this.plannedExpensesMonthComboBox.SelectedIndexChanged += new System.EventHandler(this.plannedExpensesMonthComboBox_SelectedIndexChanged);
+            this.plannedExpensesMonthComboBox.TextChanged += new System.EventHandler(this.plannedExpensesMonthComboBox_TextChanged);
+
+            this.maintenanceYearComboBox.SelectedIndexChanged += new System.EventHandler(this.maintenanceYearComboBox_SelectedIndexChanged);
+            this.maintenanceYearComboBox.TextChanged += new System.EventHandler(this.maintenanceYearComboBox_TextChanged);
+            this.maintenanceMonthComboBox.SelectedIndexChanged += new System.EventHandler(this.maintenanceMonthComboBox_SelectedIndexChanged);
+            this.maintenanceMonthComboBox.TextChanged += new System.EventHandler(this.maintenanceMonthComboBox_TextChanged);
+
+            this.searchWorkTimePersonComboBox.SelectedIndexChanged += new System.EventHandler(this.searchWorkTimePersonComboBox_SelectedIndexChanged);
+            this.searchWorkTimeMonthComboBox.SelectedIndexChanged += new System.EventHandler(this.searchWorkTimeMonthComboBox_SelectedIndexChanged);
+        }
+
+
+
+
         private void mainTabControl_SelectedIndexChanged(object sender, EventArgs e)
         {
+            Cursor.Current = Cursors.AppStarting;
+            hidePanels();
+            if (mainTabControl.SelectedIndex == 0)
+            {
+                StockDBConnection.Close();
+                MaintenanceDBConnection.Close();
+                PlannedExpensesDBConnection.Close();
+                ConsumptionDBConnection.Close();
+                WorkTimeDBConnection.Close();
+
+                Cursor.Current = Cursors.Default;
+            }
             if (mainTabControl.SelectedIndex == 1)
             {
                 StockDBConnection.Open();
@@ -113,6 +182,9 @@ namespace EnergyService
                 PlannedExpensesDBConnection.Close();
                 ConsumptionDBConnection.Close();
                 WorkTimeDBConnection.Close();
+
+                StockPanel.Visible = true;
+                Cursor.Current = Cursors.Default;
             }
             if (mainTabControl.SelectedIndex == 2)
             {
@@ -123,6 +195,8 @@ namespace EnergyService
                 WorkTimeDBConnection.Close();
 
                 GetMaintenances(PrepareSearchCommand());
+                maintenancePanel.Visible = true;
+                Cursor.Current = Cursors.Default;
             }
             if (mainTabControl.SelectedIndex==3)
             {
@@ -133,6 +207,8 @@ namespace EnergyService
                 WorkTimeDBConnection.Close();
 
                 GetPlannedExpenses(PreparePlannedExpensesSearchCommand());
+                plannedExpensesPanel.Visible = true;
+                Cursor.Current = Cursors.Default;
             }
             if (mainTabControl.SelectedIndex == 4)
             {
@@ -144,6 +220,8 @@ namespace EnergyService
 
                 SetConsumptionsLabels();
                 RedrawChart(GetConsumptionData(GetCommand()));
+                consumptionPanel.Visible = true;
+                Cursor.Current = Cursors.Default;
             }
             if (mainTabControl.SelectedIndex == 5)
             {
@@ -154,6 +232,8 @@ namespace EnergyService
                 WorkTimeDBConnection.Open();
 
                 GetWorkTime();
+                workTimePanel.Visible = true;
+                Cursor.Current = Cursors.Default;
             }
             if (mainTabControl.SelectedIndex == 6)
             {
@@ -162,6 +242,8 @@ namespace EnergyService
                 PlannedExpensesDBConnection.Close();
                 ConsumptionDBConnection.Close();
                 WorkTimeDBConnection.Close();
+
+                Cursor.Current = Cursors.Default;
             }
             if (mainTabControl.SelectedIndex == 7)
             {
@@ -170,6 +252,8 @@ namespace EnergyService
                 PlannedExpensesDBConnection.Close();
                 ConsumptionDBConnection.Close();
                 WorkTimeDBConnection.Close();
+
+                Cursor.Current = Cursors.Default;
             }
         }
 
@@ -719,7 +803,7 @@ namespace EnergyService
         }
         public void GetResources(Group group, int mode)
         {
-            Cursor.Current = Cursors.WaitCursor;
+            Cursor.Current = Cursors.AppStarting;
             int[] groupID = new int[10];
             groupID[0] = group.L0ID;
             groupID[1] = group.L1ID;
@@ -813,6 +897,7 @@ namespace EnergyService
             }
             CurrentStockDataGridView.ClearSelection();
             Cursor.Current = Cursors.Default;
+
         }
         private void SearchResources(int ID)
         {
@@ -1262,18 +1347,7 @@ namespace EnergyService
         }
 
 
-        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            MaintenanceDBConnection.Close();
-            StockDBConnection.Close();
-            PersonsDBConnection.Close();
-            LoginDBConnection.Close();
-            PlannedExpensesDBConnection.Close();
-            ConsumptionDBConnection.Close();
-            WorkTimeDBConnection.Close();
 
-            Copy(sourceDirectory, targetDirectory);
-        }
 
         private void CurrentStockDataGridView_Resize(object sender, EventArgs e)// Add colunms resize
         {
@@ -1603,7 +1677,7 @@ namespace EnergyService
         }
         private void GetMaintenances(string searchParameters)
         {
-            Cursor.Current = Cursors.WaitCursor;
+            Cursor.Current = Cursors.AppStarting;
             string searchParameter = "";
                 string commandText = "";
 
@@ -1990,7 +2064,7 @@ namespace EnergyService
         }
         private void GetPlannedExpenses(string command)
         {
-            Cursor.Current = Cursors.WaitCursor;
+            Cursor.Current = Cursors.AppStarting;
             if (command != "")
             {
                 command = " WHERE " + command;
@@ -2434,7 +2508,7 @@ namespace EnergyService
         }
         private void RedrawChart(Consumption[] consumptions)
         {
-            Cursor.Current = Cursors.WaitCursor;
+            Cursor.Current = Cursors.AppStarting;
             Consumption[] tmp = new Consumption[12];
             tmp = consumptions;
             double yearTotal = 0;
@@ -2856,7 +2930,7 @@ namespace EnergyService
         //FUNCTIONS////////////////////////////////////////////////
         private void GetWorkTime()
         {         
-            Cursor.Current = Cursors.WaitCursor;
+            Cursor.Current = Cursors.AppStarting;
             int month = 0;
             switch (searchWorkTimeMonthComboBox.Text)
             {
@@ -3361,7 +3435,7 @@ namespace EnergyService
 
         private void CreateWorkTimeTable()
         {
-            Cursor.Current = Cursors.WaitCursor;
+            Cursor.Current = Cursors.AppStarting;
             string dir= Environment.CurrentDirectory + "\\Data\\WorkTime\\";
             string file = searchWorkTimeYearComboBox.Text + "_" + searchWorkTimeMonthComboBox.Text;
 
@@ -3650,6 +3724,8 @@ namespace EnergyService
                 CopyAll(diSourceSubDir, nextTargetSubDir);
             }
         }
+
+
 
 
 

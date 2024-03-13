@@ -73,6 +73,26 @@ namespace EnergyService.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap animated_loading_icon_11553530367ia5sfylgph {
+            get {
+                object obj = ResourceManager.GetObject("animated-loading-icon-11553530367ia5sfylgph", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap loading {
+            get {
+                object obj = ResourceManager.GetObject("loading", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap refresh_page_arrow_button_icon_icons_com_53909 {
             get {
                 object obj = ResourceManager.GetObject("refresh-page-arrow-button_icon-icons.com_53909", resourceCulture);
