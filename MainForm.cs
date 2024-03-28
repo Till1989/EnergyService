@@ -3509,13 +3509,18 @@ namespace EnergyService
 
                 if (dayTypeComboBox.Text == "Vac")
                 {
-                    workHours = 0;
-                    multiplier = 0;
-                    shift = 0;
-                    nightHours = 0;
-                    WorkTimeDBCommand = new OleDbCommand("INSERT INTO WorkTime VALUES('" + personName + "', '" + personStatus + "', " + year + ", '" + month + "', "
-                        + day + ", " + workHours + ", " + multiplier + ", " + shift + ", '" + rate + "', " + nightHours + "," + dayOfWeek + ",'" + dayType + "')", WorkTimeDBConnection);
-                    WorkTimeDBCommand.ExecuteNonQuery();
+
+                    DialogResult dialogResult = MessageBox.Show("Entered VACATION day type." + "\r\n" + "Are you sure?", "", MessageBoxButtons.YesNo);
+                    if (dialogResult == DialogResult.Yes)
+                    {
+                        workHours = 0;
+                        multiplier = 0;
+                        shift = 0;
+                        nightHours = 0;
+                        WorkTimeDBCommand = new OleDbCommand("INSERT INTO WorkTime VALUES('" + personName + "', '" + personStatus + "', " + year + ", '" + month + "', "
+                            + day + ", " + workHours + ", " + multiplier + ", " + shift + ", '" + rate + "', " + nightHours + "," + dayOfWeek + ",'" + dayType + "')", WorkTimeDBConnection);
+                        WorkTimeDBCommand.ExecuteNonQuery();
+                    }
                 }
             }
         }
@@ -3574,6 +3579,23 @@ namespace EnergyService
                     ws.Cells[6, i].Style.TextRotation = 90;
                     ws.Row(6).Height = 35;
                 }
+
+                for (int i = 5; i < ws.Dimension.Columns; i++)
+                {
+                    ws.Cells[8, i].Style.TextRotation = 90;
+                    ws.Row(8).Height = 25;
+                    if (ws.Cells[8, i].Text=="Vac")
+                    {
+                        ws.Cells[8, i].Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
+                        ws.Cells[8, i].Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.LightGreen);
+                    }
+                    if (ws.Cells[8, i].Text == "Wrk")
+                    {
+                        ws.Cells[8, i].Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
+                        ws.Cells[8, i].Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.LightCoral);
+                    }
+                }
+
                 ws.Column(ws.Dimension.Columns).Width = 15;
                 for (int i = 1; i < workTimeDataGridView.Rows.Count+1; i++)
                 {
