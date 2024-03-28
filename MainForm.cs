@@ -167,9 +167,6 @@ namespace EnergyService
             this.searchWorkTimeMonthComboBox.SelectedIndexChanged += new System.EventHandler(this.searchWorkTimeMonthComboBox_SelectedIndexChanged);
         }
 
-
-
-
         private void mainTabControl_SelectedIndexChanged(object sender, EventArgs e)
         {
             Cursor.Current = Cursors.AppStarting;
@@ -3365,22 +3362,30 @@ namespace EnergyService
 
                 for (int y = 0; y < tmp[i].workHours.Length; y++)
                 {
-                    if (tmp[i].daysOfWeek[y] > 0 && tmp[i].daysOfWeek[y] < 6)
+                    if (tmp[i].dayType[y]=="Wrk")
                     {
-                        double t = ((tmp[i].workHours[y] - tmp[i].nightWorkHours[y]) * Convert.ToDouble(tmp[i].rate[y])) +
-                            ((tmp[i].nightWorkHours[y]) * Convert.ToDouble(tmp[i].rate[y]) * 1.2);
-                        totalPayment += t + t / 1000 * (add + bonus);
-                    }
-                    else
-                    {
-                        double t = ((tmp[i].workHours[y] - tmp[i].nightWorkHours[y]) * Convert.ToDouble(tmp[i].rate[y])) +
-                            ((tmp[i].nightWorkHours[y]) * Convert.ToDouble(tmp[i].rate[y]) * 1.2);
-                        totalPayment += t + t / 1000 * bonus;
-                        if (tmp[i].paymentMultiplier[y] == 2)
+                        if (tmp[i].daysOfWeek[y] > 0 && tmp[i].daysOfWeek[y] < 6)
                         {
-                            totalPayment += t;
+                            double t = ((tmp[i].workHours[y] - tmp[i].nightWorkHours[y]) * Convert.ToDouble(tmp[i].rate[y])) +
+                                ((tmp[i].nightWorkHours[y]) * Convert.ToDouble(tmp[i].rate[y]) * 1.2);
+                            totalPayment += t + t / 1000 * (add + bonus);
+                        }
+                        else
+                        {
+                            double t = ((tmp[i].workHours[y] - tmp[i].nightWorkHours[y]) * Convert.ToDouble(tmp[i].rate[y])) +
+                                ((tmp[i].nightWorkHours[y]) * Convert.ToDouble(tmp[i].rate[y]) * 1.2);
+                            totalPayment += t + t / 1000 * bonus;
+                            if (tmp[i].paymentMultiplier[y] == 2)
+                            {
+                                totalPayment += t;
+                            }
                         }
                     }
+                    if (tmp[i].dayType[y] == "Vac")
+                    {
+                        totalPayment += Convert.ToDouble(tmp[i].rate[y]);
+                    }
+
 
                 }
 
@@ -3404,33 +3409,6 @@ namespace EnergyService
                 workTimeDataGridView.Rows[workTimeDataGridView.Rows.Count - 2].Cells[3].Value = "Res. Payment, UAH";
                 double rest = totalPayment - tax - warTax;
                 workTimeDataGridView.Rows[workTimeDataGridView.Rows.Count - 2].Cells[workTimeDataGridView.Rows[workTimeDataGridView.Rows.Count - 2].Cells.Count - 1].Value = rest.ToString() + "UAH";
-
-                /*
-                for (int y = 0; y < tmp[i].workHours.Length; y++)
-                {
-
-
-
-                    totalPayment += ((tmp[i].workHours[y] - tmp[i].nightWorkHours[y]) * tmp[i].paymentMultiplier[y] * Convert.ToDouble(tmp[i].rate[y])) +
-                        (tmp[i].nightWorkHours[y] * tmp[i].paymentMultiplier[y] * Convert.ToDouble(tmp[i].rate[y]) * 1.2);
-                }
-
-                workTimeDataGridView.Rows[workTimeDataGridView.Rows.Count - 2].Cells[workTimeDataGridView.Rows[workTimeDataGridView.Rows.Count - 2].Cells.Count - 1].Value = totalPayment.ToString() + "UAH";
-                
-                workTimeDataGridView.Rows.Add();
-                double bonus = 0;
-                bonus = totalPayment / 100 * (Convert.ToInt32(additionalComboBox.Text) + Convert.ToInt32(bonusComboBox.Text));
-                workTimeDataGridView.Rows[workTimeDataGridView.Rows.Count - 2].Cells[workTimeDataGridView.Rows[workTimeDataGridView.Rows.Count - 2].Cells.Count - 1].Value = bonus.ToString() + "UAH";
-
-                workTimeDataGridView.Rows.Add();
-                double tax = Math.Round((totalPayment + bonus) / 100 * 19.5, 2);
-                workTimeDataGridView.Rows[workTimeDataGridView.Rows.Count - 2].Cells[workTimeDataGridView.Rows[workTimeDataGridView.Rows.Count - 2].Cells.Count - 1].Value = "-" + tax.ToString() + "UAH";
-                
-                workTimeDataGridView.Rows.Add();
-                double rest = (totalPayment + bonus) - tax;
-                workTimeDataGridView.Rows[workTimeDataGridView.Rows.Count - 2].Cells[workTimeDataGridView.Rows[workTimeDataGridView.Rows.Count - 2].Cells.Count - 1].Value = rest.ToString() + "UAH";
-                */
-
 
             }
 
@@ -3876,6 +3854,8 @@ namespace EnergyService
                 CopyAll(diSourceSubDir, nextTargetSubDir);
             }
         }
+
+
 
 
 
