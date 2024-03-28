@@ -88,7 +88,16 @@ namespace EnergyService
             addWorkTimePersonComboBox.SelectedIndex = 0;
             workShiftComboBox.SelectedIndex = 0;
 
-
+            this.ConstantsDBConnection= new OleDbConnection(SetProvider("Constants.accdb"));
+            dayTypeComboBox.Text = GetConstant("dayType");
+            if (dayTypeComboBox.Text=="Wrk")
+            {
+                rateTextBox.Text = GetConstant("rate");
+            }
+            if (dayTypeComboBox.Text == "Vac")
+            {
+                rateTextBox.Text = GetConstant("vacRate");
+            }
 
 
             StockDBConnection.Close();
@@ -256,6 +265,31 @@ namespace EnergyService
                 Cursor.Current = Cursors.Default;
             }
         }
+
+        private string GetConstant(string name)
+        {
+            ConstantsDBConnection.Open();
+            string value="";
+            string command = "SELECT constValue FROM Constants WHERE constName='" + name + "'";
+            ConstantsDBCommand = new OleDbCommand(command, ConstantsDBConnection);
+            this.ConstantsDBReader = ConstantsDBCommand.ExecuteReader();
+            while (ConstantsDBReader.Read())
+            {
+                value = ConstantsDBReader[0].ToString();
+            }
+            ConstantsDBConnection.Close();
+            return value;
+        }
+
+        private void SetConstant(string name, string value)
+        {
+            ConstantsDBConnection.Open();
+            ConstantsDBCommand = new OleDbCommand("UPDATE Constants SET constValue='" + value + "' WHERE constName='" + name+"'", ConstantsDBConnection);
+            ConstantsDBCommand.ExecuteNonQuery();
+            ConstantsDBConnection.Close();
+        }
+
+
 
         //LOGIN**************************************************************************************************************************************************************************/
         OleDbConnection LoginDBConnection;
@@ -2897,6 +2931,9 @@ namespace EnergyService
         OleDbConnection WorkTimeDBConnection;
         OleDbCommand WorkTimeDBCommand;
         OleDbDataReader WorkTimeDBReader;
+        OleDbConnection ConstantsDBConnection;
+        OleDbCommand ConstantsDBCommand;
+        OleDbDataReader ConstantsDBReader;
         //CLASSES/////////////////////////////////////////////////
         public class WorkTime
         {
@@ -2911,8 +2948,9 @@ namespace EnergyService
             public string[] rate;
             public int[] nightWorkHours;
             public int[] daysOfWeek;
+            public string[] dayType;
 
-            public WorkTime(string personName, string personStatus, int workYear, string workMonth, int[] workDay, int[] workHours, int[] nightWorkHours, int[] paymentMultiplier, int[] workShift, string[] rate, int[] daysOfWeek)
+            public WorkTime(string personName, string personStatus, int workYear, string workMonth, int[] workDay, int[] workHours, int[] nightWorkHours, int[] paymentMultiplier, int[] workShift, string[] rate, int[] daysOfWeek, string[] dayType)
             {
                 this.personName = personName;
                 this.personStatus = personStatus;
@@ -2925,6 +2963,7 @@ namespace EnergyService
                 this.workShift = workShift;
                 this.rate = rate;
                 this.daysOfWeek = daysOfWeek;
+                this.dayType = dayType;
             }
         }
         //FUNCTIONS////////////////////////////////////////////////
@@ -2966,6 +3005,7 @@ namespace EnergyService
                 int[] shift = new int[40];
                 string[] rate = new string[40];
                 int[] daysOfWeek = new int[40];
+                string[] daysType = new string[40];
 
                 name = ((Person)searchWorkTimePersonComboBox.SelectedItem).name;
                 status = ((Person)searchWorkTimePersonComboBox.SelectedItem).position;
@@ -2986,10 +3026,11 @@ namespace EnergyService
                     rate[i] = WorkTimeDBReader[8].ToString();
                     nightHours[i] = Convert.ToInt32(WorkTimeDBReader[9]);
                     daysOfWeek[i] = Convert.ToInt32(WorkTimeDBReader[10]);
+                    daysType[i] = WorkTimeDBReader[11].ToString();
                     i++;
                 }
 
-                tmp[0] = new WorkTime(name, status, year, searchWorkTimeMonthComboBox.Text, days, hours, nightHours, multiplier, shift, rate, daysOfWeek);
+                tmp[0] = new WorkTime(name, status, year, searchWorkTimeMonthComboBox.Text, days, hours, nightHours, multiplier, shift, rate, daysOfWeek, daysType);
 
                 Array.Resize(ref tmp[0].workDay, maxDays);
                 Array.Resize(ref tmp[0].workHours, maxDays);
@@ -2999,6 +3040,7 @@ namespace EnergyService
                 Array.Resize(ref tmp[0].rate, maxDays);
                 Array.Resize(ref tmp[0].rate, maxDays);
                 Array.Resize(ref tmp[0].daysOfWeek, maxDays);
+                Array.Resize(ref tmp[0].dayType, maxDays);
             }
             else
             {
@@ -3015,6 +3057,7 @@ namespace EnergyService
                     int[] shift = new int[40];
                     string[] rate = new string[40];
                     int[] daysOfWeek = new int[40];
+                    string[] daysType = new string[40];
 
                     int y = 0;
 
@@ -3030,10 +3073,11 @@ namespace EnergyService
                         rate[y] = WorkTimeDBReader[8].ToString();
                         nightHours[y] = Convert.ToInt32(WorkTimeDBReader[9]);
                         daysOfWeek[y] = Convert.ToInt32(WorkTimeDBReader[10]);
+                        daysType[y] = WorkTimeDBReader[11].ToString();
                         y++;
                     }
 
-                    tmp[i] = new WorkTime(name, status, year, searchWorkTimeMonthComboBox.Text, days, hours, nightHours, multiplier, shift, rate, daysOfWeek);
+                    tmp[i] = new WorkTime(name, status, year, searchWorkTimeMonthComboBox.Text, days, hours, nightHours, multiplier, shift, rate, daysOfWeek, daysType);
 
                     Array.Resize(ref tmp[i].workDay, maxDays);
                     Array.Resize(ref tmp[i].workHours, maxDays);
@@ -3042,6 +3086,7 @@ namespace EnergyService
                     Array.Resize(ref tmp[i].workShift, maxDays);
                     Array.Resize(ref tmp[i].rate, maxDays);
                     Array.Resize(ref tmp[i].daysOfWeek, maxDays);
+                    Array.Resize(ref tmp[i].dayType, maxDays);
                 }
 
             }
@@ -3109,6 +3154,16 @@ namespace EnergyService
                     }
                 }
                 tmp[i].daysOfWeek = temp5;
+
+                string[] temp6 = new string[maxDays];
+                for (int y = 0; y < tmp[i].dayType.Length; y++)
+                {
+                    if (tmp[i].workDay[y] != 0)
+                    {
+                        temp6[tmp[i].workDay[y] - 1] = tmp[i].dayType[y];
+                    }
+                }
+                tmp[i].dayType = temp6;
             }
 
             workTimeDataGridView.Rows.Clear();
@@ -3272,6 +3327,23 @@ namespace EnergyService
 
                 }
 
+                workTimeDataGridView.Rows.Add();
+                workTimeDataGridView.Rows[workTimeDataGridView.Rows.Count - 2].Cells[3].Value = "DayType";
+                for (int y = 4; y < (maxDays + 4); y++)
+                {
+                    if (tmp[i].dayType[y - 4] != null)
+                    {
+                        workTimeDataGridView.Rows[workTimeDataGridView.Rows.Count - 2].Cells[y].Value = tmp[i].dayType[y - 4];
+                    }
+
+
+                }
+
+
+
+
+
+
                 string decimalSeparator = CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator;
 
                 for (int y = 0; y < tmp[i].rate.Length; y++)
@@ -3367,69 +3439,84 @@ namespace EnergyService
         }
         private void SetWorkTime()
         {
-            if(addWorkTimePersonComboBox.Text!="" && addWorkTimeTextBox.Text!="" && addWorkTimeMultiplierComboBox.Text!="" && addWorkTimeDateTimePicker.Value!=null && workShiftComboBox.Text!="")
+            bool checkResult = false;
+
+            string personName = ((Person)addWorkTimePersonComboBox.SelectedItem).name;
+            string personStatus = ((Person)addWorkTimePersonComboBox.SelectedItem).position;
+            int year = Convert.ToInt32(addWorkTimeDateTimePicker.Value.ToString("yyyy"));
+            string month = "";
+            int day = Convert.ToInt32(addWorkTimeDateTimePicker.Value.ToString("dd"));
+            int workHours = 0;
+            int multiplier = Convert.ToInt32(addWorkTimeMultiplierComboBox.Text);
+            int shift = Convert.ToInt32(workShiftComboBox.Text);
+            string rate = rateTextBox.Text;
+            int nightHours = Convert.ToInt32(nightHoursTextBox.Text);
+            int dayOfWeek = Convert.ToInt32(addWorkTimeDateTimePicker.Value.DayOfWeek);
+            string dayType = dayTypeComboBox.Text;
+
+            for (int i = 1; i < 13; i++)
             {
-                bool checkResult = false;
-
-                string personName = ((Person)addWorkTimePersonComboBox.SelectedItem).name;
-                string personStatus = ((Person)addWorkTimePersonComboBox.SelectedItem).position;
-                int year = Convert.ToInt32(addWorkTimeDateTimePicker.Value.ToString("yyyy"));
-                string month = "";
-                int day = Convert.ToInt32(addWorkTimeDateTimePicker.Value.ToString("dd"));
-                int multiplier = Convert.ToInt32(addWorkTimeMultiplierComboBox.Text);
-                int shift = Convert.ToInt32(workShiftComboBox.Text);
-                string rate = rateTextBox.Text;
-                int nightHours = Convert.ToInt32(nightHoursTextBox.Text);
-                int dayOfWeek = Convert.ToInt32(addWorkTimeDateTimePicker.Value.DayOfWeek);
-
-
-
-
-
-                for (int i=1; i<13; i++)
+                switch (Convert.ToInt32(addWorkTimeDateTimePicker.Value.ToString("MM")))
                 {
-                    switch(Convert.ToInt32(addWorkTimeDateTimePicker.Value.ToString("MM")))
-                    {
-                        case 1: month = "January"; break;
-                        case 2: month = "February"; break;
-                        case 3: month = "March"; break;
-                        case 4: month = "April"; break;
-                        case 5: month = "May"; break;
-                        case 6: month = "June"; break;
-                        case 7: month = "July"; break;
-                        case 8: month = "August"; break;
-                        case 9: month = "September"; break;
-                        case 10: month = "October"; break;
-                        case 11: month = "November"; break;
-                        case 12: month = "December"; break;
-                        default: break;
-                    }
+                    case 1: month = "January"; break;
+                    case 2: month = "February"; break;
+                    case 3: month = "March"; break;
+                    case 4: month = "April"; break;
+                    case 5: month = "May"; break;
+                    case 6: month = "June"; break;
+                    case 7: month = "July"; break;
+                    case 8: month = "August"; break;
+                    case 9: month = "September"; break;
+                    case 10: month = "October"; break;
+                    case 11: month = "November"; break;
+                    case 12: month = "December"; break;
+                    default: break;
                 }
-                WorkTimeDBCommand = new OleDbCommand("SELECT workHours FROM WorkTime WHERE personName='" + addWorkTimePersonComboBox.Text +
-                    "' AND workYear=" + year + " AND workMonth='" + month + "' AND workDay=" + day, WorkTimeDBConnection);
-                this.WorkTimeDBReader = WorkTimeDBCommand.ExecuteReader();
-                if(WorkTimeDBReader.Read())
-                {
-                    checkResult = false;
-                    MessageBox.Show("Not Empty Value");
-                }
-                else
-                {
-                    checkResult = true;
-                }
+            }
 
-                if(checkResult)
-                {
-                    int workHours = Convert.ToInt32(addWorkTimeTextBox.Text);
-                    WorkTimeDBCommand = new OleDbCommand("INSERT INTO WorkTime VALUES('" + personName + "', '" + personStatus + "', " + year + ", '" + month + "', "
-                        + day + ", " + workHours + ", " + multiplier + ", " + shift + ", '" + rate + "', " + nightHours + "," + dayOfWeek + ")", WorkTimeDBConnection);
-                    WorkTimeDBCommand.ExecuteNonQuery();
-                }
-
+            WorkTimeDBCommand = new OleDbCommand("SELECT workHours FROM WorkTime WHERE personName='" + addWorkTimePersonComboBox.Text +
+                "' AND workYear=" + year + " AND workMonth='" + month + "' AND workDay=" + day, WorkTimeDBConnection);
+            this.WorkTimeDBReader = WorkTimeDBCommand.ExecuteReader();
+            if (WorkTimeDBReader.Read())
+            {
+                checkResult = false;
+                MessageBox.Show("Not Empty Value");
             }
             else
             {
-                MessageBox.Show("Some Fields Are Empty");
+                checkResult = true;
+            }
+            if (checkResult)
+            {
+                if (dayTypeComboBox.Text == "Wrk")
+                {
+                    if (addWorkTimePersonComboBox.Text != "" && addWorkTimeTextBox.Text != "" && addWorkTimeMultiplierComboBox.Text != "" && addWorkTimeDateTimePicker.Value != null && workShiftComboBox.Text != "")
+                    {
+                        workHours = Convert.ToInt32(addWorkTimeTextBox.Text);
+
+                        WorkTimeDBCommand = new OleDbCommand("INSERT INTO WorkTime VALUES('" + personName + "', '" + personStatus + "', " + year + ", '" + month + "', "
+                            + day + ", " + workHours + ", " + multiplier + ", " + shift + ", '" + rate + "', " + nightHours + "," + dayOfWeek + ",'" + dayType + "')", WorkTimeDBConnection);
+                        WorkTimeDBCommand.ExecuteNonQuery();
+                    }
+                    else
+                    {
+                        if (dayTypeComboBox.Text == "Wrk")
+                        {
+                            MessageBox.Show("Some Fields Are Empty");
+                        }
+                    }
+                }
+
+                if (dayTypeComboBox.Text == "Vac")
+                {
+                    workHours = 0;
+                    multiplier = 0;
+                    shift = 0;
+                    nightHours = 0;
+                    WorkTimeDBCommand = new OleDbCommand("INSERT INTO WorkTime VALUES('" + personName + "', '" + personStatus + "', " + year + ", '" + month + "', "
+                        + day + ", " + workHours + ", " + multiplier + ", " + shift + ", '" + rate + "', " + nightHours + "," + dayOfWeek + ",'" + dayType + "')", WorkTimeDBConnection);
+                    WorkTimeDBCommand.ExecuteNonQuery();
+                }
             }
         }
 
@@ -3545,7 +3632,7 @@ namespace EnergyService
         {
             //MessageBox.Show((Convert.ToInt32(e.KeyChar)).ToString());
             Char number = e.KeyChar;
-            if (!Char.IsDigit(number) && number != 8 && number !=44)
+            if (!Char.IsDigit(number) && number != 8 && number !=46)
             {
                 e.Handled = true;
             }
@@ -3606,22 +3693,29 @@ namespace EnergyService
             {
                 rateTextBox.Text = "0";
             }
-            if (rateTextBox.Text == ",")
+            if (rateTextBox.Text == ".")
             {
                 rateTextBox.Text = "0";
             }
-            if (rateTextBox.Text == "0,")
+            if (rateTextBox.Text == "0.")
             {
                 rateTextBox.Text = "0";
             }
-            if (rateTextBox.Text == ",0")
+            if (rateTextBox.Text == ".0")
             {
                 rateTextBox.Text = "0";
             }
-            if (Convert.ToDouble(rateTextBox.Text) > 1000)
+
+            string fsvs = rateTextBox.Text;
+            string decimalSeparator = CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator;
+            fsvs = fsvs.Replace(".", decimalSeparator);
+            
+
+            if (Convert.ToDouble(fsvs) > 1000)
             {
-                rateTextBox.Text = "1000";
+                fsvs = "1000";
             }
+            rateTextBox.Text = fsvs.Replace(",", ".");
 
             string tmp = "";
             tmp = rateTextBox.Text.Substring(0, 1);
@@ -3690,6 +3784,42 @@ namespace EnergyService
             CreateWorkTimeTable();
         }
 
+        private void dayTypeComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (dayTypeComboBox.Text == "Wrk")
+            {
+                addWorkTimeTextBox.Enabled = true;
+                workShiftComboBox.Enabled = true;
+                if (workShiftComboBox.Text == "2" || workShiftComboBox.Text == "3")
+                {
+                    nightHoursTextBox.Enabled = true;
+                }
+                addWorkTimeMultiplierComboBox.Enabled = true;
+
+                SetConstant("dayType", "Wrk");
+                string tmp = GetConstant("rate");
+                rateTextBox.Text = GetConstant("vacRate");
+                SetConstant("vacRate", rateTextBox.Text);
+                rateTextBox.Text = tmp;
+            }
+            if (dayTypeComboBox.Text == "Vac")
+            {
+                addWorkTimeTextBox.Enabled = false;
+                workShiftComboBox.Enabled = false;
+                nightHoursTextBox.Enabled = false;
+                addWorkTimeMultiplierComboBox.Enabled = false;
+                SetConstant("dayType", "Vac");
+                string tmp = GetConstant("vacRate");
+                rateTextBox.Text = GetConstant("rate");
+                SetConstant("rate", rateTextBox.Text);
+                rateTextBox.Text = tmp;
+            }
+        }
+        private void dayTypeComboBox_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            e.Handled = true;
+        }
+
         //WORK TIME********************************************************************************************************************************************************************/
 
         //BACKUP********************************************************************************************************************************************************************/
@@ -3724,6 +3854,10 @@ namespace EnergyService
                 CopyAll(diSourceSubDir, nextTargetSubDir);
             }
         }
+
+
+
+
 
 
 
