@@ -3867,14 +3867,51 @@ namespace EnergyService
 
 
 
+
+
         //BACKUP********************************************************************************************************************************************************************/
 
 
 
+        //CONTRACTS*****************************************************************************************************************************************************************/
+        //CLASSES/////////////////////////////////////////////////
+        public class Contract
+        {
+            public Contract()
+            {
+
+            }
+        }
+
+        //FUNCTIONS////////////////////////////////////////////////
+
+        //EVENTS/////////////////////////////////////////////////
+        private void contractTypeComboBox_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            Char number = e.KeyChar;
+            e.Handled = true; 
+        }
+
+        private void contractTypeComboBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            e.Handled = true;
+            MessageBox.Show(Convert.ToString(e.KeyCode));
+        }
+
+        private void contractActionTypeComboBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            e.Handled = true;
+            MessageBox.Show(Convert.ToString(e.KeyCode));
+        }
+
+        private void contractActionTypeComboBox_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            Char number = e.KeyChar;
+            e.Handled = true;
+        }
 
 
-
-
+        //CONTRACTS*****************************************************************************************************************************************************************/
 
 
 
