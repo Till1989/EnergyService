@@ -30,36 +30,36 @@ namespace EnergyService
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle67 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle68 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle69 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle70 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle71 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle72 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle73 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle74 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle75 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle76 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle77 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle78 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle79 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle80 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle81 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle82 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle83 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle84 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle85 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle86 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle87 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle88 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea4 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend4 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series13 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.Series series14 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.Series series15 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.Series series16 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.Title title7 = new System.Windows.Forms.DataVisualization.Charting.Title();
-            System.Windows.Forms.DataVisualization.Charting.Title title8 = new System.Windows.Forms.DataVisualization.Charting.Title();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle13 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle14 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle15 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle16 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle17 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle18 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle19 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle20 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle21 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle22 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series4 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Title title1 = new System.Windows.Forms.DataVisualization.Charting.Title();
+            System.Windows.Forms.DataVisualization.Charting.Title title2 = new System.Windows.Forms.DataVisualization.Charting.Title();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.mainTabControl = new System.Windows.Forms.TabControl();
             this.LogIntabPage = new System.Windows.Forms.TabPage();
@@ -252,8 +252,12 @@ namespace EnergyService
             this.addWorkTimePersonComboBox = new System.Windows.Forms.ComboBox();
             this.contractsPage = new System.Windows.Forms.TabPage();
             this.contractsPanel = new System.Windows.Forms.Panel();
+            this.label53 = new System.Windows.Forms.Label();
+            this.contractObjectTypeL2ComboBox = new System.Windows.Forms.ComboBox();
+            this.label52 = new System.Windows.Forms.Label();
+            this.contractActionTypeComboBox = new System.Windows.Forms.ComboBox();
             this.label51 = new System.Windows.Forms.Label();
-            this.contractObjectTypeComboBox = new System.Windows.Forms.ComboBox();
+            this.contractObjectTypeL1ComboBox = new System.Windows.Forms.ComboBox();
             this.helpPage = new System.Windows.Forms.TabPage();
             this.historyPage = new System.Windows.Forms.TabPage();
             this.historyPanel = new System.Windows.Forms.Panel();
@@ -266,8 +270,9 @@ namespace EnergyService
             this.EURCurrencyLabel = new System.Windows.Forms.Label();
             this.currencyTimer = new System.Windows.Forms.Timer(this.components);
             this.loadDelayTimer = new System.Windows.Forms.Timer(this.components);
-            this.label52 = new System.Windows.Forms.Label();
-            this.contractActionTypeComboBox = new System.Windows.Forms.ComboBox();
+            this.contractsTabControl = new System.Windows.Forms.TabControl();
+            this.searchPage = new System.Windows.Forms.TabPage();
+            this.addPage = new System.Windows.Forms.TabPage();
             this.mainTabControl.SuspendLayout();
             this.LogIntabPage.SuspendLayout();
             this.logInPanel.SuspendLayout();
@@ -303,6 +308,7 @@ namespace EnergyService
             this.contractsPanel.SuspendLayout();
             this.historyPage.SuspendLayout();
             this.historyPanel.SuspendLayout();
+            this.contractsTabControl.SuspendLayout();
             this.SuspendLayout();
             // 
             // mainTabControl
@@ -631,8 +637,8 @@ namespace EnergyService
             // 
             // ID
             // 
-            dataGridViewCellStyle67.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.ID.DefaultCellStyle = dataGridViewCellStyle67;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.ID.DefaultCellStyle = dataGridViewCellStyle1;
             this.ID.Frozen = true;
             this.ID.HeaderText = "ID";
             this.ID.Name = "ID";
@@ -643,16 +649,16 @@ namespace EnergyService
             // title
             // 
             this.title.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            dataGridViewCellStyle68.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            this.title.DefaultCellStyle = dataGridViewCellStyle68;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            this.title.DefaultCellStyle = dataGridViewCellStyle2;
             this.title.HeaderText = "Name";
             this.title.Name = "title";
             this.title.ReadOnly = true;
             // 
             // quantity
             // 
-            dataGridViewCellStyle69.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.quantity.DefaultCellStyle = dataGridViewCellStyle69;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.quantity.DefaultCellStyle = dataGridViewCellStyle3;
             this.quantity.HeaderText = "Quantity";
             this.quantity.Name = "quantity";
             this.quantity.ReadOnly = true;
@@ -660,8 +666,8 @@ namespace EnergyService
             // 
             // units
             // 
-            dataGridViewCellStyle70.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.units.DefaultCellStyle = dataGridViewCellStyle70;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.units.DefaultCellStyle = dataGridViewCellStyle4;
             this.units.HeaderText = "Units";
             this.units.Name = "units";
             this.units.ReadOnly = true;
@@ -669,8 +675,8 @@ namespace EnergyService
             // 
             // supplier
             // 
-            dataGridViewCellStyle71.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.supplier.DefaultCellStyle = dataGridViewCellStyle71;
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.supplier.DefaultCellStyle = dataGridViewCellStyle5;
             this.supplier.HeaderText = "Supplier";
             this.supplier.Name = "supplier";
             this.supplier.ReadOnly = true;
@@ -678,8 +684,8 @@ namespace EnergyService
             // 
             // invoice
             // 
-            dataGridViewCellStyle72.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.invoice.DefaultCellStyle = dataGridViewCellStyle72;
+            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.invoice.DefaultCellStyle = dataGridViewCellStyle6;
             this.invoice.HeaderText = "Invoice";
             this.invoice.Name = "invoice";
             this.invoice.ReadOnly = true;
@@ -687,8 +693,8 @@ namespace EnergyService
             // 
             // supplyDate
             // 
-            dataGridViewCellStyle73.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.supplyDate.DefaultCellStyle = dataGridViewCellStyle73;
+            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.supplyDate.DefaultCellStyle = dataGridViewCellStyle7;
             this.supplyDate.HeaderText = "Supply date";
             this.supplyDate.Name = "supplyDate";
             this.supplyDate.ReadOnly = true;
@@ -1182,8 +1188,8 @@ namespace EnergyService
             // 
             // equipmentName
             // 
-            dataGridViewCellStyle74.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.equipmentName.DefaultCellStyle = dataGridViewCellStyle74;
+            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.equipmentName.DefaultCellStyle = dataGridViewCellStyle8;
             this.equipmentName.HeaderText = "Name";
             this.equipmentName.Name = "equipmentName";
             this.equipmentName.ReadOnly = true;
@@ -1211,8 +1217,8 @@ namespace EnergyService
             // 
             // equipmentID
             // 
-            dataGridViewCellStyle75.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.equipmentID.DefaultCellStyle = dataGridViewCellStyle75;
+            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.equipmentID.DefaultCellStyle = dataGridViewCellStyle9;
             this.equipmentID.HeaderText = "ID";
             this.equipmentID.Name = "equipmentID";
             this.equipmentID.ReadOnly = true;
@@ -1229,8 +1235,8 @@ namespace EnergyService
             // 
             // equipmentFacility
             // 
-            dataGridViewCellStyle76.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.equipmentFacility.DefaultCellStyle = dataGridViewCellStyle76;
+            dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.equipmentFacility.DefaultCellStyle = dataGridViewCellStyle10;
             this.equipmentFacility.HeaderText = "Facility";
             this.equipmentFacility.Name = "equipmentFacility";
             this.equipmentFacility.ReadOnly = true;
@@ -1245,8 +1251,8 @@ namespace EnergyService
             // 
             // maintenanceMonth
             // 
-            dataGridViewCellStyle77.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.maintenanceMonth.DefaultCellStyle = dataGridViewCellStyle77;
+            dataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.maintenanceMonth.DefaultCellStyle = dataGridViewCellStyle11;
             this.maintenanceMonth.HeaderText = "Month";
             this.maintenanceMonth.Name = "maintenanceMonth";
             this.maintenanceMonth.ReadOnly = true;
@@ -1255,9 +1261,9 @@ namespace EnergyService
             // 
             // doneMark
             // 
-            dataGridViewCellStyle78.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle78.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.doneMark.DefaultCellStyle = dataGridViewCellStyle78;
+            dataGridViewCellStyle12.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle12.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.doneMark.DefaultCellStyle = dataGridViewCellStyle12;
             this.doneMark.HeaderText = "Done Mark";
             this.doneMark.Name = "doneMark";
             this.doneMark.ReadOnly = true;
@@ -1266,8 +1272,8 @@ namespace EnergyService
             // 
             // maintenanceExecutor
             // 
-            dataGridViewCellStyle79.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.maintenanceExecutor.DefaultCellStyle = dataGridViewCellStyle79;
+            dataGridViewCellStyle13.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.maintenanceExecutor.DefaultCellStyle = dataGridViewCellStyle13;
             this.maintenanceExecutor.HeaderText = "Executor";
             this.maintenanceExecutor.Name = "maintenanceExecutor";
             this.maintenanceExecutor.ReadOnly = true;
@@ -1275,8 +1281,8 @@ namespace EnergyService
             // 
             // maintenanceDate
             // 
-            dataGridViewCellStyle80.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.maintenanceDate.DefaultCellStyle = dataGridViewCellStyle80;
+            dataGridViewCellStyle14.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.maintenanceDate.DefaultCellStyle = dataGridViewCellStyle14;
             this.maintenanceDate.HeaderText = "Date";
             this.maintenanceDate.Name = "maintenanceDate";
             this.maintenanceDate.ReadOnly = true;
@@ -1284,8 +1290,8 @@ namespace EnergyService
             // 
             // maintenanceAct
             // 
-            dataGridViewCellStyle81.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.maintenanceAct.DefaultCellStyle = dataGridViewCellStyle81;
+            dataGridViewCellStyle15.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.maintenanceAct.DefaultCellStyle = dataGridViewCellStyle15;
             this.maintenanceAct.HeaderText = "Act";
             this.maintenanceAct.Name = "maintenanceAct";
             this.maintenanceAct.ReadOnly = true;
@@ -1295,9 +1301,9 @@ namespace EnergyService
             // maintenanceNote
             // 
             this.maintenanceNote.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            dataGridViewCellStyle82.NullValue = null;
-            dataGridViewCellStyle82.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.maintenanceNote.DefaultCellStyle = dataGridViewCellStyle82;
+            dataGridViewCellStyle16.NullValue = null;
+            dataGridViewCellStyle16.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.maintenanceNote.DefaultCellStyle = dataGridViewCellStyle16;
             this.maintenanceNote.HeaderText = "Note";
             this.maintenanceNote.MinimumWidth = 100;
             this.maintenanceNote.Name = "maintenanceNote";
@@ -1672,8 +1678,8 @@ namespace EnergyService
             // 
             // IDColumn
             // 
-            dataGridViewCellStyle83.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.IDColumn.DefaultCellStyle = dataGridViewCellStyle83;
+            dataGridViewCellStyle17.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.IDColumn.DefaultCellStyle = dataGridViewCellStyle17;
             this.IDColumn.Frozen = true;
             this.IDColumn.HeaderText = "ID";
             this.IDColumn.Name = "IDColumn";
@@ -1683,42 +1689,42 @@ namespace EnergyService
             // descriptionColumn
             // 
             this.descriptionColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            dataGridViewCellStyle84.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.descriptionColumn.DefaultCellStyle = dataGridViewCellStyle84;
+            dataGridViewCellStyle18.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.descriptionColumn.DefaultCellStyle = dataGridViewCellStyle18;
             this.descriptionColumn.HeaderText = "Description";
             this.descriptionColumn.Name = "descriptionColumn";
             this.descriptionColumn.ReadOnly = true;
             // 
             // Year
             // 
-            dataGridViewCellStyle85.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.Year.DefaultCellStyle = dataGridViewCellStyle85;
+            dataGridViewCellStyle19.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.Year.DefaultCellStyle = dataGridViewCellStyle19;
             this.Year.HeaderText = "Year";
             this.Year.Name = "Year";
             this.Year.ReadOnly = true;
             // 
             // month
             // 
-            dataGridViewCellStyle86.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.month.DefaultCellStyle = dataGridViewCellStyle86;
+            dataGridViewCellStyle20.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.month.DefaultCellStyle = dataGridViewCellStyle20;
             this.month.HeaderText = "Month";
             this.month.Name = "month";
             this.month.ReadOnly = true;
             // 
             // amount
             // 
-            dataGridViewCellStyle87.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle87.Format = "N2";
-            dataGridViewCellStyle87.NullValue = null;
-            this.amount.DefaultCellStyle = dataGridViewCellStyle87;
+            dataGridViewCellStyle21.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle21.Format = "N2";
+            dataGridViewCellStyle21.NullValue = null;
+            this.amount.DefaultCellStyle = dataGridViewCellStyle21;
             this.amount.HeaderText = "Amount, UAH";
             this.amount.Name = "amount";
             this.amount.ReadOnly = true;
             // 
             // done
             // 
-            dataGridViewCellStyle88.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.done.DefaultCellStyle = dataGridViewCellStyle88;
+            dataGridViewCellStyle22.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.done.DefaultCellStyle = dataGridViewCellStyle22;
             this.done.HeaderText = "Done";
             this.done.Name = "done";
             this.done.ReadOnly = true;
@@ -2047,48 +2053,48 @@ namespace EnergyService
             | System.Windows.Forms.AnchorStyles.Right)));
             this.consumptionChart.BorderlineColor = System.Drawing.Color.Black;
             this.consumptionChart.BorderlineDashStyle = System.Windows.Forms.DataVisualization.Charting.ChartDashStyle.Solid;
-            chartArea4.AxisX.IntervalAutoMode = System.Windows.Forms.DataVisualization.Charting.IntervalAutoMode.VariableCount;
-            chartArea4.AxisX.MajorGrid.LineColor = System.Drawing.Color.Silver;
-            chartArea4.AxisX.MajorGrid.LineDashStyle = System.Windows.Forms.DataVisualization.Charting.ChartDashStyle.Dash;
-            chartArea4.AxisY.MajorGrid.LineColor = System.Drawing.Color.Silver;
-            chartArea4.AxisY.MajorGrid.LineDashStyle = System.Windows.Forms.DataVisualization.Charting.ChartDashStyle.Dash;
-            chartArea4.Name = "totalChartArea";
-            this.consumptionChart.ChartAreas.Add(chartArea4);
-            legend4.LegendStyle = System.Windows.Forms.DataVisualization.Charting.LegendStyle.Column;
-            legend4.Name = "Legend1";
-            this.consumptionChart.Legends.Add(legend4);
+            chartArea1.AxisX.IntervalAutoMode = System.Windows.Forms.DataVisualization.Charting.IntervalAutoMode.VariableCount;
+            chartArea1.AxisX.MajorGrid.LineColor = System.Drawing.Color.Silver;
+            chartArea1.AxisX.MajorGrid.LineDashStyle = System.Windows.Forms.DataVisualization.Charting.ChartDashStyle.Dash;
+            chartArea1.AxisY.MajorGrid.LineColor = System.Drawing.Color.Silver;
+            chartArea1.AxisY.MajorGrid.LineDashStyle = System.Windows.Forms.DataVisualization.Charting.ChartDashStyle.Dash;
+            chartArea1.Name = "totalChartArea";
+            this.consumptionChart.ChartAreas.Add(chartArea1);
+            legend1.LegendStyle = System.Windows.Forms.DataVisualization.Charting.LegendStyle.Column;
+            legend1.Name = "Legend1";
+            this.consumptionChart.Legends.Add(legend1);
             this.consumptionChart.Location = new System.Drawing.Point(3, 113);
             this.consumptionChart.Name = "consumptionChart";
-            series13.ChartArea = "totalChartArea";
-            series13.Legend = "Legend1";
-            series13.Name = "tot";
-            series14.ChartArea = "totalChartArea";
-            series14.Legend = "Legend1";
-            series14.Name = "production";
-            series15.ChartArea = "totalChartArea";
-            series15.Legend = "Legend1";
-            series15.Name = "heating";
-            series16.ChartArea = "totalChartArea";
-            series16.Legend = "Legend1";
-            series16.Name = "Water summary, cub. m";
-            this.consumptionChart.Series.Add(series13);
-            this.consumptionChart.Series.Add(series14);
-            this.consumptionChart.Series.Add(series15);
-            this.consumptionChart.Series.Add(series16);
+            series1.ChartArea = "totalChartArea";
+            series1.Legend = "Legend1";
+            series1.Name = "tot";
+            series2.ChartArea = "totalChartArea";
+            series2.Legend = "Legend1";
+            series2.Name = "production";
+            series3.ChartArea = "totalChartArea";
+            series3.Legend = "Legend1";
+            series3.Name = "heating";
+            series4.ChartArea = "totalChartArea";
+            series4.Legend = "Legend1";
+            series4.Name = "Water summary, cub. m";
+            this.consumptionChart.Series.Add(series1);
+            this.consumptionChart.Series.Add(series2);
+            this.consumptionChart.Series.Add(series3);
+            this.consumptionChart.Series.Add(series4);
             this.consumptionChart.Size = new System.Drawing.Size(1231, 519);
             this.consumptionChart.TabIndex = 1;
             this.consumptionChart.Text = "chart1";
-            title7.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            title7.Name = "Title1";
-            title7.Text = "--";
-            title8.DockedToChartArea = "totalChartArea";
-            title8.Docking = System.Windows.Forms.DataVisualization.Charting.Docking.Left;
-            title8.DockingOffset = -8;
-            title8.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            title8.Name = "Title2";
-            title8.Text = "--";
-            this.consumptionChart.Titles.Add(title7);
-            this.consumptionChart.Titles.Add(title8);
+            title1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            title1.Name = "Title1";
+            title1.Text = "--";
+            title2.DockedToChartArea = "totalChartArea";
+            title2.Docking = System.Windows.Forms.DataVisualization.Charting.Docking.Left;
+            title2.DockingOffset = -8;
+            title2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            title2.Name = "Title2";
+            title2.Text = "--";
+            this.consumptionChart.Titles.Add(title1);
+            this.consumptionChart.Titles.Add(title2);
             // 
             // workTimePage
             // 
@@ -2543,36 +2549,81 @@ namespace EnergyService
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.contractsPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.contractsPanel.Controls.Add(this.contractsTabControl);
+            this.contractsPanel.Controls.Add(this.label53);
+            this.contractsPanel.Controls.Add(this.contractObjectTypeL2ComboBox);
             this.contractsPanel.Controls.Add(this.label52);
             this.contractsPanel.Controls.Add(this.contractActionTypeComboBox);
             this.contractsPanel.Controls.Add(this.label51);
-            this.contractsPanel.Controls.Add(this.contractObjectTypeComboBox);
+            this.contractsPanel.Controls.Add(this.contractObjectTypeL1ComboBox);
             this.contractsPanel.Location = new System.Drawing.Point(3, 3);
             this.contractsPanel.Name = "contractsPanel";
             this.contractsPanel.Size = new System.Drawing.Size(1240, 637);
             this.contractsPanel.TabIndex = 1;
             // 
+            // label53
+            // 
+            this.label53.AutoSize = true;
+            this.label53.Location = new System.Drawing.Point(10, 56);
+            this.label53.Name = "label53";
+            this.label53.Size = new System.Drawing.Size(41, 13);
+            this.label53.TabIndex = 5;
+            this.label53.Text = "Object:";
+            // 
+            // contractObjectTypeL2ComboBox
+            // 
+            this.contractObjectTypeL2ComboBox.FormattingEnabled = true;
+            this.contractObjectTypeL2ComboBox.Location = new System.Drawing.Point(13, 72);
+            this.contractObjectTypeL2ComboBox.Name = "contractObjectTypeL2ComboBox";
+            this.contractObjectTypeL2ComboBox.Size = new System.Drawing.Size(130, 21);
+            this.contractObjectTypeL2ComboBox.TabIndex = 4;
+            this.contractObjectTypeL2ComboBox.SelectedIndexChanged += new System.EventHandler(this.contractObjectTypeL2ComboBox_SelectedIndexChanged);
+            this.contractObjectTypeL2ComboBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.contractObjectTypeL2ComboBox_KeyPress);
+            // 
+            // label52
+            // 
+            this.label52.AutoSize = true;
+            this.label52.Location = new System.Drawing.Point(9, 104);
+            this.label52.Name = "label52";
+            this.label52.Size = new System.Drawing.Size(67, 13);
+            this.label52.TabIndex = 3;
+            this.label52.Text = "Action Type:";
+            // 
+            // contractActionTypeComboBox
+            // 
+            this.contractActionTypeComboBox.FormattingEnabled = true;
+            this.contractActionTypeComboBox.Items.AddRange(new object[] {
+            "Supply",
+            "Service",
+            "Distribution"});
+            this.contractActionTypeComboBox.Location = new System.Drawing.Point(12, 120);
+            this.contractActionTypeComboBox.Name = "contractActionTypeComboBox";
+            this.contractActionTypeComboBox.Size = new System.Drawing.Size(130, 21);
+            this.contractActionTypeComboBox.TabIndex = 2;
+            this.contractActionTypeComboBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.contractActionTypeComboBox_KeyDown);
+            this.contractActionTypeComboBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.contractActionTypeComboBox_KeyPress);
+            // 
             // label51
             // 
             this.label51.AutoSize = true;
-            this.label51.Location = new System.Drawing.Point(25, 11);
+            this.label51.Location = new System.Drawing.Point(9, 7);
             this.label51.Name = "label51";
             this.label51.Size = new System.Drawing.Size(68, 13);
             this.label51.TabIndex = 1;
             this.label51.Text = "Object Type:";
             // 
-            // contractObjectTypeComboBox
+            // contractObjectTypeL1ComboBox
             // 
-            this.contractObjectTypeComboBox.FormattingEnabled = true;
-            this.contractObjectTypeComboBox.Items.AddRange(new object[] {
-            "Energy",
+            this.contractObjectTypeL1ComboBox.FormattingEnabled = true;
+            this.contractObjectTypeL1ComboBox.Items.AddRange(new object[] {
+            "Resources",
             "Equipment"});
-            this.contractObjectTypeComboBox.Location = new System.Drawing.Point(28, 27);
-            this.contractObjectTypeComboBox.Name = "contractObjectTypeComboBox";
-            this.contractObjectTypeComboBox.Size = new System.Drawing.Size(130, 21);
-            this.contractObjectTypeComboBox.TabIndex = 0;
-            this.contractObjectTypeComboBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.contractTypeComboBox_KeyDown);
-            this.contractObjectTypeComboBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.contractTypeComboBox_KeyPress);
+            this.contractObjectTypeL1ComboBox.Location = new System.Drawing.Point(12, 23);
+            this.contractObjectTypeL1ComboBox.Name = "contractObjectTypeL1ComboBox";
+            this.contractObjectTypeL1ComboBox.Size = new System.Drawing.Size(130, 21);
+            this.contractObjectTypeL1ComboBox.TabIndex = 0;
+            this.contractObjectTypeL1ComboBox.SelectedIndexChanged += new System.EventHandler(this.contractObjectTypeL1ComboBox_SelectedIndexChanged);
+            this.contractObjectTypeL1ComboBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.contractObjectTypeL1ComboBox_KeyPress);
             // 
             // helpPage
             // 
@@ -2672,28 +2723,38 @@ namespace EnergyService
             this.loadDelayTimer.Interval = 1000;
             this.loadDelayTimer.Tick += new System.EventHandler(this.loadDelayTimer_Tick);
             // 
-            // label52
+            // contractsTabControl
             // 
-            this.label52.AutoSize = true;
-            this.label52.Location = new System.Drawing.Point(25, 60);
-            this.label52.Name = "label52";
-            this.label52.Size = new System.Drawing.Size(67, 13);
-            this.label52.TabIndex = 3;
-            this.label52.Text = "Action Type:";
+            this.contractsTabControl.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.contractsTabControl.Controls.Add(this.searchPage);
+            this.contractsTabControl.Controls.Add(this.addPage);
+            this.contractsTabControl.Location = new System.Drawing.Point(149, 7);
+            this.contractsTabControl.Name = "contractsTabControl";
+            this.contractsTabControl.SelectedIndex = 0;
+            this.contractsTabControl.Size = new System.Drawing.Size(1086, 625);
+            this.contractsTabControl.TabIndex = 6;
             // 
-            // contractActionTypeComboBox
+            // searchPage
             // 
-            this.contractActionTypeComboBox.FormattingEnabled = true;
-            this.contractActionTypeComboBox.Items.AddRange(new object[] {
-            "Supply",
-            "Service",
-            "Distribution"});
-            this.contractActionTypeComboBox.Location = new System.Drawing.Point(28, 76);
-            this.contractActionTypeComboBox.Name = "contractActionTypeComboBox";
-            this.contractActionTypeComboBox.Size = new System.Drawing.Size(130, 21);
-            this.contractActionTypeComboBox.TabIndex = 2;
-            this.contractActionTypeComboBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.contractActionTypeComboBox_KeyDown);
-            this.contractActionTypeComboBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.contractActionTypeComboBox_KeyPress);
+            this.searchPage.Location = new System.Drawing.Point(4, 22);
+            this.searchPage.Name = "searchPage";
+            this.searchPage.Padding = new System.Windows.Forms.Padding(3);
+            this.searchPage.Size = new System.Drawing.Size(1078, 599);
+            this.searchPage.TabIndex = 0;
+            this.searchPage.Text = "Search";
+            this.searchPage.UseVisualStyleBackColor = true;
+            // 
+            // addPage
+            // 
+            this.addPage.Location = new System.Drawing.Point(4, 22);
+            this.addPage.Name = "addPage";
+            this.addPage.Padding = new System.Windows.Forms.Padding(3);
+            this.addPage.Size = new System.Drawing.Size(1078, 599);
+            this.addPage.TabIndex = 1;
+            this.addPage.Text = "Add";
+            this.addPage.UseVisualStyleBackColor = true;
             // 
             // MainForm
             // 
@@ -2765,6 +2826,7 @@ namespace EnergyService
             this.historyPage.ResumeLayout(false);
             this.historyPanel.ResumeLayout(false);
             this.historyPanel.PerformLayout();
+            this.contractsTabControl.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -2976,9 +3038,14 @@ namespace EnergyService
         private System.Windows.Forms.TabPage contractsPage;
         private System.Windows.Forms.Panel contractsPanel;
         private System.Windows.Forms.Label label51;
-        private System.Windows.Forms.ComboBox contractObjectTypeComboBox;
+        private System.Windows.Forms.ComboBox contractObjectTypeL1ComboBox;
         private System.Windows.Forms.Label label52;
         private System.Windows.Forms.ComboBox contractActionTypeComboBox;
+        private System.Windows.Forms.Label label53;
+        private System.Windows.Forms.ComboBox contractObjectTypeL2ComboBox;
+        private System.Windows.Forms.TabControl contractsTabControl;
+        private System.Windows.Forms.TabPage searchPage;
+        private System.Windows.Forms.TabPage addPage;
     }
 }
 

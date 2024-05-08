@@ -99,12 +99,15 @@ namespace EnergyService
                 rateTextBox.Text = GetConstant("vacRate");
             }
 
+            this.ContractDBConnection = new OleDbConnection(SetProvider("Contracts.accdb"));
+            ContractDBConnection.Open();
 
             StockDBConnection.Close();
             MaintenanceDBConnection.Close();
             PlannedExpensesDBConnection.Close();
             ConsumptionDBConnection.Close();
             WorkTimeDBConnection.Close();
+            ContractDBConnection.Close();
 
             SetEventsHandlers();
 
@@ -3874,6 +3877,9 @@ namespace EnergyService
 
 
         //CONTRACTS*****************************************************************************************************************************************************************/
+        OleDbConnection ContractDBConnection;
+        OleDbCommand ContractDBCommand;
+        OleDbDataReader ContractDBReader;
         //CLASSES/////////////////////////////////////////////////
         public class Contract
         {
@@ -3886,16 +3892,15 @@ namespace EnergyService
         //FUNCTIONS////////////////////////////////////////////////
 
         //EVENTS/////////////////////////////////////////////////
-        private void contractTypeComboBox_KeyPress(object sender, KeyPressEventArgs e)
+        private void contractObjectTypeL1ComboBox_KeyPress(object sender, KeyPressEventArgs e)
         {
             Char number = e.KeyChar;
-            e.Handled = true; 
-        }
-
-        private void contractTypeComboBox_KeyDown(object sender, KeyEventArgs e)
-        {
             e.Handled = true;
-            MessageBox.Show(Convert.ToString(e.KeyCode));
+        }
+        private void contractObjectTypeL2ComboBox_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            Char number = e.KeyChar;
+            e.Handled = true;
         }
 
         private void contractActionTypeComboBox_KeyDown(object sender, KeyEventArgs e)
@@ -3909,6 +3914,41 @@ namespace EnergyService
             Char number = e.KeyChar;
             e.Handled = true;
         }
+
+        private void contractObjectTypeL1ComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string[] items;
+            contractObjectTypeL2ComboBox.Items.Clear();
+            contractActionTypeComboBox.Items.Clear();
+            contractObjectTypeL2ComboBox.Text = "";
+            contractActionTypeComboBox.Text = "";
+            switch (contractObjectTypeL1ComboBox.Text)
+            {
+                case "Resources": items = new string[] { "Gas", "Electricity", "Water"}; contractObjectTypeL2ComboBox.Items.AddRange(items); break;
+                case "Equipment": items = new string[]{"Common Equipment"}; contractObjectTypeL2ComboBox.Items.AddRange(items); break;
+                default:break;
+            }
+
+        }
+
+        private void contractObjectTypeL2ComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string[] items;
+            contractActionTypeComboBox.Items.Clear();
+            contractActionTypeComboBox.Text = "";
+            switch (contractObjectTypeL2ComboBox.Text)
+            {
+                case "Gas": items = new string[] { "Supply", "Distribution", "Service", "Research" }; contractActionTypeComboBox.Items.AddRange(items); break;
+                case "Electricity": items = new string[] { "Supply", "Distribution", "Service", "Research" }; contractActionTypeComboBox.Items.AddRange(items); break;
+                case "Water": items = new string[] { "Supply", "Research" }; contractActionTypeComboBox.Items.AddRange(items); break;
+                case "Common Equipment": items = new string[] { "Supply", "Research", "Service" }; contractActionTypeComboBox.Items.AddRange(items); break;
+                default: break;
+            }
+        }
+
+ 
+
+
 
 
         //CONTRACTS*****************************************************************************************************************************************************************/
