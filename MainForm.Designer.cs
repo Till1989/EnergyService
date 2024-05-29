@@ -252,6 +252,9 @@ namespace EnergyService
             this.addWorkTimePersonComboBox = new System.Windows.Forms.ComboBox();
             this.contractsPage = new System.Windows.Forms.TabPage();
             this.contractsPanel = new System.Windows.Forms.Panel();
+            this.contractsTabControl = new System.Windows.Forms.TabControl();
+            this.searchPage = new System.Windows.Forms.TabPage();
+            this.addPage = new System.Windows.Forms.TabPage();
             this.label53 = new System.Windows.Forms.Label();
             this.contractObjectTypeL2ComboBox = new System.Windows.Forms.ComboBox();
             this.label52 = new System.Windows.Forms.Label();
@@ -270,9 +273,7 @@ namespace EnergyService
             this.EURCurrencyLabel = new System.Windows.Forms.Label();
             this.currencyTimer = new System.Windows.Forms.Timer(this.components);
             this.loadDelayTimer = new System.Windows.Forms.Timer(this.components);
-            this.contractsTabControl = new System.Windows.Forms.TabControl();
-            this.searchPage = new System.Windows.Forms.TabPage();
-            this.addPage = new System.Windows.Forms.TabPage();
+            this.activeContractCheckBox = new System.Windows.Forms.CheckBox();
             this.mainTabControl.SuspendLayout();
             this.LogIntabPage.SuspendLayout();
             this.logInPanel.SuspendLayout();
@@ -306,9 +307,9 @@ namespace EnergyService
             this.addWorkTimePanel.SuspendLayout();
             this.contractsPage.SuspendLayout();
             this.contractsPanel.SuspendLayout();
+            this.contractsTabControl.SuspendLayout();
             this.historyPage.SuspendLayout();
             this.historyPanel.SuspendLayout();
-            this.contractsTabControl.SuspendLayout();
             this.SuspendLayout();
             // 
             // mainTabControl
@@ -2549,6 +2550,7 @@ namespace EnergyService
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.contractsPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.contractsPanel.Controls.Add(this.activeContractCheckBox);
             this.contractsPanel.Controls.Add(this.contractsTabControl);
             this.contractsPanel.Controls.Add(this.label53);
             this.contractsPanel.Controls.Add(this.contractObjectTypeL2ComboBox);
@@ -2560,6 +2562,39 @@ namespace EnergyService
             this.contractsPanel.Name = "contractsPanel";
             this.contractsPanel.Size = new System.Drawing.Size(1240, 637);
             this.contractsPanel.TabIndex = 1;
+            // 
+            // contractsTabControl
+            // 
+            this.contractsTabControl.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.contractsTabControl.Controls.Add(this.searchPage);
+            this.contractsTabControl.Controls.Add(this.addPage);
+            this.contractsTabControl.Location = new System.Drawing.Point(149, 7);
+            this.contractsTabControl.Name = "contractsTabControl";
+            this.contractsTabControl.SelectedIndex = 0;
+            this.contractsTabControl.Size = new System.Drawing.Size(1086, 625);
+            this.contractsTabControl.TabIndex = 6;
+            // 
+            // searchPage
+            // 
+            this.searchPage.Location = new System.Drawing.Point(4, 22);
+            this.searchPage.Name = "searchPage";
+            this.searchPage.Padding = new System.Windows.Forms.Padding(3);
+            this.searchPage.Size = new System.Drawing.Size(1078, 599);
+            this.searchPage.TabIndex = 0;
+            this.searchPage.Text = "Search";
+            this.searchPage.UseVisualStyleBackColor = true;
+            // 
+            // addPage
+            // 
+            this.addPage.Location = new System.Drawing.Point(4, 22);
+            this.addPage.Name = "addPage";
+            this.addPage.Padding = new System.Windows.Forms.Padding(3);
+            this.addPage.Size = new System.Drawing.Size(1078, 599);
+            this.addPage.TabIndex = 1;
+            this.addPage.Text = "Add";
+            this.addPage.UseVisualStyleBackColor = true;
             // 
             // label53
             // 
@@ -2723,38 +2758,15 @@ namespace EnergyService
             this.loadDelayTimer.Interval = 1000;
             this.loadDelayTimer.Tick += new System.EventHandler(this.loadDelayTimer_Tick);
             // 
-            // contractsTabControl
+            // activeContractCheckBox
             // 
-            this.contractsTabControl.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.contractsTabControl.Controls.Add(this.searchPage);
-            this.contractsTabControl.Controls.Add(this.addPage);
-            this.contractsTabControl.Location = new System.Drawing.Point(149, 7);
-            this.contractsTabControl.Name = "contractsTabControl";
-            this.contractsTabControl.SelectedIndex = 0;
-            this.contractsTabControl.Size = new System.Drawing.Size(1086, 625);
-            this.contractsTabControl.TabIndex = 6;
-            // 
-            // searchPage
-            // 
-            this.searchPage.Location = new System.Drawing.Point(4, 22);
-            this.searchPage.Name = "searchPage";
-            this.searchPage.Padding = new System.Windows.Forms.Padding(3);
-            this.searchPage.Size = new System.Drawing.Size(1078, 599);
-            this.searchPage.TabIndex = 0;
-            this.searchPage.Text = "Search";
-            this.searchPage.UseVisualStyleBackColor = true;
-            // 
-            // addPage
-            // 
-            this.addPage.Location = new System.Drawing.Point(4, 22);
-            this.addPage.Name = "addPage";
-            this.addPage.Padding = new System.Windows.Forms.Padding(3);
-            this.addPage.Size = new System.Drawing.Size(1078, 599);
-            this.addPage.TabIndex = 1;
-            this.addPage.Text = "Add";
-            this.addPage.UseVisualStyleBackColor = true;
+            this.activeContractCheckBox.AutoSize = true;
+            this.activeContractCheckBox.Location = new System.Drawing.Point(12, 160);
+            this.activeContractCheckBox.Name = "activeContractCheckBox";
+            this.activeContractCheckBox.Size = new System.Drawing.Size(62, 17);
+            this.activeContractCheckBox.TabIndex = 7;
+            this.activeContractCheckBox.Text = "Active?";
+            this.activeContractCheckBox.UseVisualStyleBackColor = true;
             // 
             // MainForm
             // 
@@ -2823,10 +2835,10 @@ namespace EnergyService
             this.contractsPage.ResumeLayout(false);
             this.contractsPanel.ResumeLayout(false);
             this.contractsPanel.PerformLayout();
+            this.contractsTabControl.ResumeLayout(false);
             this.historyPage.ResumeLayout(false);
             this.historyPanel.ResumeLayout(false);
             this.historyPanel.PerformLayout();
-            this.contractsTabControl.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -3046,6 +3058,7 @@ namespace EnergyService
         private System.Windows.Forms.TabControl contractsTabControl;
         private System.Windows.Forms.TabPage searchPage;
         private System.Windows.Forms.TabPage addPage;
+        private System.Windows.Forms.CheckBox activeContractCheckBox;
     }
 }
 

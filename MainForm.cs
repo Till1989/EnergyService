@@ -2923,6 +2923,7 @@ namespace EnergyService
         private void currencyTimer_Tick(object sender, EventArgs e)
         {
             readCurrency();
+            currencyTimer.Enabled = false;
         }
 
         //CURRENCY********************************************************************************************************************************************************************/
